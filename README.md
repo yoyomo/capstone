@@ -1,2 +1,2 @@
-# capstone
-Efficient Irrigation System
+# H2O Crop
+Optimum Irrigation System
