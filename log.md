@@ -39,4 +39,7 @@ Encuentro con Dr. Erick Aponte
 Jesus Javier Armando  
 Discusión de especificaciones con Erick Aponte  
   
+6 de feb - 6:30pm  
+los cuatro  
+Proposal Presentation  
   
