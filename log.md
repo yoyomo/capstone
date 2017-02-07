@@ -26,3 +26,17 @@ Reunión con Harmsen. Más detalles y acuerdo con diseño
 26 de enero - 10:30am  
 Todos  
 Finca alzamora Bryan Runner (hardware specs)  
+  
+2 de feb - 9:30am  
+Armando Jesus Javier  
+Reunión con Lizette, Brunner, Harmsen  
+  
+2 de feb - 3:00pm  
+los cuatro  
+Encuentro con Dr. Erick Aponte  
+  
+6 de feb - 2:30pm  
+Jesus Javier Armando  
+Discusión de especificaciones con Erick Aponte  
+  
+  
