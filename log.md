@@ -43,3 +43,12 @@ Discusión de especificaciones con Erick Aponte
 los cuatro  
 Proposal Presentation  
   
+7 de feb - 6:30pm  
+todos  
+Propuesta  
+  
+9 de feb - 6:30pm  
+todos  
+Propuesta  
+  
+  
