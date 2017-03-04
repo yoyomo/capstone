@@ -51,4 +51,8 @@ Propuesta
 todos  
 Propuesta  
   
+27 feb - 2:30pm  
+Javier Jesus Armando  
+Diseño hardware  
+  
   
