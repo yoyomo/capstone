@@ -5,6 +5,7 @@ EvapoTranspiration Estimate: ETc= (ETo)kc
 Daily data: academia.uprm.edu  
 Main website: pragwater.com  
 Bryan Runner: brbrunner@yahoo.com  
+Asistente: raldys.cruz@upr.edu  
 
 ##Date Log
 23 de enero 2017 - 4:30pm  
