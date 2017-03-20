@@ -1,3 +1,8 @@
+/*************************************************************
+ * ************************ SET UP ***************************
+ *************************************************************
+ */
+
 var express = require('express');
 var app = express();
 app.use(express.static('www'));
@@ -16,11 +21,13 @@ function clientConnect(){
 	client = new pg.Client(conString);
 	client.connect();
 }
-
 clientConnect();
 
+/*************************************************************
+ * ************************ EMAILS ***************************
+ *************************************************************
+ */
 var nodemailer = require('nodemailer');
-
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport({
 	service: 'Gmail',
@@ -50,14 +57,14 @@ app.get('/sendMail/:username/:email',function(req,res){
 	});
 });
 
+/*************************************************************
+ * ************************ QUERIES **************************
+ *************************************************************
+ */
 
-app.get('/db/get/soil', function (req,res) {
+function get(stringQuery,req,res){
 	//clientConnect();
-	query = client.query(
-		"select *\
-		from soilwatercharacteristics\
-		;"
-	);  
+	query = client.query(stringQuery);  
 	query.on('row', function(row, result) {
 		result.addRow(row);
 	});
@@ -65,7 +72,118 @@ app.get('/db/get/soil', function (req,res) {
    		//client.end(); 
 		res.writeHead(200, {'Content-Type': 'text/plain'});
 		res.write(JSON.stringify(result.rows, null, "    "));
-		console.log(result);
 		res.end();  
 	});
+}
+
+function add(stringQuery,req,res){
+	//clientConnect();
+	query = client.query(stringQuery);  
+   	query.on('end', function (result) {          
+   		//client.end(); 
+		res.writeHead(200, {'Content-Type': 'text/plain'});
+		res.status(200).write(JSON.stringify(result.rows, null, "    "));
+		res.end();  
+	});
+}
+
+// Sign Up
+app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', function (req,res) {
+	var farmer = req.params;
+	add("insert into farmer (fullname, email, username, password, phonenumber)\
+		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
+		'"+farmer.password+"','"+farmer.phonenumber+"')\
+		;",req,res);
+});
+
+// Log In
+app.get('/db/get/farmer/:username/:password', function (req,res) {
+	var farmer = req.params;
+	get("select *\
+		from farmer\
+		where username='"+farmer.username+"' and password='"+farmer.password+"'\
+		;",req,res);
+});
+
+// Gets Latitude values
+app.get('/db/get/latitude', function (req,res) {
+	get("select *\
+		from latitude\
+		;",req,res);
+});
+
+// Gets Longitude values
+app.get('/db/get/longitude', function (req,res) {
+	get("select *\
+		from longitude\
+		;",req,res);
+});
+
+
+// Gets Soil Water Characteristics for Farms
+app.get('/db/get/soils', function (req,res) {
+	get("select *\
+		from soilwatercharacteristics\
+		;",req,res);
+});
+
+// Add Farm
+app.get('/db/add/farm/:uid/:farmname/:soiltype/:latindex/:lonindex', function (req,res) {
+	var farm = req.params;
+	add("insert into farm (uid,farmname,soiltype,latindex,lonindex)\
+		values ("+farm.uid+",'"+farm.farmname+"',\
+		'"+farm.soiltype+"',"+farm.latindex+","+farm.lonindex+")\
+		;",req,res);
+});
+
+// Get user's farms
+app.get('/db/get/farms/:uid', function (req,res) {
+	var farms = req.params;
+	get("select *\
+		from farm\
+		where uid="+farms.uid+"\
+		;",req,res);
+});
+
+// Get all irrigation methods
+app.get('/db/get/irrigationmethod/', function (req,res) {
+	var farms = req.params;
+	get("select *\
+		from fieldapplicationefficiency\
+		;",req,res);
+});
+
+// Add Irrigation Zone
+app.get('/db/add/iz/:farmid/:uid/:izname/:acres/:waterflow/:method/:eff', function (req,res) {
+	var iz = req.params;
+	add("insert into irrigationzone \
+		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)\
+		values ("+iz.farmid+","+iz.uid+",'"+iz.izname+"',"+iz.acres+",\
+		"+iz.waterflow+",'"+iz.method+"',"+iz.eff+")\
+		;",req,res);
+});
+
+// Get user's irrigation zones by farm
+app.get('/db/get/iz/:farmid/:uid', function (req,res) {
+	var iz = req.params;
+	get("select *\
+		from irrigationzone\
+		where farmid="+iz.farmid+" and uid="+iz.uid+"\
+		;",req,res);
+});
+
+// Get all crop info
+app.get('/db/get/cropinfo/', function (req,res) {
+	var farms = req.params;
+	get("select *\
+		from cropinfo\
+		;",req,res);
+});
+
+// Add Crop
+app.get('/db/add/crop/:izid/:uid/:infoid', function (req,res) {
+	var crop = req.params;
+	add("insert into crop (izid,uid,infoid)\
+		values ("+crop.izid+","+crop.uid+","+crop.infoid+")\
+		;",req,res);
 });
