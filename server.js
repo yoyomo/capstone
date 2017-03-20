@@ -62,23 +62,12 @@ app.get('/sendMail/:username/:email',function(req,res){
  *************************************************************
  */
 
-function get(stringQuery,req,res){
+function call(stringQuery,req,res){
 	//clientConnect();
 	query = client.query(stringQuery);  
 	query.on('row', function(row, result) {
 		result.addRow(row);
 	});
-   	query.on('end', function (result) {          
-   		//client.end(); 
-		res.writeHead(200, {'Content-Type': 'text/plain'});
-		res.write(JSON.stringify(result.rows, null, "    "));
-		res.end();  
-	});
-}
-
-function add(stringQuery,req,res){
-	//clientConnect();
-	query = client.query(stringQuery);  
    	query.on('end', function (result) {          
    		//client.end(); 
 		res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -90,7 +79,7 @@ function add(stringQuery,req,res){
 // Sign Up
 app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', function (req,res) {
 	var farmer = req.params;
-	add("insert into farmer (fullname, email, username, password, phonenumber)\
+	call("insert into farmer (fullname, email, username, password, phonenumber)\
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
 		'"+farmer.password+"','"+farmer.phonenumber+"')\
 		;",req,res);
@@ -99,7 +88,7 @@ app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', func
 // Log In
 app.get('/db/get/farmer/:username/:password', function (req,res) {
 	var farmer = req.params;
-	get("select *\
+	call("select *\
 		from farmer\
 		where username='"+farmer.username+"' and password='"+farmer.password+"'\
 		;",req,res);
@@ -107,14 +96,14 @@ app.get('/db/get/farmer/:username/:password', function (req,res) {
 
 // Gets Latitude values
 app.get('/db/get/latitude', function (req,res) {
-	get("select *\
+	call("select *\
 		from latitude\
 		;",req,res);
 });
 
 // Gets Longitude values
 app.get('/db/get/longitude', function (req,res) {
-	get("select *\
+	call("select *\
 		from longitude\
 		;",req,res);
 });
@@ -122,7 +111,7 @@ app.get('/db/get/longitude', function (req,res) {
 
 // Gets Soil Water Characteristics for Farms
 app.get('/db/get/soils', function (req,res) {
-	get("select *\
+	call("select *\
 		from soilwatercharacteristics\
 		;",req,res);
 });
@@ -130,7 +119,7 @@ app.get('/db/get/soils', function (req,res) {
 // Add Farm
 app.get('/db/add/farm/:uid/:farmname/:soiltype/:latindex/:lonindex', function (req,res) {
 	var farm = req.params;
-	add("insert into farm (uid,farmname,soiltype,latindex,lonindex)\
+	call("insert into farm (uid,farmname,soiltype,latindex,lonindex)\
 		values ("+farm.uid+",'"+farm.farmname+"',\
 		'"+farm.soiltype+"',"+farm.latindex+","+farm.lonindex+")\
 		;",req,res);
@@ -139,7 +128,7 @@ app.get('/db/add/farm/:uid/:farmname/:soiltype/:latindex/:lonindex', function (r
 // Get user's farms
 app.get('/db/get/farms/:uid', function (req,res) {
 	var farms = req.params;
-	get("select *\
+	call("select *\
 		from farm\
 		where uid="+farms.uid+"\
 		;",req,res);
@@ -148,7 +137,7 @@ app.get('/db/get/farms/:uid', function (req,res) {
 // Get all irrigation methods
 app.get('/db/get/irrigationmethod/', function (req,res) {
 	var farms = req.params;
-	get("select *\
+	call("select *\
 		from fieldapplicationefficiency\
 		;",req,res);
 });
@@ -156,7 +145,7 @@ app.get('/db/get/irrigationmethod/', function (req,res) {
 // Add Irrigation Zone
 app.get('/db/add/iz/:farmid/:uid/:izname/:acres/:waterflow/:method/:eff', function (req,res) {
 	var iz = req.params;
-	add("insert into irrigationzone \
+	call("insert into irrigationzone \
 		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)\
 		values ("+iz.farmid+","+iz.uid+",'"+iz.izname+"',"+iz.acres+",\
 		"+iz.waterflow+",'"+iz.method+"',"+iz.eff+")\
@@ -166,7 +155,7 @@ app.get('/db/add/iz/:farmid/:uid/:izname/:acres/:waterflow/:method/:eff', functi
 // Get user's irrigation zones by farm
 app.get('/db/get/iz/:farmid/:uid', function (req,res) {
 	var iz = req.params;
-	get("select *\
+	call("select *\
 		from irrigationzone\
 		where farmid="+iz.farmid+" and uid="+iz.uid+"\
 		;",req,res);
@@ -175,7 +164,7 @@ app.get('/db/get/iz/:farmid/:uid', function (req,res) {
 // Get all crop info
 app.get('/db/get/cropinfo/', function (req,res) {
 	var farms = req.params;
-	get("select *\
+	call("select *\
 		from cropinfo\
 		;",req,res);
 });
@@ -183,7 +172,54 @@ app.get('/db/get/cropinfo/', function (req,res) {
 // Add Crop
 app.get('/db/add/crop/:izid/:uid/:infoid', function (req,res) {
 	var crop = req.params;
-	add("insert into crop (izid,uid,infoid)\
+	call("insert into crop (izid,uid,infoid)\
 		values ("+crop.izid+","+crop.uid+","+crop.infoid+")\
 		;",req,res);
 });
+
+// Get logged in user
+app.get('/db/get/farmer/:uid', function (req,res) {
+	var farmer = req.params;
+	call("select *\
+		from farmer\
+		where uid="+farmer.uid+"\
+		;",req,res);
+});
+
+// Get all user's crops
+app.get('/db/get/crops/:uid', function (req,res) {
+	var crops = req.params;
+	call("select *\
+		from crop\
+		where uid="+crops.uid+"\
+		;",req,res);
+});
+
+// Edit Crop
+app.get('/db/edit/crop/:cropid/:uid/:izid/:infoid', function (req,res) {
+	var crop = req.params;
+	call("update crop\
+		set izid="+crop.izid+",infoid="+crop.infoid+"\
+		where cropid="+crop.cropid+" and uid="+crop.uid+"\
+		;",req,res);
+});
+
+// Read Specific Crop Information
+app.get('/db/get/crop/:cropid/:uid', function (req,res) {
+	var crop = req.params;
+	call("select *\
+		from crop natural join irrigationzone\
+		where cropid="+crop.cropid+" and uid="+crop.uid+"\
+		;",req,res);
+});
+
+// Read All Crops' Information that are not Finished
+app.get('/db/get/allcrops', function (req,res) {
+	var crop = req.params;
+	call("select *\
+		from crop natural join cropinfo natural join irrigationzone natural join\
+		farm natural join soilwatercharacteristics natural join latitude natural join longitude\
+		where cropstatus='On Going'\
+		;",req,res);
+});
+
