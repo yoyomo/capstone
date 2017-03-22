@@ -64,7 +64,12 @@ app.get('/sendMail/:username/:email',function(req,res){
 
 function call(stringQuery,req,res){
 	//clientConnect();
-	query = client.query(stringQuery);  
+	query = client.query(stringQuery);
+	query.on('error', function(error) {
+		console.log(error);
+		res.write(JSON.stringify(error, null, "    "));
+		res.end();
+	});  
 	query.on('row', function(row, result) {
 		result.addRow(row);
 	});
@@ -223,3 +228,207 @@ app.get('/db/get/allcrops', function (req,res) {
 		;",req,res);
 });
 
+// Add to History
+app.get('/db/add/history/:cropid/:uid/:recommendedet/:irrigatedet/:seasonday', function(req,res) {
+	var history = req.params;
+	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday)\
+		values ("+history.cropid+","+history.uid+",\
+		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+")\
+		;", req, res);
+});
+
+// Get Crop's History
+app.get('/db/get/history/:cropid/:uid', function(req,res) {
+	var history = req.params;
+	call("select *\
+		from history\
+		where cropid="+history.cropid+" and uid="+history.uid+"\
+		;", req, res);
+});
+
+// Edit Crop's History 
+/*
+ * WARNING: CHANGING A CROP'S HISTORY AFFECTS THE CUMULATIVE ET
+ */
+app.get('/db/edit/history/:histid/:cropid/:uid/:irrigatedet', function(req,res) {
+	var history = req.params;
+
+	// first update cumulative crop with respect to old written value
+	var firstQuery = 
+		"update crop\
+		set cumulativeet=(cumulativeet-"+history.irrigatedet+"\
+		+(select irrigatedet\
+			from history\
+			where histid="+history.histid+" and cropid="+history.cropid+" and uid="+history.uid+"))\
+		where cropid="+history.cropid+" and uid="+history.uid+";";
+
+	// then update history values with new one
+	var secondQuery = 
+		"update history\
+		set irrigatedet="+history.irrigatedet+"\
+		where histid="+history.histid+" and cropid="+history.cropid+" and uid="+history.uid+"\
+		;";
+	call(firstQuery + secondQuery, req, res);
+});
+
+// Edit Farmer (used for settings/forgotten)
+app.get('/db/edit/farmer/:uid/:email/:password/:username/:phonenumber/:fullname', function(req,res) {
+	var farmer = req.params;
+	var stringQuery = 
+		"update farmer\
+		set email='"+farmer.email+"',password='"+farmer.password+"',\
+		username='"+farmer.username+"',phonenumber='"+farmer.phonenumber+"',\
+		fullname='"+farmer.fullname+"'\
+		where uid="+farmer.uid+"\
+		;";
+	call(stringQuery, req, res);
+});
+
+// Update Crop (called when new data is calculated everyday)
+app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:cumulativeet', function(req,res) {
+	var crop = req.params;
+	var stringQuery = 
+		"update crop\
+		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
+		cumulativeet="+crop.cumulativeet+"\
+		where cropid="+crop.cropid+" and uid="+crop.uid+"\
+		;";
+	call(stringQuery, req, res);
+});
+
+// Edit Farm
+app.get('/db/edit/farm/:farmid/:uid/:farmname/:soiltype/:latindex/:lonindex', function (req,res) {
+	var farm = req.params;
+	call("update farm\
+		set farmname='"+farm.farmname+"', soiltype='"+farm.soiltype+"',\
+		latindex="+farm.latindex+", lonindex="+farm.lonindex+"\
+		where farmid="+farm.farmid+" and uid="+farm.uid+"\
+		;",req,res);
+});
+
+// Edit Irrigation Zone
+app.get('/db/edit/iz/:izid/:uid/:farmid/:izname/:acres/:waterflow/:method/:eff', function (req,res) {
+	var iz = req.params;
+	call("update irrigationzone\
+		set farmid="+iz.farmid+", izname='"+iz.izname+"', \
+		acres="+iz.acres+", waterflow="+iz.waterflow+", \
+		irrigationmethod='"+iz.method+"', irrigationefficiency="+iz.eff+"\
+		where izid="+iz.izid+" and uid="+iz.uid+"\
+		;",req,res);
+});
+
+/*************************************************************
+ * ************************ HARDWARE *************************
+ *********************** CONTROL SYSTEM **********************
+ *************************************************************
+ */
+
+// Add Master Control
+app.get('/db/add/mc/:farmid/:uid/:ipaddress', function (req,res) {
+	var mc = req.params;
+	call("insert into mastercontrol (farmid, uid, ipaddress)\
+		values ("+mc.farmid+","+mc.uid+",'"+mc.ipaddress+"')\
+		;",req,res);
+});
+
+// Get user's Master Control
+app.get('/db/get/mc/:uid', function (req,res) {
+	var mc = req.params;
+	call("select *\
+		from mastercontrol\
+		where uid="+mc.uid+"\
+		;",req,res);
+});
+
+// Edit user's Master Control
+app.get('/db/edit/mc/:controlid/:uid/:farmid/:ipaddress', function (req,res) {
+	var mc = req.params;
+	call("update mastercontrol\
+		set farmid="+mc.farmid+", ipaddress='"+mc.ipaddress+"'\
+		where controlid="+mc.controlid+" and uid="+mc.uid+"\
+		;",req,res);
+});
+
+// Add Valve to Master Control
+app.get('/db/add/valve/:uid/:izid/:controlid/:valveid', function (req,res) {
+	var valve = req.params;
+	call("insert into valvecontrol (uid,izid,controlid,valveid)\
+		values ("+valve.uid+","+valve.izid+","+valve.controlid+","+valve.valveid+")\
+		;",req,res);
+});
+
+// Get user's Valves of a Master Control
+app.get('/db/get/valve/:uid/:controlid', function (req,res) {
+	var valve = req.params;
+	call("select *\
+		from valvecontrol\
+		where uid="+valve.uid+" and controlid="+valve.controlid+"\
+		;",req,res);
+});
+
+// Edit user's Valve
+app.get('/db/edit/valve/:uid/:izid/:controlid/:valveid', function (req,res) {
+	var valve = req.params;
+	call("update valvecontrol\
+		set valveid="+valve.valveid+"\
+		where uid="+valve.uid+" and controlid="+valve.controlid+" and izid="+valve.izid+"\
+		;",req,res);
+});
+
+// Add Communication (Send Irrigation Amount)
+app.get('/db/add/comm/:uid/:izid/irrigate/:comamount', function (req,res) {
+	var comm = req.params;
+	call("insert into communication (uid,izid,comamount)\
+		values ("+comm.uid+","+comm.izid+","+comm.comamount+")\
+		;",req,res);
+});
+
+// Add Communication (Send Irrigation Amount)
+app.get('/db/add/comm/:uid/:izid/stop', function (req,res) {
+	var comm = req.params;
+	call("insert into communication (uid,izid,command,comamount)\
+		values ("+comm.uid+","+comm.izid+",'Stop',0)\
+		;",req,res);
+});
+
+// Get Communication between user and irrigation zone
+app.get('/db/get/comm/:uid/:izid', function (req,res) {
+	var comm = req.params;
+	call("select *\
+		from communication\
+		where uid="+comm.uid+" and izid="+comm.izid+"\
+		;",req,res);
+});
+
+// Update Communication status to Received
+app.get('/db/update/comm/:uid/:izid/received', function (req,res) {
+	var comm = req.params;
+	call("update communication\
+		set comstatus='Received', datereceived='now()'\
+		where comid=(select max(comid)\
+			from communication\
+			where uid="+comm.uid+" and izid="+comm.izid+")\
+		;",req,res);
+});
+
+// Update Communication to Irrigating
+app.get('/db/update/comm/:uid/:izid/irrigating', function (req,res) {
+	var comm = req.params;
+	call("update communication\
+		set comstatus='Irrigating'\
+		where comid=(select max(comid)\
+			from communication\
+			where uid="+comm.uid+" and izid="+comm.izid+")\
+		;",req,res);
+});
+
+// Update Communication to Finished
+app.get('/db/update/comm/:uid/:izid/finished', function (req,res) {
+	var comm = req.params;
+	call("update communication\
+		set comstatus='Finished'\
+		where comid=(select max(comid)\
+			from communication\
+			where uid="+comm.uid+" and izid="+comm.izid+")\
+		;",req,res);
+});
