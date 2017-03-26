@@ -520,7 +520,12 @@ function accessDatabase(restfulAPI,callback){
         });
         response.on('end', function() {
             // Data reception is done, do whatever with it!
-            var parsed = JSON.parse(body);
+            var parsed;
+            try{
+                parsed = JSON.parse(body);
+            }catch(error){
+            	parsed = body;
+            }
             callback(parsed);
         });
     });
@@ -555,12 +560,13 @@ function updateNewData(crop){
 	accessDatabase('/db/update/crop/'
 		+crop.cropid+'/'+crop.uid+'/'+crop.currentday+'/'+crop.currentet+'/'
 		+crop.currentkc+'/'+crop.cumulativeet, function(result){
+			console.log(result);
 			console.log('Updated crop '+crop.cropid+': day '+crop.currentday+crop.currentet,crop.currentkc,crop.cumulativeet);
 	});
 
 	if(true){
 		//alert user to irrigate
-		accessDatabase('/sendAlert/armando.ortiz1@upr.edu/papito/'+crop.cropname+'/'+crop.farmname,function(r){});
+		//accessDatabase('/sendAlert/armando.ortiz1@upr.edu/papito/'+crop.cropname+'/'+crop.farmname,function(r){});
 	}
 }
 
