@@ -32,8 +32,8 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
 	service: 'Gmail',
 	auth: {
-		user: 'bulletinboarduprm@gmail.com',
-		pass:'announceit'
+		user: 'h2ocrop.pr@gmail.com',
+		pass:'efficientirrigationsystem'
 	}
 });
 
@@ -226,7 +226,7 @@ app.get('/db/get/crop/:cropid/:uid', function (req,res) {
 app.get('/db/get/allcrops', function (req,res) {
 	var crop = req.params;
 	call("select *\
-		from crop natural join cropinfo natural join irrigationzone natural join\
+		from farmer natural join crop natural join cropinfo natural join irrigationzone natural join\
 		farm natural join soilwatercharacteristics natural join latitude natural join longitude\
 		where cropstatus='On Going'\
 		;",req,res);
@@ -520,11 +520,7 @@ function accessDatabase(restfulAPI,callback){
         });
         response.on('end', function() {
             // Data reception is done, do whatever with it!
-            try{
-            	var parsed = JSON.parse(body);
-            }catch(error){
-            	parsed = body;
-            }
+            var parsed = JSON.parse(body);
             callback(parsed);
         });
     });
@@ -562,9 +558,9 @@ function updateNewData(crop){
 			console.log('Updated crop '+crop.cropid+': day '+crop.currentday+crop.currentet,crop.currentkc,crop.cumulativeet);
 	});
 
-	if(crop.cumulativeet >= RAW){
+	if(true){
 		//alert user to irrigate
-
+		accessDatabase('/sendAlert/armando.ortiz1@upr.edu/papito/'+crop.cropname+'/'+crop.farmname,function(r){});
 	}
 }
 
