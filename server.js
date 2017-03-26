@@ -289,12 +289,13 @@ app.get('/db/edit/farmer/:uid/:email/:password/:username/:phonenumber/:fullname'
 });
 
 // Update Crop (called when new data is calculated everyday)
-app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:currentkc/:cumulativeet', function(req,res) {
+app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:currentkc/:cumulativeet/:cropstatus', function(req,res) {
 	var crop = req.params;
 	var stringQuery = 
 		"update crop\
 		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
-		cumulativeet="+crop.cumulativeet+", currentkc="+crop.currentkc+"\
+		cumulativeet="+crop.cumulativeet+", currentkc="+crop.currentkc+",\
+		cropstatus="+crop.cropstatus+"\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;";
 	call(stringQuery, req, res);
