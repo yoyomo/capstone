@@ -1,5 +1,10 @@
 ### Back end Tests
 
+/*************************************************************
+ * ************************ QUERIES **************************
+ *************************************************************
+ */
+
 ##Sign Up
 #SQL
 Query: 		insert into farmer (fullname, email, username, password, phonenumber)
@@ -352,23 +357,21 @@ Query: 		update communication
 URL: http://localhost:5000/db/update/comm/1/1/finished
 Result: Communication has finished
 
+/*************************************************************
+ * ************************ EMAILS ***************************
+ *************************************************************
+ */
+
 ##Send Mail
 #RESTFUL API
 URL: http://localhost:5000/sendAlert/armandi.ortiz1@upr.edu/papo1@gmail.com/Tomato/Juana%20Diaz
 Result: Email received. 
 
-##Delete Crop
-#SQL 
-Query:
-	delete from crop
-	where cropid=5 and uid=1 and izid=1
-Result:
-Crop was deleted
-#RESTFUL API
-URL:
-http://localhost:5000/db/delete/crop/6/1/1
-Result:
-Crop was deleted
+/*************************************************************
+ * ************************ ADMIN ****************************
+ ************************* CONTROL ***************************
+ *************************************************************
+ */
 
 ##Make A user Admin
 #SQL
