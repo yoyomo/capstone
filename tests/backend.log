@@ -418,3 +418,22 @@ URL:
 http://localhost:5000/db/admin/edit/cropinfo/174/Rotten%20Cherry/Cherrylae/20/20/0/90/130/January/Animal%20Crossing/0.33/0.88/1.0/1.0/.07/.08
 Result:
 Successful Crop added
+
+/*************************************************************
+ * ************************ SERVER UPDATE **************************
+ *************************************************************
+ */
+Output:
+
+20170330: ReferenceET downloaded into matrix.
+20170330: Rainfall downloaded into matrix.
+Updated crop 1: day 26 3.1266599999999998 0.6000 13.7
+Updated crop 2: day 22 3.1266599999999998 0.6000 13.7
+
+Error:.
+20170401's file is not ready.
+20170400's file is not ready.
+20170399's file is not ready.
+
+Plan: 
+Use module by month 
