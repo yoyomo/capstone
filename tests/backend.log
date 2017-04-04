@@ -1,5 +1,362 @@
 ### Back end Tests
 
+##Sign Up
+#SQL
+Query: 		insert into farmer (fullname, email, username, password, phonenumber)
+		values ('Papo Martinez','papo1@gmail.com','papo_elprimero',
+		'1234','787-694-8080'
+#RESTFUL API
+URL: http://localhost:5000/db/add/farmer/Papo%20Rodriguez/papo2@gmail.com/papo_elsegundo/1234/787-727-2839
+Result: User added. Ran a few times to check constraints.
+
+##Log In
+#SQL
+Query: 		select *
+		from farmer
+		where (username='papo_elprimero' or email='papo_elprimero') and password='1234'
+#RESTFUL API
+URL: http://localhost:5000/db/get/farmer/papo_elprimero/1234
+Result: User Info Acquired
+
+## Get Latitude values
+#SQL
+Query: 		select *
+		from latitude
+#RESTFUL API
+URL: http://localhost:5000/db/get/latitude
+Result: All latitudes acquired
+
+## Get Longitude values
+#SQL
+Query: 		select *
+		from longitude
+#RESTFUL API
+URL: http://localhost:5000/db/get/longitude
+Result: All longitudes acquired
+
+## Get Soil Water Characteristics for Farms
+#SQL
+Query: 		select *
+		from soilwatercharacteristics
+#RESTFUL API
+URL: http://localhost:5000/db/get/soils
+Result: All soil water characteristics acquired
+
+## Add Farm
+#SQL
+Query: 		insert into farm (uid,farmname,soiltype,latindex,lonindex)
+		values (1,'Juana Diaz',
+		'Clay',26,87)
+#RESTFUL API
+URL: http://localhost:5000/db/add/farm/1/Sagrado%20Corazon/Loam/40/90
+Result: Farm added
+
+## Get user's farms
+#SQL
+Query: 		select *
+		from farm
+		where uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/farms/1
+Result: All user's farms acquired
+
+## Get all irrigation methods
+#SQL
+Query: 		select *
+		from fieldapplicationefficiency
+#RESTFUL API
+URL: http://localhost:5000/db/get/irrigationmethod/
+Result: All irrigation methods acquired
+
+## Add Irrigation Zone
+#SQL
+Query: 		insert into irrigationzone
+		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)
+		values (1,1,'Izquierda',10,
+		300,'Drip',0.85
+#RESTFUL API
+URL: http://localhost:5000/db/add/iz/1/1/Derecha/10/0/Drip/0.85
+Result: Irrigation Zone added
+
+## Get user's irrigation zones by farm
+#SQL
+Query: 		select *
+		from irrigationzone
+		where farmid=1 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/iz/1/1
+Result: Irrigation Zones acquired
+
+## Get all crop info
+#SQL
+Query: 		select *
+		from cropinfo
+#RESTFUL API
+URL: http://localhost:5000/db/get/cropinfo/
+Result: All Crop Infos acquired
+
+## Add Crop
+#SQL
+Query: 		insert into crop (izid,uid,infoid)\
+		values (1,1,28)
+#RESTFUL API
+URL: http://localhost:5000/db/add/crop/5/1/28
+Result: Crop added
+
+## Get logged in user
+#SQL
+Query: 		select *
+		from farmer
+		where uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/farmer/1
+Result: User info acquired
+
+## Get all user's crops
+#SQL
+Query: 		select *
+		from crop
+		where uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/crops/1
+Result: User's crop info acquired
+
+## Edit Crop
+#SQL
+Query: 		update crop
+		set izid=1,infoid=30
+		where cropid=2 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/edit/crop/2/1/5/28
+Result: User's crop info updated
+
+## Read Specific Crop Information
+#SQL
+Query: 		select *
+		from crop natural join irrigationzone
+		where cropid=1 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/crop/1/1
+Result: User's specific crop info acquired
+
+## Read All Crops' Information that are not Finished
+#SQL
+Query: 		select *
+		from farmer natural join crop natural join cropinfo natural join irrigationzone natural join
+		farm natural join soilwatercharacteristics natural join latitude natural join longitude
+		where cropstatus='On Going'
+#RESTFUL API
+URL: http://localhost:5000/db/get/allcrops
+Result: All crop's information of all users acquired
+
+## Add to History
+#SQL
+Query: 		insert into history (cropid,uid,recommendedet,irrigatedet,seasonday)
+		values (1,1,3.3,2.2,1)
+#RESTFUL API
+URL: http://localhost:5000/db/add/history/1/1/2.3/1.9/2
+Result: Crop's history added
+
+## Get Crop's History
+#SQL
+Query: 		select *
+		from history
+		where cropid=1 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/history/1/1
+Result: Crop's history acquired
+
+## Edit Crop's History
+#SQL
+Query: 		update crop
+		set cumulativeet=(cumulativeet-1.7
+		+(select irrigatedet
+			from history
+			where histid=2 and cropid=1 and uid=1))
+		where cropid=1 and uid=1;
+		update history
+		set irrigatedet=1.7
+		where histid=2 and cropid=1 and uid=1;
+#RESTFUL API
+URL: http://localhost:5000/db/edit/history/2/1/1/1.9
+Result: Crop's history edited
+
+## Edit Farmer (used for settings/forgotten)
+#SQL
+Query: 		update farmer
+		set email='ilikeyou@hotmail.com',password='strongpassword',
+		username='papo_3',phonenumber='No tengo',
+		fullname='Papito Dios'
+		where uid=8
+#RESTFUL API
+URL: http://localhost:5000/db/edit/farmer/8/papo8@gmail.com/1234/papo_elocho/787-328-3238/Papito%20Polo
+Result: Farmer Settings edited
+
+## Update Crop (called when new data is calculated everyday)
+#SQL
+Query: 		update crop
+		set currentday=50, currentet=5.8,
+		cumulativeet=40.8, currentkc=1.2,
+		cropstatus='Finished'
+		where cropid=1 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/update/crop/1/1/25/0/0.6/13.7/On%20Going
+Result: Crop's values updated
+
+## Edit Farm
+#SQL
+Query: 		update farm
+		set farmname='Fajardo', soiltype='Clay',
+		latindex=33, lonindex=55
+		where farmid=2 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/edit/farm/2/1/Sagrado%20Corazon/Loam/40/90
+Result: Farm edited
+
+## Edit Irrigation Zone
+#SQL
+Query: 		update irrigationzone
+		set farmid=2, izname='El Medio', 
+		acres=15, waterflow=222, 
+		irrigationmethod='Sprinkler', irrigationefficiency=0
+		where izid=5 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/edit/iz/5/1/1/Derecha/10/0/Drip/0.85
+Result: Irrigation Zone edited
+
+## Delete User's Crop
+#SQL
+Query: 		delete from crop
+		where cropid=5 and uid=1 and izid=1
+#RESTFUL API
+URL: http://localhost:5000/db/delete/crop/6/1/1
+Result: After adding two crops, crops were deleted
+
+
+
+/*************************************************************
+ * ************************ HARDWARE *************************
+ *********************** CONTROL SYSTEM **********************
+ *************************************************************
+ */
+ 
+## Add Master Control
+#SQL
+Query: 		insert into mastercontrol (farmid, uid, ipaddress)
+		values (1,1,'0.0.0.0')
+#RESTFUL API
+URL: http://localhost:5000/db/add/mc/2/1/192.56.78.04
+Result: Master Control IP address were added
+
+## Get user's Master Control
+#SQL
+Query: 		select *
+		from mastercontrol
+		where uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/mc/1
+Result: All users master controls acquired
+
+## Edit user's Master Control
+#SQL
+Query: 		update mastercontrol
+		set farmid=1, ipaddress='0.0.0.0'
+		where controlid=3 and uid=1
+#RESTFUL API
+URL: http://localhost:5000/db/edit/mc/3/1/2/192.56.78.04
+Result: master controls was edited
+
+## Add Valve to Master Control
+#SQL
+Query: 		insert into valvecontrol (uid,izid,controlid,valveid)
+		values (1,1,1,0)
+#RESTFUL API
+URL: http://localhost:5000/db/add/valve/1/5/1/1
+Result: valves were added, after adding tuple constraints
+
+## Get user's Valves of a Master Control
+#SQL
+Query: 		select *
+		from valvecontrol
+		where uid=1 and controlid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/valve/1/1
+Result: valves of master control were acquired
+
+## Edit user's Valve
+#SQL
+Query: 		update valvecontrol
+		set valveid=2
+		where uid=1 and controlid=1 and izid=1
+#RESTFUL API
+URL: http://localhost:5000/db/edit/valve/1/1/1/0
+Result: valves of master control were edited
+
+## Add Communication (Send Irrigation Amount)
+#SQL
+Query: 		insert into communication (uid,izid,comamount)
+		values (1,1,5.4)
+#RESTFUL API
+URL: http://localhost:5000/db/add/comm/1/1/irrigate/5.4
+Result: Communication was set
+
+## Stop Communication
+#SQL
+Query: 		insert into communication (uid,izid,command,comamount)
+		values (1,1,'Stop',0)
+#RESTFUL API
+URL: http://localhost:5000/db/add/comm/1/1/stop
+Result: Irrigation was stopped
+
+## Get Communication between user and irrigation zone
+#SQL
+Query: 		select *
+		from communication
+		where uid=1 and izid=1
+#RESTFUL API
+URL: http://localhost:5000/db/get/comm/1/1
+Result: All communication were acquired
+
+## Update Communication status
+
+#to Received
+#SQL
+Query: 		update communication
+		set comstatus='Received', datereceived='now()'
+		where comid=(select max(comid)
+			from communication
+			where uid=1 and izid=1)
+#RESTFUL API
+URL: http://localhost:5000/db/update/comm/1/1/received
+Result: Communication was received (after adding newest crop with 2.2 amount cropid=4)
+
+#to Irrigating
+#SQL
+Query: 		update communication
+		set comstatus='Irrigating'
+		where comid=(select max(comid)
+			from communication
+			where uid=1 and izid=1)
+#RESTFUL API
+URL: http://localhost:5000/db/update/comm/1/1/irrigating
+Result: Communication is irrigating
+
+#to Finished
+#SQL
+Query: 		update communication
+		set comstatus='Finished'
+		where comid=(select max(comid)
+			from communication
+			where uid=1 and izid=1)
+#RESTFUL API
+URL: http://localhost:5000/db/update/comm/1/1/finished
+Result: Communication has finished
+
+##Send Mail
+#RESTFUL API
+URL: http://localhost:5000/sendAlert/armandi.ortiz1@upr.edu/papo1@gmail.com/Tomato/Juana%20Diaz
+Result: Email received. 
+
 ##Delete Crop
 #SQL 
 Query:
