@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Farm</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)= "closeModal1()">
+        <ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+<form #formCtrl="ngForm">
+<ion-item>
+  <ion-label stacked>Farm Name</ion-label>
+        <ion-input type="text" [(ngModel)]="farmInfo.farmName" name="farmName" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label>Soil Type</ion-label>
+        <ion-select [(ngModel)]="farmInfo.soilType" name="soilType" required>
+          <ion-option value="clar">Clay</ion-option>
+          <ion-option value="loam">Loam</ion-option>
+          <ion-option value="silt">Silt</ion-option>
+          <ion-option value="sand">Sand</ion-option>
+        </ion-select>
+</ion-item>
+
+<ion-item>
+  <ion-label stacked>Lattitude</ion-label>
+        <ion-input type="text" [(ngModel)]="farmInfo.lattitude" name="lattitude" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label stacked>Longitude</ion-label>
+        <ion-input type="text" [(ngModel)]="farmInfo.longitude" name="longitude" required></ion-input>
+</ion-item>
+
+<button ion-button block (click)="closeModal()" [disabled]="!formCtrl.form.valid">Add Farm</button>
+</form>
+
+</ion-content>

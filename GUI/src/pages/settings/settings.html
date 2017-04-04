@@ -1,0 +1,59 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Account Info</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+
+ <ion-list>
+
+<ion-item-sliding *ngFor="let set of settings">
+ 
+  <ion-item>
+    Name: {{name}}
+  </ion-item>
+
+   <ion-item>
+    Last Name: {{lastName}}
+  </ion-item>
+
+   <ion-item>
+    Username: {{username}}
+  </ion-item>
+
+   <ion-item>
+    Email: {{email}}
+  </ion-item>
+
+   <ion-item>
+    Password: {{password}}
+  </ion-item>
+
+  <ion-item-options>
+                <button ion-button icon-only (click)="editNote(set)" light>
+                    <ion-icon name="paper"></ion-icon>
+                </button>
+                <button ion-button icon-only (click)="deleteNote(set)" danger>
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+    </ion-item-options>
+
+  </ion-item-sliding>
+ 
+    </ion-list>
+    </ion-card>
+
+
+  
+
+ 
+        
+
+  <button ion-button (click)="settingsDone()" round>Done</button>
+        
+</ion-content>
+
