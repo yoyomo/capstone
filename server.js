@@ -295,7 +295,7 @@ app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:currentkc/:cumulat
 		"update crop\
 		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
 		cumulativeet="+crop.cumulativeet+", currentkc="+crop.currentkc+",\
-		cropstatus="+crop.cropstatus+"\
+		cropstatus='"+crop.cropstatus+"'\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;";
 	call(stringQuery, req, res);
