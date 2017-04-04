@@ -1,0 +1,60 @@
+### Back end Tests
+
+##Delete Crop
+#SQL 
+Query:
+	delete from crop
+	where cropid=5 and uid=1 and izid=1
+Result:
+Crop was deleted
+#RESTFUL API
+URL:
+http://localhost:5000/db/delete/crop/6/1/1
+Result:
+Crop was deleted
+
+##Make A user Admin
+#SQL
+Query:
+update farmer
+set typeofuser='Admin'
+where uid=11
+Result:
+User was upgraded to Admin
+#RESTFUL API
+URL:
+http://localhost:5000/db/admin/makeadmin/11
+Result:
+User was upgraded to Admin
+
+##Add Crop Info
+#SQL
+Query:
+insert into cropinfo (infoid,cropname,category,lini,ldev,
+lmid,llate,total,plantdate,region,kcini,kcmid,kcend,maxcropheight,zr,p)
+values(174,'Rotten Tomato','Tomatolae',15,15,24,13,150,'June','California',0.6,1.2,3.0,.66,3.0,0.7)
+Result:
+Successful Crop added
+#RESTFUL API
+URL:
+http://localhost:5000/db/admin/add/cropinfo/174/Rotten%20Tomato/Tomatolae/15/15/24/13/150/June/California/0.6/1.2/3.0/.66/3.0/0.7
+Result:
+Successful Crop added
+
+##Edit Crop Info
+#SQL
+Query:
+update cropinfo 
+set cropname='Rotten Cherry',category='Cherrylae',
+lini=20,ldev=20,lmid=0,llate=90,total=130,
+plantdate='January',region='Animal Crossing',
+kcini=0.33,kcmid=0.88,kcend=1.0,
+maxcropheight=1.0,zr=.07,p=.08
+where infoid=174
+Result:
+Successful Crop edited
+#RESTFUL API
+URL:
+http://localhost:5000/db/admin/edit/cropinfo/174/Rotten%20Cherry/Cherrylae/20/20/0/90/130/January/Animal%20Crossing/0.33/0.88/1.0/1.0/.07/.08
+Result:
+Successful Crop added

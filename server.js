@@ -322,6 +322,14 @@ app.get('/db/edit/iz/:izid/:uid/:farmid/:izname/:acres/:waterflow/:method/:eff',
 		;",req,res);
 });
 
+// Delete User's Crop
+app.get('/db/delete/crop/:cropid/:uid/:izid', function (req,res) {
+	var crop = req.params;
+	call("delete from crop\
+		where cropid="+crop.cropid+" and uid="+crop.uid+" and izid="+crop.izid+"\
+		;",req,res);
+});
+
 /*************************************************************
  * ************************ HARDWARE *************************
  *********************** CONTROL SYSTEM **********************
@@ -435,6 +443,49 @@ app.get('/db/update/comm/:uid/:izid/finished', function (req,res) {
 		where comid=(select max(comid)\
 			from communication\
 			where uid="+comm.uid+" and izid="+comm.izid+")\
+		;",req,res);
+});
+
+
+/*************************************************************
+ * ************************ ADMIN ****************************
+ ************************* CONTROL ***************************
+ *************************************************************
+ */
+
+// Add Crop Info
+app.get('/db/admin/add/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:llate/:total/:plantdate/:region/:kcini/:kcmid/:kcend/:maxcropheight/:zr/:p', function (req,res) {
+	var admin = req.params;
+	call("insert into cropinfo (infoid,cropname,category,\
+		lini,ldev,lmid,llate,total,\
+		plantdate,region,kcini,kcmid,kcend,\
+		maxcropheight,zr,p)\
+		values("+admin.infoid+",'"+admin.cropname+"','"+admin.category+"',\
+		"+admin.lini+","+admin.ldev+","+admin.lmid+","+admin.llate+","+admin.total+",\
+		'"+admin.plantdate+"','"+admin.region+"',"+admin.kcini+","+admin.kcmid+","+admin.kcend+",\
+		"+admin.maxcropheight+","+admin.zr+","+admin.p+")\
+		;",req,res);
+});
+
+// Edit Crop Info
+app.get('/db/admin/edit/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:llate/:total/:plantdate/:region/:kcini/:kcmid/:kcend/:maxcropheight/:zr/:p', function (req,res) {
+	var admin = req.params;
+	call("update cropinfo \
+		set cropname='"+admin.cropname+"',category='"+admin.category+"',\
+		lini="+admin.lini+",ldev="+admin.ldev+",lmid="+admin.lmid+",llate="+admin.llate+",total="+admin.total+",\
+		plantdate='"+admin.plantdate+"',region='"+admin.region+"',\
+		kcini="+admin.kcini+",kcmid="+admin.kcmid+",kcend="+admin.kcend+",\
+		maxcropheight="+admin.maxcropheight+",zr="+admin.zr+",p="+admin.p+"\
+		where infoid="+admin.infoid+"\
+		;",req,res);
+});
+
+// Make Farmer Admin
+app.get('/db/admin/makeadmin/:uid', function (req,res) {
+	var admin = req.params;
+	call("update farmer\
+		set typeofuser='Admin'\
+		where uid="+admin.uid+"\
 		;",req,res);
 });
 
