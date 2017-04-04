@@ -95,11 +95,11 @@ app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', func
 });
 
 // Log In
-app.get('/db/get/farmer/:username/:password', function (req,res) {
+app.get('/db/get/farmer/:usernameORemail/:password', function (req,res) {
 	var farmer = req.params;
 	call("select *\
 		from farmer\
-		where username='"+farmer.username+"' and password='"+farmer.password+"'\
+		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') and password='"+farmer.password+"'\
 		;",req,res);
 });
 
