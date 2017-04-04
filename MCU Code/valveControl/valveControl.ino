@@ -1,11 +1,11 @@
-int sensor1 = 5;
-int sensor2 = 6;
-int sensor3 = 7;
-int sensor4 = 8;
-int valve1 = 19;
-int valve2 = 18;
-int valve3 = 17;
-int valve4 = 15;
+int sensor1 = 5;        // pin P61
+int sensor2 = 6;        // pin P59
+int sensor3 = 7;        // pin P05
+int sensor4 = 8;        // pin P62
+int valve1 = 19;        // pin P18
+int valve2 = 18;        // pin P08
+int valve3 = 17;        // pin P45
+int valve4 = 15;        // pin P06
 volatile int count = 0;
 
 void setup() {
@@ -21,11 +21,13 @@ void setup() {
   pinMode(valve3, OUTPUT);
   pinMode(valve4, OUTPUT);
 
+  // Initialize Pins
   digitalWrite(valve1, LOW);
   digitalWrite(valve2, LOW);
   digitalWrite(valve3, LOW);
   digitalWrite(valve4, LOW);
-  
+
+  // set up interrupts
   attachInterrupt(sensor1, counter1, RISING);
   //attachInterrupt(sensor2, counter, RISING);
   //attachInterrupt(sensor3, counter, RISING);
