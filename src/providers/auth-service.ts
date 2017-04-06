@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
- 
+
+
 export class User {
-  name: string;
-  lastName: string;
+  fullname: string;
   username: string;
   email: string;
   password: string;
  
-  constructor(name: string, lastName: string, username: string, email: string, password:string) {
-    this.name = name;
-    this.lastName = lastName;
+  constructor(fullname: string, username: string, email: string, password:string) {
+    this.fullname = fullname;
     this.username = username;
     this.email = email;
     this.password = password;
@@ -22,18 +22,31 @@ export class User {
 @Injectable()
 export class AuthService {
   currentUser: User;
+
+  constructor(private http:Http) {
+         
+    }
+
+  public createUser(fullname, username, email, password){
+    this.currentUser = new User(fullname, username, email, password);
+  }
  
   public login(credentials) {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password === "pass" && credentials.email === "email");
-        this.currentUser = new User('Illary', 'Lopes', 'illary.lopes', 'illary.lopes@gmail.com', 'illy');
-        observer.next(access);
-        observer.complete();
-      });
+      var url = '/db/get/farmer/'+credentials.email+'/'+credentials.password;
+      var response = this.http.get(url).map(res => res.json());
+      return response;
+      // return Observable.create(observer => {
+      //   // At this point make a request to your backend to make a real check!
+      //   let access = (credentials.password === "pass" && credentials.email === "email");
+      //   this.currentUser = new User('Illary', 'Lopes', 'illary.lopes', 'illary.lopes@gmail.com', 'illy');
+      //   // observer.next(access);
+      //   // observer.complete();
+      //   observer.next(true);
+      //   observer.complete();
+      // });
     }
   }
  

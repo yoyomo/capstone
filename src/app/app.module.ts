@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { HttpModule, JsonpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
@@ -35,9 +36,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   
   ],
   imports: [
-    IonicModule.forRoot(MyApp), ChartsModule
+    IonicModule.forRoot(MyApp), ChartsModule, HttpModule, JsonpModule
   ],
-  bootstrap: [IonicApp],
+  bootstrap: [IonicApp,MyApp],
   entryComponents: [
     MyApp,
     LoginPage,

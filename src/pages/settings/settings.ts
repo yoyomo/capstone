@@ -12,8 +12,7 @@ import { HomePage } from '../home/home';
 export class SettingsPage {
 originalSets: any;
 
-  name = "";
- lastName = '';
+  fullname = '';
   username = '';
   email = '';
   password = '';
@@ -24,8 +23,7 @@ originalSets: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService,public alertCtrl: AlertController) {
 
     let info = this.auth.getUserInfo();
-    this.name = info.name;
-    this.lastName = info.lastName;
+    this.fullname = info.fullname;
     this.username = info.username;
     this.email = info.email;
     this.password = info.password;

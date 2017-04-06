@@ -2,5 +2,11 @@
   "name": "h2ocrop",
   "app_id": "",
   "v2": true,
-  "typescript": true
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/db",
+      "proxyUrl": "http://h2ocrop.herokuapp.com/db"
+    }
+  ]
 }

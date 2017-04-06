@@ -21,8 +21,7 @@ farmName = " ";
 farmZone = " ";
 farmCrop = " ";
 
-name = "";
-lastName = '';
+fullname = '';
 username = '';
 email = '';
 password = '';
@@ -33,8 +32,8 @@ notes: any = [];
    public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
     
     let info = this.auth.getUserInfo();
-    this.name = info.name;
-    this.lastName = info.lastName;
+    console.log(info);
+    this.fullname = info.fullname;
     this.username = info.username;
     this.email = info.email;
     this.password = info.password;
