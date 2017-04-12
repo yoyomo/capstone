@@ -8,22 +8,32 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class RegisterPage {
   createSuccess = false;
-  registerCredentials = {email: '', password: ''};
+  registerCredentials = {
+    fullname: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmpassword: ''};
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController) {}
  
   public register() {
-    this.auth.register(this.registerCredentials).subscribe(success => {
-      if (success) {
-        this.createSuccess = true;
-          this.showPopup("Success", "Account created.");
-      } else {
-        this.showPopup("Error", "Problem creating account.");
-      }
-    },
-    error => {
-      this.showPopup("Error", error);
-    });
+    if(this.registerCredentials.password === this.registerCredentials.confirmpassword) {
+
+      this.auth.register(this.registerCredentials).subscribe(success => {
+        if (success) {
+          this.createSuccess = true;
+            this.showPopup("Success", "Account created.");
+        } else {
+          this.showPopup("Error", "Problem creating account.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
+    }else{
+      this.showPopup("Error", "Passwords must match");
+    }
   }
  
   showPopup(title, text) {

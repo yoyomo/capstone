@@ -102,6 +102,16 @@ function readAllCrops() {
 
 }
 
+function clearSpaces(data){
+	for(d in data){
+		if(typeof data[d] === "string") {
+			
+			data[d] = data[d].split(' ').join('%20');
+			console.log(data[d]);
+		}
+	}
+}
+
 function updateNewData(crop){
 	var calculated, irrigationDepth, Kc, adjusted,ETcadj,RAW;
 
@@ -117,26 +127,26 @@ function updateNewData(crop){
 	RAW = adjusted.RAW;
 	crop.cumulativeET += ETcadj;
 
+	//clear for URL Launch
+	clearSpaces(crop);
+	console.log(JSON.stringify(crop));
+
 	//update crop in database
-	crop.cropstatus = crop.cropstatus.replace(' ','%20');
-	accessDatabase('/db/update/crop/'
-		+crop.cropid+'/'+crop.uid+'/'+crop.currentday+'/'+crop.currentet+'/'
-		+crop.currentkc+'/'+crop.cumulativeet+'/'+crop.cropstatus, function(result){
+	accessDatabase('/db/update/crop/'+JSON.stringify(crop), function(result){
 			console.log('Updated crop '+crop.cropid+': day '+crop.currentday,crop.currentet,crop.currentkc,crop.cumulativeet);
 	});
 
-	if(crop.cumulativeet >= RAW){
-		//alert user to irrigate
-		crop.farmname = crop.farmname.replace(' ','%20');
-		accessDatabase('/sendAlert/'+crop.email+'/'+crop.username+'/'+crop.cropname+'/'+crop.farmname,function(result){
-			console.log('Alerted user '+crop.username+' at '+crop.email);
-		});
-	}
-	// if(true){
+	// if(crop.cumulativeet >= RAW){
 	// 	//alert user to irrigate
-	// 	crop.farmname = crop.farmname.replace(' ','%20');
-	// 	accessDatabase('/sendAlert/'+'armando.ortiz1@upr.edu'+'/'+crop.username+'/'+crop.cropname+'/'+crop.farmname,function(r){});
+	// 	accessDatabase('/sendAlert/'+JSON.stringify(crop),function(result){
+	// 		console.log('Alerted user '+crop.username+' at '+crop.email);
+	// 	});
 	// }
+	if(true){
+		//alert user to irrigate
+		crop.email = 'armando.ortiz1@upr.edu';
+		accessDatabase('/sendAlert/'+JSON.stringify(crop),function(r){});
+	}
 
 }
 

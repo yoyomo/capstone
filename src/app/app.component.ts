@@ -6,9 +6,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { SettingsPage } from '../pages/settings/settings';
+import {AuthService} from '../providers/auth-service'
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [AuthService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

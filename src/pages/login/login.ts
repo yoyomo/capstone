@@ -11,7 +11,7 @@ import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = {fullname: '', username: '', email: '', password: ''};
+  registerCredentials = {usernameORmail: '', password: ''};
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
  
@@ -24,12 +24,13 @@ export class LoginPage {
   }
  
   public login() {
+    var user;
     this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(user => {
+    this.auth.login(this.registerCredentials).subscribe(data => {
+      user = data[0];
       if (user) {
+        console.log('Logged in: '+user.fullname);
         this.auth.createUser(user.fullname, user.username, user.email, user.password);
-        // console.log(this.auth.getUserInfo());
-        console.log(user.fullname);
         setTimeout(() => {
         this.loading.dismiss();
         this.nav.setRoot(HomePage)
@@ -41,6 +42,8 @@ export class LoginPage {
     error => {
       this.showError(error);
     });
+
+
   }
  
   showLoading() {

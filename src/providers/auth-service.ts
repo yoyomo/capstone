@@ -30,23 +30,18 @@ export class AuthService {
   public createUser(fullname, username, email, password){
     this.currentUser = new User(fullname, username, email, password);
   }
+
+
+  private accessDatabase(url) {
+    return this.http.get(url).map(res => res.json());
+  }
  
   public login(credentials) {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      var url = '/db/get/farmer/'+credentials.email+'/'+credentials.password;
-      var response = this.http.get(url).map(res => res.json());
-      return response;
-      // return Observable.create(observer => {
-      //   // At this point make a request to your backend to make a real check!
-      //   let access = (credentials.password === "pass" && credentials.email === "email");
-      //   this.currentUser = new User('Illary', 'Lopes', 'illary.lopes', 'illary.lopes@gmail.com', 'illy');
-      //   // observer.next(access);
-      //   // observer.complete();
-      //   observer.next(true);
-      //   observer.complete();
-      // });
+      var url = '/db/get/farmer/'+JSON.stringify(credentials);
+      return this.accessDatabase(url);
     }
   }
  
@@ -56,10 +51,8 @@ export class AuthService {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
+      var url = '/db/add/farmer/:fullname/:email/:username/:password/:phonenumber'
+      return this.accessDatabase(url);
     }
   }
 

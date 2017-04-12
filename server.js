@@ -37,8 +37,8 @@ var transporter = nodemailer.createTransport({
 	}
 });
 
-app.get('/sendAlert/:email/:username/:cropname/:farmname',function(req,res){
-	var alert = req.params;
+app.get('/sendAlert/:alert',function(req,res){
+	var alert = JSON.parse(req.params.alert);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'bulletinboarduprm@gmail.com', // sender address
@@ -86,8 +86,8 @@ function call(stringQuery,req,res){
 }
 
 // Sign Up
-app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', function (req,res) {
-	var farmer = req.params;
+app.get('/db/add/farmer/:farmer', function (req,res) {
+	var farmer = JSON.parse(req.params.farmer);
 	call("insert into farmer (fullname, email, username, password, phonenumber)\
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
 		'"+farmer.password+"','"+farmer.phonenumber+"')\
@@ -95,8 +95,8 @@ app.get('/db/add/farmer/:fullname/:email/:username/:password/:phonenumber', func
 });
 
 // Log In
-app.get('/db/get/farmer/:usernameORemail/:password', function (req,res) {
-	var farmer = req.params;
+app.get('/db/get/farmer/:farmer', function (req,res) {
+	var farmer = JSON.parse(req.params.farmer);
 	call("select *\
 		from farmer\
 		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') and password='"+farmer.password+"'\
@@ -126,8 +126,8 @@ app.get('/db/get/soils', function (req,res) {
 });
 
 // Add Farm
-app.get('/db/add/farm/:uid/:farmname/:soiltype/:latindex/:lonindex', function (req,res) {
-	var farm = req.params;
+app.get('/db/add/farm/:farm', function (req,res) {
+	var farm = JSON.parse(req.params.farm);
 	call("insert into farm (uid,farmname,soiltype,latindex,lonindex)\
 		values ("+farm.uid+",'"+farm.farmname+"',\
 		'"+farm.soiltype+"',"+farm.latindex+","+farm.lonindex+")\
@@ -135,8 +135,8 @@ app.get('/db/add/farm/:uid/:farmname/:soiltype/:latindex/:lonindex', function (r
 });
 
 // Get user's farms
-app.get('/db/get/farms/:uid', function (req,res) {
-	var farms = req.params;
+app.get('/db/get/farms/:farms', function (req,res) {
+	var farms = JSON.parse(req.params.farms);
 	call("select *\
 		from farm\
 		where uid="+farms.uid+"\
@@ -145,15 +145,14 @@ app.get('/db/get/farms/:uid', function (req,res) {
 
 // Get all irrigation methods
 app.get('/db/get/irrigationmethod/', function (req,res) {
-	var farms = req.params;
 	call("select *\
 		from fieldapplicationefficiency\
 		;",req,res);
 });
 
 // Add Irrigation Zone
-app.get('/db/add/iz/:farmid/:uid/:izname/:acres/:waterflow/:method/:eff', function (req,res) {
-	var iz = req.params;
+app.get('/db/add/iz/:iz', function (req,res) {
+	var iz = JSON.parse(req.params.iz);
 	call("insert into irrigationzone \
 		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)\
 		values ("+iz.farmid+","+iz.uid+",'"+iz.izname+"',"+iz.acres+",\
@@ -162,8 +161,8 @@ app.get('/db/add/iz/:farmid/:uid/:izname/:acres/:waterflow/:method/:eff', functi
 });
 
 // Get user's irrigation zones by farm
-app.get('/db/get/iz/:farmid/:uid', function (req,res) {
-	var iz = req.params;
+app.get('/db/get/iz/:iz', function (req,res) {
+	var iz = JSON.parse(req.params.iz);
 	call("select *\
 		from irrigationzone\
 		where farmid="+iz.farmid+" and uid="+iz.uid+"\
@@ -172,23 +171,22 @@ app.get('/db/get/iz/:farmid/:uid', function (req,res) {
 
 // Get all crop info
 app.get('/db/get/cropinfo/', function (req,res) {
-	var farms = req.params;
 	call("select *\
 		from cropinfo\
 		;",req,res);
 });
 
 // Add Crop
-app.get('/db/add/crop/:izid/:uid/:infoid', function (req,res) {
-	var crop = req.params;
+app.get('/db/add/crop/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
 	call("insert into crop (izid,uid,infoid)\
 		values ("+crop.izid+","+crop.uid+","+crop.infoid+")\
 		;",req,res);
 });
 
 // Get logged in user
-app.get('/db/get/farmer/:uid', function (req,res) {
-	var farmer = req.params;
+app.get('/db/get/farmer/:farmer', function (req,res) {
+	var farmer = JSON.parse(req.params.farmer);
 	call("select *\
 		from farmer\
 		where uid="+farmer.uid+"\
@@ -196,8 +194,8 @@ app.get('/db/get/farmer/:uid', function (req,res) {
 });
 
 // Get all user's crops
-app.get('/db/get/crops/:uid', function (req,res) {
-	var crops = req.params;
+app.get('/db/get/crops/:crops', function (req,res) {
+	var crops = JSON.parse(req.params.crops);
 	call("select *\
 		from crop\
 		where uid="+crops.uid+"\
@@ -205,8 +203,8 @@ app.get('/db/get/crops/:uid', function (req,res) {
 });
 
 // Edit Crop
-app.get('/db/edit/crop/:cropid/:uid/:izid/:infoid', function (req,res) {
-	var crop = req.params;
+app.get('/db/edit/crop/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
 	call("update crop\
 		set izid="+crop.izid+",infoid="+crop.infoid+"\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
@@ -214,8 +212,8 @@ app.get('/db/edit/crop/:cropid/:uid/:izid/:infoid', function (req,res) {
 });
 
 // Read Specific Crop Information
-app.get('/db/get/crop/:cropid/:uid', function (req,res) {
-	var crop = req.params;
+app.get('/db/get/crop/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
 	call("select *\
 		from crop natural join irrigationzone\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
@@ -224,7 +222,6 @@ app.get('/db/get/crop/:cropid/:uid', function (req,res) {
 
 // Read All Crops' Information that are not Finished
 app.get('/db/get/allcrops', function (req,res) {
-	var crop = req.params;
 	call("select *\
 		from farmer natural join crop natural join cropinfo natural join irrigationzone natural join\
 		farm natural join soilwatercharacteristics natural join latitude natural join longitude\
@@ -233,8 +230,8 @@ app.get('/db/get/allcrops', function (req,res) {
 });
 
 // Add to History
-app.get('/db/add/history/:cropid/:uid/:recommendedet/:irrigatedet/:seasonday', function(req,res) {
-	var history = req.params;
+app.get('/db/add/history/:history', function(req,res) {
+	var history = JSON.parse(req.params.history);
 	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday)\
 		values ("+history.cropid+","+history.uid+",\
 		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+")\
@@ -242,8 +239,8 @@ app.get('/db/add/history/:cropid/:uid/:recommendedet/:irrigatedet/:seasonday', f
 });
 
 // Get Crop's History
-app.get('/db/get/history/:cropid/:uid', function(req,res) {
-	var history = req.params;
+app.get('/db/get/history/:history', function(req,res) {
+	var history = JSON.parse(req.params.history);
 	call("select *\
 		from history\
 		where cropid="+history.cropid+" and uid="+history.uid+"\
@@ -254,8 +251,8 @@ app.get('/db/get/history/:cropid/:uid', function(req,res) {
 /*
  * WARNING: CHANGING A CROP'S HISTORY AFFECTS THE CUMULATIVE ET
  */
-app.get('/db/edit/history/:histid/:cropid/:uid/:irrigatedet', function(req,res) {
-	var history = req.params;
+app.get('/db/edit/history/:history', function(req,res) {
+	var history = JSON.parse(req.params.history);
 
 	// first update cumulative crop with respect to old written value
 	var firstQuery = 
@@ -276,8 +273,8 @@ app.get('/db/edit/history/:histid/:cropid/:uid/:irrigatedet', function(req,res) 
 });
 
 // Edit Farmer (used for settings/forgotten)
-app.get('/db/edit/farmer/:uid/:email/:password/:username/:phonenumber/:fullname', function(req,res) {
-	var farmer = req.params;
+app.get('/db/edit/farmer/:farmer', function(req,res) {
+	var farmer = JSON.parse(req.params.farmer);
 	var stringQuery = 
 		"update farmer\
 		set email='"+farmer.email+"',password='"+farmer.password+"',\
@@ -289,8 +286,8 @@ app.get('/db/edit/farmer/:uid/:email/:password/:username/:phonenumber/:fullname'
 });
 
 // Update Crop (called when new data is calculated everyday)
-app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:currentkc/:cumulativeet/:cropstatus', function(req,res) {
-	var crop = req.params;
+app.get('/db/update/crop/:crop', function(req,res) {
+	var crop = JSON.parse(req.params.crop);
 	var stringQuery = 
 		"update crop\
 		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
@@ -302,8 +299,8 @@ app.get('/db/update/crop/:cropid/:uid/:currentday/:currentet/:currentkc/:cumulat
 });
 
 // Edit Farm
-app.get('/db/edit/farm/:farmid/:uid/:farmname/:soiltype/:latindex/:lonindex', function (req,res) {
-	var farm = req.params;
+app.get('/db/edit/farm/:farm', function (req,res) {
+	var farm = JSON.parse(req.params.farm);
 	call("update farm\
 		set farmname='"+farm.farmname+"', soiltype='"+farm.soiltype+"',\
 		latindex="+farm.latindex+", lonindex="+farm.lonindex+"\
@@ -312,8 +309,8 @@ app.get('/db/edit/farm/:farmid/:uid/:farmname/:soiltype/:latindex/:lonindex', fu
 });
 
 // Edit Irrigation Zone
-app.get('/db/edit/iz/:izid/:uid/:farmid/:izname/:acres/:waterflow/:method/:eff', function (req,res) {
-	var iz = req.params;
+app.get('/db/edit/iz/:iz', function (req,res) {
+	var iz = JSON.parse(req.params.iz);
 	call("update irrigationzone\
 		set farmid="+iz.farmid+", izname='"+iz.izname+"', \
 		acres="+iz.acres+", waterflow="+iz.waterflow+", \
@@ -323,8 +320,8 @@ app.get('/db/edit/iz/:izid/:uid/:farmid/:izname/:acres/:waterflow/:method/:eff',
 });
 
 // Delete User's Crop
-app.get('/db/delete/crop/:cropid/:uid/:izid', function (req,res) {
-	var crop = req.params;
+app.get('/db/delete/crop/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
 	call("delete from crop\
 		where cropid="+crop.cropid+" and uid="+crop.uid+" and izid="+crop.izid+"\
 		;",req,res);
@@ -337,16 +334,16 @@ app.get('/db/delete/crop/:cropid/:uid/:izid', function (req,res) {
  */
 
 // Add Master Control
-app.get('/db/add/mc/:farmid/:uid/:ipaddress', function (req,res) {
-	var mc = req.params;
+app.get('/db/add/mc/:mc', function (req,res) {
+	var mc = JSON.parse(req.params.mc);
 	call("insert into mastercontrol (farmid, uid, ipaddress)\
 		values ("+mc.farmid+","+mc.uid+",'"+mc.ipaddress+"')\
 		;",req,res);
 });
 
 // Get user's Master Control
-app.get('/db/get/mc/:uid', function (req,res) {
-	var mc = req.params;
+app.get('/db/get/mc/:mc', function (req,res) {
+	var mc = JSON.parse(req.params.mc);
 	call("select *\
 		from mastercontrol\
 		where uid="+mc.uid+"\
@@ -354,8 +351,8 @@ app.get('/db/get/mc/:uid', function (req,res) {
 });
 
 // Edit user's Master Control
-app.get('/db/edit/mc/:controlid/:uid/:farmid/:ipaddress', function (req,res) {
-	var mc = req.params;
+app.get('/db/edit/mc/:mc', function (req,res) {
+	var mc = JSON.parse(req.params.mc);
 	call("update mastercontrol\
 		set farmid="+mc.farmid+", ipaddress='"+mc.ipaddress+"'\
 		where controlid="+mc.controlid+" and uid="+mc.uid+"\
@@ -363,16 +360,16 @@ app.get('/db/edit/mc/:controlid/:uid/:farmid/:ipaddress', function (req,res) {
 });
 
 // Add Valve to Master Control
-app.get('/db/add/valve/:uid/:izid/:controlid/:valveid', function (req,res) {
-	var valve = req.params;
+app.get('/db/add/valve/:valve', function (req,res) {
+	var valve = JSON.parse(req.params.valve);
 	call("insert into valvecontrol (uid,izid,controlid,valveid)\
 		values ("+valve.uid+","+valve.izid+","+valve.controlid+","+valve.valveid+")\
 		;",req,res);
 });
 
 // Get user's Valves of a Master Control
-app.get('/db/get/valve/:uid/:controlid', function (req,res) {
-	var valve = req.params;
+app.get('/db/get/valve/:valve', function (req,res) {
+	var valve = JSON.parse(req.params.valve);
 	call("select *\
 		from valvecontrol\
 		where uid="+valve.uid+" and controlid="+valve.controlid+"\
@@ -380,8 +377,8 @@ app.get('/db/get/valve/:uid/:controlid', function (req,res) {
 });
 
 // Edit user's Valve
-app.get('/db/edit/valve/:uid/:izid/:controlid/:valveid', function (req,res) {
-	var valve = req.params;
+app.get('/db/edit/valve/:valve', function (req,res) {
+	var valve = JSON.parse(req.params.valve);
 	call("update valvecontrol\
 		set valveid="+valve.valveid+"\
 		where uid="+valve.uid+" and controlid="+valve.controlid+" and izid="+valve.izid+"\
@@ -389,24 +386,24 @@ app.get('/db/edit/valve/:uid/:izid/:controlid/:valveid', function (req,res) {
 });
 
 // Add Communication (Send Irrigation Amount)
-app.get('/db/add/comm/:uid/:izid/irrigate/:comamount', function (req,res) {
-	var comm = req.params;
+app.get('/db/add/comm/:comm', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("insert into communication (uid,izid,comamount)\
 		values ("+comm.uid+","+comm.izid+","+comm.comamount+")\
 		;",req,res);
 });
 
 // Add Communication (Send Irrigation Amount)
-app.get('/db/add/comm/:uid/:izid/stop', function (req,res) {
-	var comm = req.params;
+app.get('/db/add/comm/:comm/stop', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("insert into communication (uid,izid,command,comamount)\
 		values ("+comm.uid+","+comm.izid+",'Stop',0)\
 		;",req,res);
 });
 
 // Get Communication between user and irrigation zone
-app.get('/db/get/comm/:uid/:izid', function (req,res) {
-	var comm = req.params;
+app.get('/db/get/comm/:comm', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("select *\
 		from communication\
 		where uid="+comm.uid+" and izid="+comm.izid+"\
@@ -414,8 +411,8 @@ app.get('/db/get/comm/:uid/:izid', function (req,res) {
 });
 
 // Update Communication status to Received
-app.get('/db/update/comm/:uid/:izid/received', function (req,res) {
-	var comm = req.params;
+app.get('/db/update/comm/:comm/received', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Received', datereceived='now()'\
 		where comid=(select max(comid)\
@@ -425,8 +422,8 @@ app.get('/db/update/comm/:uid/:izid/received', function (req,res) {
 });
 
 // Update Communication to Irrigating
-app.get('/db/update/comm/:uid/:izid/irrigating', function (req,res) {
-	var comm = req.params;
+app.get('/db/update/comm/:comm/irrigating', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Irrigating'\
 		where comid=(select max(comid)\
@@ -436,8 +433,8 @@ app.get('/db/update/comm/:uid/:izid/irrigating', function (req,res) {
 });
 
 // Update Communication to Finished
-app.get('/db/update/comm/:uid/:izid/finished', function (req,res) {
-	var comm = req.params;
+app.get('/db/update/comm/:comm/finished', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Finished'\
 		where comid=(select max(comid)\
@@ -454,8 +451,8 @@ app.get('/db/update/comm/:uid/:izid/finished', function (req,res) {
  */
 
 // Add Crop Info
-app.get('/db/admin/add/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:llate/:total/:plantdate/:region/:kcini/:kcmid/:kcend/:maxcropheight/:zr/:p', function (req,res) {
-	var admin = req.params;
+app.get('/db/admin/add/cropinfo/:admin', function (req,res) {
+	var admin = JSON.parse(req.params.admin);
 	call("insert into cropinfo (infoid,cropname,category,\
 		lini,ldev,lmid,llate,total,\
 		plantdate,region,kcini,kcmid,kcend,\
@@ -468,8 +465,8 @@ app.get('/db/admin/add/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:l
 });
 
 // Edit Crop Info
-app.get('/db/admin/edit/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:llate/:total/:plantdate/:region/:kcini/:kcmid/:kcend/:maxcropheight/:zr/:p', function (req,res) {
-	var admin = req.params;
+app.get('/db/admin/edit/cropinfo/:admin', function (req,res) {
+	var admin = JSON.parse(req.params.admin);
 	call("update cropinfo \
 		set cropname='"+admin.cropname+"',category='"+admin.category+"',\
 		lini="+admin.lini+",ldev="+admin.ldev+",lmid="+admin.lmid+",llate="+admin.llate+",total="+admin.total+",\
@@ -481,8 +478,8 @@ app.get('/db/admin/edit/cropinfo/:infoid/:cropname/:category/:lini/:ldev/:lmid/:
 });
 
 // Make Farmer Admin
-app.get('/db/admin/makeadmin/:uid', function (req,res) {
-	var admin = req.params;
+app.get('/db/admin/makeadmin/:admin', function (req,res) {
+	var admin = JSON.parse(req.params.admin);
 	call("update farmer\
 		set typeofuser='Admin'\
 		where uid="+admin.uid+"\
