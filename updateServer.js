@@ -105,9 +105,7 @@ function readAllCrops() {
 function clearSpaces(data){
 	for(d in data){
 		if(typeof data[d] === "string") {
-			
 			data[d] = data[d].split(' ').join('%20');
-			console.log(data[d]);
 		}
 	}
 }
@@ -125,33 +123,40 @@ function updateNewData(crop){
 	adjusted = adjustIrrigationDepth(crop);
 	ETcadj = adjusted.ETcadj;
 	RAW = adjusted.RAW;
-	crop.cumulativeET += ETcadj;
+	crop.cumulativeet += ETcadj;
 
 	//clear for URL Launch
 	clearSpaces(crop);
-	console.log(JSON.stringify(crop));
 
 	//update crop in database
 	accessDatabase('/db/update/crop/'+JSON.stringify(crop), function(result){
-			console.log('Updated crop '+crop.cropid+': day '+crop.currentday,crop.currentet,crop.currentkc,crop.cumulativeet);
+			console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
+				' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet);
 	});
 
-	// if(crop.cumulativeet >= RAW){
-	// 	//alert user to irrigate
-	// 	accessDatabase('/sendAlert/'+JSON.stringify(crop),function(result){
-	// 		console.log('Alerted user '+crop.username+' at '+crop.email);
-	// 	});
-	// }
-	if(true){
+	if(crop.cumulativeet >= RAW){
 		//alert user to irrigate
-		crop.email = 'armando.ortiz1@upr.edu';
-		accessDatabase('/sendAlert/'+JSON.stringify(crop),function(r){});
+		accessDatabase('/sendAlert/'+JSON.stringify(crop),function(result){
+			console.log('Alerted user '+crop.username+' at '+crop.email);
+		});
 	}
+	// if(true){
+	// 	//alert user to irrigate
+	// 	crop.email = 'armando.ortiz1@upr.edu';
+	// 	accessDatabase('/sendAlert/'+JSON.stringify(crop),function(r){});
+	// }
 
 }
 
 function getIrrigationDepth(crop){
 	var latIndex, lonIndex, ETo, Kc, ETc, irrigationDepth;
+	crop.kcini = parseFloat(crop.kcini);
+	crop.kcmid = parseFloat(crop.kcmid);
+	crop.kcend = parseFloat(crop.kcend);
+	crop.lini = parseFloat(crop.lini);
+	crop.ldev = parseFloat(crop.ldev);
+	crop.lmid = parseFloat(crop.lmid);
+	crop.llate = parseFloat(crop.llate);
 
 	latIndex = crop.latindex-1;
 	lonIndex = crop.lonindex-1;
@@ -210,7 +215,7 @@ function adjustIrrigationDepth(crop){
 		Ks = (TAW - crop.cumulativeet) / (TAW - RAW);
 	}
 
-	ETcadj = Ks * crop.currentkc * crop.currentet;
+	ETcadj = Ks * crop.currentet;
 
 	return {ETcadj: ETcadj, RAW: RAW};
 }
