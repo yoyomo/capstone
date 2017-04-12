@@ -26,21 +26,20 @@
   <h1>Welcome, {{user.fullname}} !</h1>
   </ion-card>
  
- <ion-card>
+ <ion-card *ngFor="let note of notes" >
 
- <ion-list>
-
-         <ion-item-sliding *ngFor="let note of notes">
+ <ion-list (click)="dailyRec(note)">
+         <ion-item-sliding >
  
             <ion-item>
               <h2>  {{note.farmname}} </h2>
-                <button ion-item (click)="dailyRec(note)">
-               <ion-icon name="flower" item-left></ion-icon>
-               {{note.izname}}</button>
-               <button ion-item>
-              <ion-icon name="leaf" item-left></ion-icon>
-              {{note.cropname}}
-              </button>
+                <ion-item>
+               <ion-icon name="leaf" item-left></ion-icon>
+               {{note.izname}}</ion-item>
+               <ion-item>
+              <ion-icon name="flower" item-left></ion-icon>
+              {{note.cropname}}</ion-item>
+              
 
             </ion-item>
  

@@ -76,8 +76,9 @@ export class AuthService {
   }
  
   public logout() {
+    localStorage.setItem("loggedInUser",'{}');
+    this.currentUser = null;
     return Observable.create(observer => {
-      this.currentUser = null;
       observer.next(true);
       observer.complete();
     });

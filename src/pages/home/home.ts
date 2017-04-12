@@ -52,11 +52,7 @@ notes: any = [];
       this.farmCrop = data.crop
       this.notes.push(data);}
       else{
-        this.notes.push({    
-        farmName: " ",
-        farmZone: " ",
-        farmCrop: " "
-                         });
+        // don't add anything
       }
  
       })
@@ -110,8 +106,8 @@ editNote(note){
         }
     }
 
-    public dailyRec(notes){
-    this.navCtrl.push(DailyRecPage, notes)
+    public dailyRec(note){
+    this.navCtrl.push(DailyRecPage, note)
 
   }
 

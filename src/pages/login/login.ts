@@ -14,7 +14,12 @@ export class LoginPage {
   registerCredentials = {usernameORmail: '', password: ''};
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-    console.log(this.auth.getUserInfo());
+    var user = JSON.parse(localStorage.getItem("loggedInUser"));
+    console.log(user);
+    if(user.uid){
+      this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
+      this.nav.setRoot(HomePage);
+    }
   }
  
   public createAccount() {
@@ -34,8 +39,9 @@ export class LoginPage {
         console.log('Logged in: '+user.fullname);
         this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
         setTimeout(() => {
+          localStorage.setItem("loggedInUser",JSON.stringify(user));
         this.loading.dismiss();
-        this.nav.setRoot(HomePage)
+        this.nav.setRoot(HomePage);
         });
       } else {
         this.showError("Access Denied");
