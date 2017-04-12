@@ -21,11 +21,13 @@ export class RegisterPage {
     if(this.registerCredentials.password === this.registerCredentials.confirmpassword) {
 
       this.auth.register(this.registerCredentials).subscribe(success => {
-        if (success) {
-          this.createSuccess = true;
-            this.showPopup("Success", "Account created.");
+        if (success.name === "error") {
+          this.showPopup("Error", success.detail);
         } else {
-          this.showPopup("Error", "Problem creating account.");
+          //console.log("Registered user: "+success)
+          console.log(success);
+          this.createSuccess = true;
+          this.showPopup("Success", "Account created.");
         }
       },
       error => {

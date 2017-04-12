@@ -21,22 +21,23 @@ farmName = " ";
 farmZone = " ";
 farmCrop = " ";
 
-fullname = '';
-username = '';
-email = '';
-password = '';
+user: any = [];
 
 notes: any = [];
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
     
-    let info = this.auth.getUserInfo();
-    console.log(info);
-    this.fullname = info.fullname;
-    this.username = info.username;
-    this.email = info.email;
-    this.password = info.password;
+    this.user = this.auth.getUserInfo();
+    console.log(this.user);
+    this.auth.getUserCrops(this.user).subscribe(data => {
+      this.notes = data;
+      console.log(this.notes);
+    },
+    error => {
+      console.log(error);
+    });
+    
 
   }
 

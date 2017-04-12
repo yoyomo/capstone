@@ -13,7 +13,9 @@ export class LoginPage {
   loading: Loading;
   registerCredentials = {usernameORmail: '', password: ''};
  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+    console.log(this.auth.getUserInfo());
+  }
  
   public createAccount() {
     this.nav.push(RegisterPage);
@@ -30,7 +32,7 @@ export class LoginPage {
       user = data[0];
       if (user) {
         console.log('Logged in: '+user.fullname);
-        this.auth.createUser(user.fullname, user.username, user.email, user.password);
+        this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
         setTimeout(() => {
         this.loading.dismiss();
         this.nav.setRoot(HomePage)

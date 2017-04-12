@@ -88,9 +88,9 @@ function call(stringQuery,req,res){
 // Sign Up
 app.get('/db/add/farmer/:farmer', function (req,res) {
 	var farmer = JSON.parse(req.params.farmer);
-	call("insert into farmer (fullname, email, username, password, phonenumber)\
+	call("insert into farmer (fullname, email, username, password)\
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
-		'"+farmer.password+"','"+farmer.phonenumber+"')\
+		'"+farmer.password+"')\
 		;",req,res);
 });
 
@@ -197,7 +197,7 @@ app.get('/db/get/farmer/:farmer', function (req,res) {
 app.get('/db/get/crops/:crops', function (req,res) {
 	var crops = JSON.parse(req.params.crops);
 	call("select *\
-		from crop\
+		from crop natural join farm natural join irrigationzone natural join cropinfo\
 		where uid="+crops.uid+"\
 		;",req,res);
 });
@@ -278,8 +278,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 	var stringQuery = 
 		"update farmer\
 		set email='"+farmer.email+"',password='"+farmer.password+"',\
-		username='"+farmer.username+"',phonenumber='"+farmer.phonenumber+"',\
-		fullname='"+farmer.fullname+"'\
+		username='"+farmer.username+"', fullname='"+farmer.fullname+"'\
 		where uid="+farmer.uid+"\
 		;";
 	call(stringQuery, req, res);

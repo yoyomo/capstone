@@ -5,12 +5,14 @@ import 'rxjs/add/operator/map';
 
 
 export class User {
+  uid: number;
   fullname: string;
   username: string;
   email: string;
   password: string;
  
-  constructor(fullname: string, username: string, email: string, password:string) {
+  constructor(uid: number, fullname: string, username: string, email: string, password:string) {
+    this.uid = uid;
     this.fullname = fullname;
     this.username = username;
     this.email = email;
@@ -27,8 +29,8 @@ export class AuthService {
          
     }
 
-  public createUser(fullname, username, email, password){
-    this.currentUser = new User(fullname, username, email, password);
+  public createUser(uid, fullname, username, email, password){
+    this.currentUser = new User(uid, fullname, username, email, password);
   }
 
 
@@ -51,7 +53,7 @@ export class AuthService {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!
-      var url = '/db/add/farmer/:fullname/:email/:username/:password/:phonenumber'
+      var url = '/db/add/farmer/'+JSON.stringify(credentials);
       return this.accessDatabase(url);
     }
   }
@@ -79,5 +81,10 @@ export class AuthService {
       observer.next(true);
       observer.complete();
     });
+  }
+
+  public getUserCrops(user) {
+    var url = '/db/get/crops/'+JSON.stringify(user);
+    return this.accessDatabase(url);
   }
 }

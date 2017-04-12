@@ -23,7 +23,7 @@
 <ion-content class="home" padding>
   
   <ion-card>
-  <h1>Welcome, {{fullname}} !</h1>
+  <h1>Welcome, {{user.fullname}} !</h1>
   </ion-card>
  
  <ion-card>
@@ -33,13 +33,13 @@
          <ion-item-sliding *ngFor="let note of notes">
  
             <ion-item>
-              <h2>  {{note.farmName}} </h2>
+              <h2>  {{note.farmname}} </h2>
                 <button ion-item (click)="dailyRec(note)">
                <ion-icon name="flower" item-left></ion-icon>
-               {{note.irrigationZone}}</button>
+               {{note.izname}}</button>
                <button ion-item>
               <ion-icon name="leaf" item-left></ion-icon>
-              {{note.crop}}
+              {{note.cropname}}
               </button>
 
             </ion-item>
