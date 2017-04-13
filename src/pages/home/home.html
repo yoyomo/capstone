@@ -22,32 +22,29 @@
  
 <ion-content class="home" padding>
   
-  <ion-card>
   <h1>Welcome, {{user.fullname}} !</h1>
-  </ion-card>
  
- <ion-card *ngFor="let note of notes" >
+  <ion-card *ngFor="let crop of crops" >
 
- <ion-list (click)="dailyRec(note)">
+    <ion-list (click)="dailyRec(crop)">
          <ion-item-sliding >
- 
             <ion-item>
-              <h2>  {{note.farmname}} </h2>
+              <h2>  {{crop.farmname}} </h2>
                 <ion-item>
                <ion-icon name="leaf" item-left></ion-icon>
-               {{note.izname}}</ion-item>
+               {{crop.izname}}</ion-item>
                <ion-item>
               <ion-icon name="flower" item-left></ion-icon>
-              {{note.cropname}}</ion-item>
+              {{crop.cropname}}</ion-item>
               
 
             </ion-item>
  
             <ion-item-options>
-                <button ion-button icon-only (click)="editNote(note)" light>
+                <button ion-button icon-only (click)="editNote(crop)" light>
                     <ion-icon name="paper"></ion-icon>
                 </button>
-                <button ion-button icon-only (click)="deleteNote(note)" danger>
+                <button ion-button icon-only (click)="deleteNote(crop)" danger>
                     <ion-icon name="trash"></ion-icon>
                 </button>
             </ion-item-options>
@@ -55,6 +52,6 @@
         </ion-item-sliding>
  
     </ion-list>
-    </ion-card>
+  </ion-card>
 
 </ion-content>

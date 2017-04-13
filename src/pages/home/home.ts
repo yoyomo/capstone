@@ -8,7 +8,6 @@ import { AlertController } from 'ionic-angular';
 import { DailyRecPage } from '../daily-rec/daily-rec';
 
 
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -17,13 +16,8 @@ import { DailyRecPage } from '../daily-rec/daily-rec';
 
 export class HomePage {
 
-farmName = " ";
-farmZone = " ";
-farmCrop = " ";
-
 user: any = [];
-
-notes: any = [];
+crops: any = [];
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
@@ -31,8 +25,8 @@ notes: any = [];
     this.user = this.auth.getUserInfo();
     console.log(this.user);
     this.auth.getUserCrops(this.user).subscribe(data => {
-      this.notes = data;
-      console.log(this.notes);
+      this.crops = data;
+      console.log(this.crops);
     },
     error => {
       console.log(error);
@@ -42,21 +36,22 @@ notes: any = [];
   }
 
   launcharAddPage(){
-    let addModal = this.modalCtrl.create(AddPage);
+    // let addModal = this.modalCtrl.create(AddPage);
 
-    addModal.onDidDismiss((data)=>{
-      if (data != null){
-      console.log("Data =>", data);
-      this.farmName = data.farmName
-      this.farmZone = data.irrigationZone
-      this.farmCrop = data.crop
-      this.notes.push(data);}
-      else{
-        // don't add anything
-      }
+    // addModal.onDidDismiss((data)=>{
+    //   if (data != null){
+    //     console.log("Data =>", data);
+    //     this.crops.push(data);
+    //   }
+    //   else{
+    //     // don't add anything
+    //   }
  
-      })
-    addModal.present();
+    //   })
+    // addModal.present();
+
+    //works for AuthService
+    this.navCtrl.push(AddPage);
  
  }
 
@@ -83,10 +78,10 @@ editNote(note){
                 {
                     text: 'Save',
                     handler: data => {
-                        let index = this.notes.indexOf(note);
+                        let index = this.crops.indexOf(note);
  
                         if(index > -1){
-                          this.notes[index] = data;
+                          this.crops[index] = data;
                         }
                     }
                 }
@@ -97,17 +92,17 @@ editNote(note){
  
     }
  
-    deleteNote(note){
+    deleteNote(crop){
  
-        let index = this.notes.indexOf(note);
+        let index = this.crops.indexOf(crop);
  
         if(index > -1){
-            this.notes.splice(index, 1);
+            this.crops.splice(index, 1);
         }
     }
 
-    public dailyRec(note){
-    this.navCtrl.push(DailyRecPage, note)
+    public dailyRec(crop){
+    this.navCtrl.push(DailyRecPage, crop)
 
   }
 

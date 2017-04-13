@@ -88,4 +88,24 @@ export class AuthService {
     var url = '/db/get/crops/'+JSON.stringify(user);
     return this.accessDatabase(url);
   }
+
+  public getUserFarms(user) {
+    var url = '/db/get/farms/'+JSON.stringify(user);
+    return this.accessDatabase(url);
+  }
+
+  public getUserZones(iz) {
+    var url = '/db/get/iz/'+JSON.stringify(iz);
+    return this.accessDatabase(url);
+  }
+
+  public getCropInfos() {
+    var url = '/db/get/cropinfo';
+    return this.accessDatabase(url);
+  }
+
+  public addCrop(crop) {
+    var url = '/db/add/crop/'+JSON.stringify(crop);
+    return this.accessDatabase(url);
+  }
 }

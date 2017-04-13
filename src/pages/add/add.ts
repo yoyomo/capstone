@@ -3,20 +3,64 @@ import { NavController, ModalController, NavParams,
    ViewController } from 'ionic-angular';
 import { AddFarmPage } from '../add-farm/add-farm';
 import { AddIrrigationZonePage } from '../add-irrigation-zone/add-irrigation-zone';
+import { AuthService } from '../../providers/auth-service';
+import { HomePage } from '../home/home';
 
 
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html'
 })
-export class AddPage {
-farmName = " ";
-farmZone = " ";
 
-public add = { farmName: '', irrigationZone: '', crop: ''};
+export class AddPage {
+
+user: any = [];
+farms: any = [];
+zones: any = [];
+cropinfos: any = [];
+
+farmname = '';
+izname = '';
+cropname = '';
+crop:any = {  uid: 0,
+        farmid: 0,
+        izid: 0,
+        infoid: 0};
+
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
-   public navParams: NavParams, public viewCtrl: ViewController) {
-    
+   public navParams: NavParams, private auth:AuthService, public viewCtrl: ViewController) {
+
+    this.user = this.auth.getUserInfo();
+    this.crop.uid = this.user.uid;
+    this.auth.getUserFarms(this.user).subscribe(data => {
+      this.farms = data;
+      console.log(this.farms);
+    },
+    error => {
+      console.log(error);
+    });
+
+    this.auth.getCropInfos().subscribe(data => {
+      this.cropinfos = data;
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  loadZones(){
+    var iz = {
+      "uid":this.user.uid,
+      "farmid":this.crop.farmid
+    };
+
+    this.auth.getUserZones(iz).subscribe(data => {
+      this.zones = data;
+      console.log(this.zones);
+    },
+    error => {
+      console.log(error);
+    });
   }
 
   launcharFarmPage(){
@@ -25,8 +69,7 @@ public add = { farmName: '', irrigationZone: '', crop: ''};
     addFarmModal.onDidDismiss((data)=>{
       console.log("Data =>", data);
       console.log(data.farmName);
-      this.farmName = data.farmName
-      this.add.farmName = data.farmName
+      this.farmname = data.farmName
         
       })
     addFarmModal.present();
@@ -38,19 +81,23 @@ public add = { farmName: '', irrigationZone: '', crop: ''};
     addFarmModal.onDidDismiss((data)=>{
       console.log("Data =>", data);
       console.log(data.zoneName);
-      this.farmZone = data.zoneName
-      this.add.irrigationZone = data.zoneName
+      this.izname = data.izname;
 
       })
     addFarmModal.present();
   }
 
-closeModal(){
-    this.viewCtrl.dismiss(this.add);
-}
+add(){
+  //this.viewCtrl.dismiss(this.add);
 
-closeModal1(){
-    this.viewCtrl.dismiss();
+  this.auth.addCrop(this.crop).subscribe(data => {
+      this.navCtrl.setRoot(HomePage);
+    },
+    error => {
+      console.log(error);
+    });
+
+  
 }
 
 }
