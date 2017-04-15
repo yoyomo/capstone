@@ -16,6 +16,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
 
+import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -55,6 +56,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService
   ]
 })

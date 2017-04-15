@@ -32,10 +32,15 @@
 </ion-item>
 <ion-item>
   <ion-label stacked>Longitude</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.longitude" name="longitude" required></ion-input>
+        <ion-input type="text" [(ngModel)]="farmInfo.longitude" name="longitude" required>{{lat}}</ion-input>
 </ion-item>
 
-<button ion-button block (click)="closeModal()" [disabled]="!formCtrl.form.valid">Add Farm</button>
 </form>
+
+<div #map id="map"></div>
+
+<button ion-button block (click)="closeModal()" [disabled]="!formCtrl.form.valid">Add Farm</button>
+
+
 
 </ion-content>
