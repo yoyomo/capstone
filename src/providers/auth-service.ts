@@ -136,4 +136,21 @@ export class AuthService {
     var url = '/db/add/iz/'+JSON.stringify(iz);
     return this.accessDatabase(url);
   }
+
+  public readSpecificCrop(crop) {
+    var url = '/db/get/crop/'+JSON.stringify(crop);
+    return this.accessDatabase(url);
+  }
+
+  public addHistory(history) {
+    var url = '/db/add/history/'+JSON.stringify(history);
+    return this.accessDatabase(url);
+  }
+
+  public updateCrop(crop) {
+    var url = '/db/update/crop/'+JSON.stringify(crop);
+    return this.accessDatabase(url);
+  }
+
+  
 }

@@ -199,7 +199,7 @@ app.get('/db/get/crops/:crops', function (req,res) {
 	call("select *\
 		from crop natural join farm natural join irrigationzone natural join cropinfo\
 		where uid="+crops.uid+"\
-		order by crop.cropid desc\
+		order by crop.dateplanted desc\
 		;",req,res);
 });
 
@@ -216,7 +216,7 @@ app.get('/db/edit/crop/:crop', function (req,res) {
 app.get('/db/get/crop/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);
 	call("select *\
-		from crop natural join irrigationzone\
+		from crop natural join farm natural join irrigationzone natural join cropinfo\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;",req,res);
 });

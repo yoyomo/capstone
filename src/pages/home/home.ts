@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams } from 'ionic-angular';
-import { AddFarmPage } from '../add-farm/add-farm';
-import { IrrigationZonePage } from '../irrigation-zone/irrigation-zone';
 import { AddPage } from '../add/add';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
@@ -40,7 +38,9 @@ crops: any = [];
   }
 
   dailyRec(crop){
-    this.navCtrl.push(DailyRecPage, crop)
+    this.navCtrl.push(DailyRecPage, {
+      crop: crop
+    });
 
   }
 

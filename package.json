@@ -1,6 +1,6 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
+  "name": "h2ocrop",
+  "author": "Capstone 2017 Team",
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
@@ -47,5 +47,5 @@
     "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": [],
-  "description": "h2ocrop: An Ionic project"
+  "description": "h2ocrop: A Capstone project"
 }
