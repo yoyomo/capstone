@@ -16,11 +16,12 @@ export class LoginPage {
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
    
    var user = JSON.parse(localStorage.getItem("loggedInUser"));
-    console.log(user);
-    if(user.uid){
-      this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
-      this.nav.setRoot(HomePage);
-    }
+    if(user){
+      if(user.uid){
+        this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
+        this.nav.setRoot(HomePage);
+      }
+    } 
   }
  
   public createAccount() {

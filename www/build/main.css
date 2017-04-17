@@ -24517,6 +24517,15 @@ ion-navbar.toolbar {
   }
 }
 
+.ios page-add-farm .scroll, .md page-add-farm .scroll {
+  height: 100%;
+}
+
+.ios page-add-farm #map, .md page-add-farm #map {
+  width: 100%;
+  height: 100%;
+}
+
 page-daily-rec .scroll-content {
   background-color: #f4f4f4;
 }

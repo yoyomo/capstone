@@ -36,24 +36,13 @@ crops: any = [];
   }
 
   launcharAddPage(){
-    // let addModal = this.modalCtrl.create(AddPage);
-
-    // addModal.onDidDismiss((data)=>{
-    //   if (data != null){
-    //     console.log("Data =>", data);
-    //     this.crops.push(data);
-    //   }
-    //   else{
-    //     // don't add anything
-    //   }
- 
-    //   })
-    // addModal.present();
-
-    //works for AuthService
     this.navCtrl.push(AddPage);
- 
- }
+  }
+
+  dailyRec(crop){
+    this.navCtrl.push(DailyRecPage, crop)
+
+  }
 
 editNote(note){
  
@@ -100,11 +89,6 @@ editNote(note){
             this.crops.splice(index, 1);
         }
     }
-
-    public dailyRec(crop){
-    this.navCtrl.push(DailyRecPage, crop)
-
-  }
 
 
 }

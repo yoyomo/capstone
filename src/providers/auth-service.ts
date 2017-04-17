@@ -26,7 +26,7 @@ export class AuthService {
   currentUser: User;
 
   constructor(private http:Http) {
-         
+      
     }
 
   public createUser(uid, fullname, username, email, password){
@@ -76,12 +76,10 @@ export class AuthService {
   }
  
   public logout() {
-    localStorage.setItem("loggedInUser",'{}');
+    console.log("Logging out...");
+    localStorage.setItem("loggedInUser",null);
     this.currentUser = null;
-    return Observable.create(observer => {
-      observer.next(true);
-      observer.complete();
-    });
+    return;
   }
 
   public getUserCrops(user) {
@@ -106,6 +104,36 @@ export class AuthService {
 
   public addCrop(crop) {
     var url = '/db/add/crop/'+JSON.stringify(crop);
+    return this.accessDatabase(url);
+  }
+
+  public getSoils() {
+    var url = '/db/get/soils';
+    return this.accessDatabase(url);
+  }
+
+  public getLatitudes() {
+    var url = '/db/get/latitude';
+    return this.accessDatabase(url);
+  }
+
+  public getLongitudes() {
+    var url = '/db/get/longitude';
+    return this.accessDatabase(url);
+  }
+
+  public addFarm(farm) {
+    var url = '/db/add/farm/'+JSON.stringify(farm);
+    return this.accessDatabase(url);
+  }
+
+  public getIrrigationMethods() {
+    var url = '/db/get/irrigationmethod';
+    return this.accessDatabase(url);
+  }
+
+  public addIrrigationZone(iz) {
+    var url = '/db/add/iz/'+JSON.stringify(iz);
     return this.accessDatabase(url);
   }
 }

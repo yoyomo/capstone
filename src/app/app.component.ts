@@ -4,8 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { AddFarmPage } from '../pages/add-farm/add-farm';
 import { LoginPage } from '../pages/login/login';
+import { LogoutPage } from '../pages/logout/logout';
 import { SettingsPage } from '../pages/settings/settings';
 import {AuthService} from '../providers/auth-service'
 
@@ -16,8 +16,7 @@ import {AuthService} from '../providers/auth-service'
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  //rootPage: any = LoginPage;
-  rootPage: any = AddFarmPage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -28,7 +27,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Account Info.', component: SettingsPage },
-      { title: 'Logout', component: LoginPage }
+      { title: 'Logout', component: LogoutPage }
 
     ];
 

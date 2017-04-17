@@ -3,6 +3,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
+import { LogoutPage } from '../pages/logout/logout';
 import { RegisterPage } from '../pages/register/register';
 import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 import { HomePage } from "../pages/home/home";
@@ -25,6 +26,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     LoginPage,
+    LogoutPage,
     RegisterPage,
     ForgotPasswordPage,
     HomePage,
@@ -43,6 +45,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     LoginPage,
+    LogoutPage,
     RegisterPage,
     ForgotPasswordPage,
     HomePage,
@@ -57,7 +60,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StatusBar,
     SplashScreen,
     Geolocation,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService
   ]
 })
 export class AppModule {}

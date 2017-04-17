@@ -14,30 +14,28 @@
 <form #formCtrl="ngForm">
 <ion-item>
   <ion-label stacked>Zone Name</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.zoneName" name="zoneName" required></ion-input>
+        <ion-input type="text" [(ngModel)]="zoneInfo.izname" name="zoneName" required></ion-input>
 </ion-item>
 <ion-item>
 <ion-label stacked>Acre</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.acre" name="acre" required></ion-input>
+        <ion-input type="number" [(ngModel)]="zoneInfo.acres" name="acres" required></ion-input>
 </ion-item>
 <ion-item>
 <ion-label stacked>Waterflow</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.waterFlow" name="waterFlow" required></ion-input>
+        <ion-input type="number" [(ngModel)]="zoneInfo.waterflow" name="waterFlow" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label>Irrigation Method</ion-label>
-        <ion-select [(ngModel)]="farmInfo.irrigationMeth" name="irrigationMeth" required>
-          <ion-option value="sand">Surface</ion-option>
-          <ion-option value="sand">Drip</ion-option>
-          <ion-option value="sand">Sprinkle</ion-option>
+        <ion-select [(ngModel)]="zoneInfo.method" name="irrigationMethod" (ionChange)="updateEfficiency()" required>
+          <ion-option *ngFor="let method of irrigationMethods" value="{{method.irrigationmethod}}">{{method.irrigationmethod}} (~%{{method.ea}})</ion-option>
         </ion-select>
 </ion-item>
 
 <ion-item>
-  <ion-label stacked>Irrigation Efficiency</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.irrigationEff" name="irrigationEff" required></ion-input>
+  <ion-label stacked>Irrigation Efficiency </ion-label>
+        <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.eff" name="irrigationEff" required></ion-input>
 </ion-item>
-<button ion-button block (click)="closeModal()" [disabled]="!formCtrl.form.valid">Add Zone</button>
+<button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>
 </form>
 
 </ion-content>
