@@ -1,6 +1,12 @@
 {
   "name": "h2ocrop",
   "author": "Capstone 2017 Team",
+  "description": "h2ocrop: A Capstone project",
+  "version": "0.1.0",
+  "engines": {
+    "node" : "6.10.2",
+    "npm" : "3.10.10"
+  },
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
@@ -46,6 +52,5 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-geolocation"
   ],
-  "cordovaPlatforms": [],
-  "description": "h2ocrop: A Capstone project"
+  "cordovaPlatforms": []
 }
