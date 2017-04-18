@@ -12,7 +12,8 @@ var urlRainfall = 'http://academic.uprm.edu/hdc/GOES-PRWEB_RESULTS/rainfall/rain
 var referenceET = [];
 var rainfall = [];
 var setup = false;
-var crop = [];
+var newCrop = [];
+
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
@@ -65,7 +66,7 @@ function getTodaysFiles(){
 				// Read All Crops
 				readAllCrops();
 			}else{
-				updateNewData(crop);
+				updateNewData(newCrop);
 			}
 		});
 	});
@@ -230,9 +231,9 @@ exports.serverUpdate = function(){
 	getTodaysFiles();
 }
 
-exports.serverUpdateNewCrop = function(newCrop){
+exports.serverUpdateNewCrop = function(crop){
 	setup = true;
-	crop = newCrop;
+	newCrop = crop;
 	console.log(crop);
 	getTodaysFiles();
 }

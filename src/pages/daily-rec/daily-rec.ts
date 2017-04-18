@@ -32,23 +32,9 @@ setupCrop:any = [];
   // Set Up if first time
   setup() {
     if(this.crop.currentday==0){
-      this.setupCrop = {
-        currentday: this.crop.currentday,
-        currentet: this.crop.currentet,
-        cumulativeet: this.crop.cumulativeet,
-        currentkc: this.crop.currentkc,
-        cropstatus: this.crop.cropstatus,
-        cropid: this.crop.cropid,
-        uid: this.crop.uid
-      };
-      console.log(this.setupCrop);
-      this.auth.setupCrop(this.setupCrop).subscribe(data => {
-
-      },
-      error => {
-        console.log(error);
-      });
-
+      // require('child_process');
+      // const setup = require('../../../updateServer.js');
+      // setup.serverUpdateNewCrop(this.crop)
     }
   }
 

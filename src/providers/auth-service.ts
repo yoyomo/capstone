@@ -156,11 +156,5 @@ export class AuthService {
     var url = '/db/get/history/'+JSON.stringify(history);
     return this.accessDatabase(url);
   }
-
-  public setupCrop(setup) {
-    var url = '/db/setup/crop/'+JSON.stringify(setup);
-    return this.accessDatabase(url);
-  }
-
   
 }
