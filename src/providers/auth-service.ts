@@ -152,5 +152,10 @@ export class AuthService {
     return this.accessDatabase(url);
   }
 
+  public getHistory(history) {
+    var url = '/db/get/history/'+JSON.stringify(history);
+    return this.accessDatabase(url);
+  }
+
   
 }

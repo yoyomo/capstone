@@ -15,24 +15,17 @@
 </ion-header>
 
 <ion-content padding>
-<h1>{{farmName}}</h1>
-<h3>{{crop}}</h3>
+  <h1>{{crop.cropname}}</h1>
+  <h3>@ {{crop.izname}}, {{crop.farmname}}</h3>
 
+  <canvas #historyCanvas width="100%" height="100%"></canvas> 
 
-<canvas baseChart width="100%" height="100%"
- [datasets]="lineChartData"
- [labels]="lineChartLabels"
- [legend]="lineChartLegend"
- [chartType]="lineChartType"
- (chartHover)="chartHovered($event)"
- (chartClick)="chartClicked($event)"></canvas> 
-
- <h3>Chart data</h3>
- <ion-row>
- <ion-col *ngFor="let label of lineChartLabels">{{label}}</ion-col>
- </ion-row>
- <ion-row *ngFor="let d of lineChartData">
- <ion-col *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</ion-col>
- </ion-row> 
+  <h3>Crop History</h3>
+  <ion-row>
+    <ion-col *ngFor="let header of headers">{{header}}</ion-col>
+  </ion-row>
+  <ion-row button *ngFor="let h of history">
+    <ion-col *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
+  </ion-row> 
 
 </ion-content>

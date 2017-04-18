@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { CropHistoryPage } from '../crop-history/crop-history';
-import { Chart } from 'chart.js';
-import { ViewChild } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
 
 @Component({
@@ -148,7 +146,9 @@ public infoFarm = { farmName: '', irrigationZone: '', crop: ''};
   }
 
   public cropHistory(){
-    this.navCtrl.push(CropHistoryPage, this.infoFarm)
+    this.navCtrl.push(CropHistoryPage, {
+      crop: this.crop
+    });
   }
 
   
@@ -169,7 +169,9 @@ public infoFarm = { farmName: '', irrigationZone: '', crop: ''};
       console.log(error);
     });
 
-    
+    /*
+     * Send to microcontroller
+     */
   }
    
 }
