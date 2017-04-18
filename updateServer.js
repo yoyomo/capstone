@@ -11,7 +11,8 @@ var urlET = 'http://academic.uprm.edu/hdc/GOES-PRWEB_RESULTS/reference_ET_Penman
 var urlRainfall = 'http://academic.uprm.edu/hdc/GOES-PRWEB_RESULTS/rainfall/rainfall'
 var referenceET = [];
 var rainfall = [];
-
+var setup = false;
+var crop = [];
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
@@ -60,8 +61,12 @@ function getTodaysFiles(){
 			rainfall = matrix;
 			console.log(day+': Rainfall downloaded into matrix.');
 
-			// Read All Crops
-			readAllCrops();
+			if(!setup){
+				// Read All Crops
+				readAllCrops();
+			}else{
+				updateNewData(crop);
+			}
 		});
 	});
 
@@ -99,7 +104,6 @@ function readAllCrops() {
         	updateNewData(allcrops[i]);
         }
     });
-
 }
 
 function clearSpaces(data){
@@ -221,8 +225,14 @@ function adjustIrrigationDepth(crop){
 }
 
 //to be called once at ~2am everyday
-function serverUpdate(){
+exports.serverUpdate = function(){
+	setup = false;
 	getTodaysFiles();
 }
 
-serverUpdate();
+exports.serverUpdateNewCrop = function(newCrop){
+	setup = true;
+	crop = newCrop;
+	console.log(crop);
+	getTodaysFiles();
+}

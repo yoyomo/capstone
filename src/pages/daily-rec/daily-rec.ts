@@ -20,14 +20,36 @@ rec = {amount: 0, type: this.types.gal};
 crop: any = [];
 history = {cropid: '', uid: '', recommendedet: 0,
 irrigatedet: 0, seasonday: 0};
+setupCrop:any = [];
 
-
-public infoFarm = { farmName: '', irrigationZone: '', crop: ''};
-//public infoFarm= { farmName: '', irrigationZone: '', crop: ''};
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private auth: AuthService) {
 		this.crop = navParams.get("crop");
     console.log(this.crop);
+    this.setup();
+  }
+
+  // Set Up if first time
+  setup() {
+    if(this.crop.currentday==0){
+      this.setupCrop = {
+        currentday: this.crop.currentday,
+        currentet: this.crop.currentet,
+        cumulativeet: this.crop.cumulativeet,
+        currentkc: this.crop.currentkc,
+        cropstatus: this.crop.cropstatus,
+        cropid: this.crop.cropid,
+        uid: this.crop.uid
+      };
+      console.log(this.setupCrop);
+      this.auth.setupCrop(this.setupCrop).subscribe(data => {
+
+      },
+      error => {
+        console.log(error);
+      });
+
+    }
   }
 
   ionViewWillEnter(){

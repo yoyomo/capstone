@@ -157,5 +157,10 @@ export class AuthService {
     return this.accessDatabase(url);
   }
 
+  public setupCrop(setup) {
+    var url = '/db/setup/crop/'+JSON.stringify(setup);
+    return this.accessDatabase(url);
+  }
+
   
 }

@@ -7,7 +7,6 @@ import { AuthService } from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 import { Events } from 'ionic-angular';
 
-
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html'
