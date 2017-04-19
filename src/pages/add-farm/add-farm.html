@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="secondary">
     <ion-title>Add Farm</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)= "closeModal1()">
@@ -13,8 +13,8 @@
 <ion-content padding>
 <form #formCtrl="ngForm">
 <ion-item>
-  <ion-label stacked>Farm Name</ion-label>
-        <ion-input type="text" [(ngModel)]="farmInfo.farmname" name="farmName" required></ion-input>
+   <ion-label floating>Farm Name</ion-label>
+   <ion-input type="text" [(ngModel)]="farmInfo.farmname" name="farmName" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label>Soil Type</ion-label>

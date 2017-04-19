@@ -1,3 +1,25 @@
+.ios, .md {
 page-add {
+
+        p {
+            font-size: 0.8em;
+            color: #d2d2d2;
+        }
+
+ 
+        ion-label, .select-text {
+            margin-left: 10px;
+        }
+ 
+        ion-input, ion-select, ion-textarea {
+            padding: 5px 10px;
+        }
+
+        .icon {
+        font-size: 32px;
+}
+ 
+}
+
 
 }

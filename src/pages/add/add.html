@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
  
     <ion-title>Add</ion-title>
     <!-- <ion-buttons end>
@@ -17,25 +17,25 @@
   <ion-row>
     <ion-col width-80>
       <ion-item>
-        <ion-label stacked>Farm Name</ion-label>
-
+       
+       <ion-label floating>Farm Name</ion-label>
+       
         <ion-select [(ngModel)]="crop.farmid" name="farmid" (ionChange)="loadZones()" required>
           <ion-option *ngFor="let farm of farms" value="{{farm.farmid}}">{{farm.farmname}}</ion-option>
         </ion-select>
 
       </ion-item>
     </ion-col>
-    <ion-col width-20><button ion-button icon-only (click)="launcharFarmPage()">
-        <ion-icon name="add-circle"></ion-icon>
-      </button>
+    <ion-col width-20><ion-icon name="add-circle" (click)="launcharFarmPage()"></ion-icon>
+
   </ion-col>   
 </ion-row>
 
  <ion-row>
     <ion-col width-80>
       <ion-item>
-        <ion-label stacked>Irrigation Zone</ion-label>
-        
+        <ion-label floating>Irrigation Zone</ion-label>
+            
         <ion-select [(ngModel)]="crop.izid" name="izid" required>
           <ion-option *ngFor="let zone of zones" value="{{zone.izid}}">{{zone.izname}}</ion-option>
         </ion-select>
@@ -44,6 +44,8 @@
     </ion-col>
     <ion-col width-20><button ion-button icon-only (click)="launcharZonePage()" [disabled]="!crop.farmid">
         <ion-icon name="add-circle"></ion-icon>
+
+        
       </button>
   </ion-col>   
 </ion-row>
@@ -51,7 +53,7 @@
 <ion-row>
   <ion-col >
     <ion-item>
-      <ion-label>Crop</ion-label>
+      <ion-label floating>Crop</ion-label>
             <ion-select [(ngModel)]="crop.infoid" name="crop" required>
               <ion-option *ngFor="let info of cropinfos" value="{{info.infoid}}">{{info.cropname}} - {{info.plantdate}} @ {{info.region}}</ion-option>
               
@@ -60,7 +62,7 @@
   </ion-col>   
 </ion-row>
 
-<button ion-button (click)="addCrop()" block [disabled]="!formCtrl.form.valid">Add</button>
+<button ion-button round (click)="addCrop()" block [disabled]="!formCtrl.form.valid">Add</button>
 </form>
       
 

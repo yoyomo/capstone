@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="secondary">
     <ion-title>Irrigation Zone</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)= "closeModal()">
@@ -13,15 +13,15 @@
 <ion-content padding>
 <form #formCtrl="ngForm">
 <ion-item>
-  <ion-label stacked>Zone Name</ion-label>
-        <ion-input type="text" [(ngModel)]="zoneInfo.izname" name="zoneName" required></ion-input>
+  <ion-label floating>Zone Name</ion-label>
+          <ion-input type="text" [(ngModel)]="zoneInfo.izname" name="zoneName" required></ion-input>
 </ion-item>
 <ion-item>
-<ion-label stacked>Acre</ion-label>
+  <ion-label floating>Acre</ion-label>
         <ion-input type="number" [(ngModel)]="zoneInfo.acres" name="acres" required></ion-input>
 </ion-item>
 <ion-item>
-<ion-label stacked>Waterflow</ion-label>
+<ion-label floating>Waterflow</ion-label>
         <ion-input type="number" [(ngModel)]="zoneInfo.waterflow" name="waterFlow" required></ion-input>
 </ion-item>
 <ion-item>
@@ -32,8 +32,8 @@
 </ion-item>
 
 <ion-item>
-  <ion-label stacked>Irrigation Efficiency </ion-label>
-        <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.eff" name="irrigationEff" required></ion-input>
+  <ion-label floating>Irrigation Efficiency</ion-label>
+          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.eff" name="irrigationEff" required></ion-input>
 </ion-item>
 <button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>
 </form>

@@ -14,6 +14,8 @@ import { CropHistoryPage } from '../pages/crop-history/crop-history';
 import { DailyRecPage } from '../pages/daily-rec/daily-rec';
 import { AuthService } from '../providers/auth-service';
 import { SettingsPage } from '../pages/settings/settings';
+import { AllFarmsPage } from '../pages/all-farms/all-farms';
+import { Sorting } from "../pipes/sorting";
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
 
@@ -35,7 +37,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AddIrrigationZonePage,
     CropHistoryPage,
     DailyRecPage,
-    SettingsPage
+    SettingsPage,
+    AllFarmsPage,
+    Sorting
   
   ],
   imports: [
@@ -54,7 +58,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AddIrrigationZonePage,
     CropHistoryPage,
     DailyRecPage,
-    SettingsPage
+    SettingsPage,
+    AllFarmsPage
   ],
   providers: [
     StatusBar,
