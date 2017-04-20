@@ -10,18 +10,21 @@ import { HomePage } from '../home/home';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-originalSets: any;
+
+inputDisabled: boolean;
+unHide: boolean;
 
   fullname = '';
   username = '';
   email = '';
   password = '';
-
   settings: any = [];
+
+  public userInfo = {uid: 1, fullname : '', username: '', email: '', password: ''};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService,public alertCtrl: AlertController) {
-
+  
     let info = this.auth.getUserInfo();
     this.fullname = info.fullname;
     this.username = info.username;
@@ -34,35 +37,21 @@ originalSets: any;
  settingsDone() {
   
     this.navCtrl.setRoot(HomePage)
-  }
+  }  
+enable(){
+  this.inputDisabled = true;
+  this.unHide = true;
+}
 
-  // editNote(){
- 
-  //       let prompt = this.alertCtrl.create({
-  //           title: 'Edit Note',
-  //           inputs: [{
-  //               name: 'title'
-  //           }],
-  //           buttons: [
-  //               {
-  //                   text: 'Cancel'
-  //               },
-  //               {
-  //                   text: 'Save',
-  //                   handler: data => {
-  //                       let index = this.notes.indexOf(note);
- 
-  //                       if(index > -1){
-  //                         this.notes[index] = data;
-  //                       }
-  //                   }
-  //               }
-  //           ]
-  //       });
- 
-  //       prompt.present();       
- 
-  //   }
-  }
+cancel(){
+  this.inputDisabled = false;
+  this.unHide = false;
+}
+
+save(){
+  this.inputDisabled = false;
+  this.unHide = false;
+}
+}
 
 
