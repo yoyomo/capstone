@@ -1,0 +1,55 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>All Farms</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-content class="home" padding>
+ 
+  <h1>{{user.username}}'s Farms</h1>
+
+  <ion-card *ngFor="let group of groups" >
+
+    <ion-list>
+      <ion-item-sliding >
+        
+        <ion-item>
+            <ion-icon name="leaf" item-left></ion-icon>
+            {{group.farmname}}
+          </ion-item> 
+
+        <ion-item-options>
+            <button ion-button icon-only (click)="editNote(crop)" light>
+                <ion-icon name="paper"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="deleteNote(crop)" danger>
+                <ion-icon name="trash"></ion-icon>
+            </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item-sliding >
+          <ion-item  (click)="dailyRec(crop)">
+            <ion-icon name="flower" item-left></ion-icon>
+            {{group.izname}}
+          </ion-item>
+                 
+        <ion-item-options>
+            <button ion-button icon-only (click)="editNote(crop)" light>
+                <ion-icon name="paper"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="deleteNote(crop)" danger>
+                <ion-icon name="trash"></ion-icon>
+            </button>
+        </ion-item-options>
+      </ion-item-sliding>
+      
+    </ion-list>
+
+  </ion-card>
+
+</ion-content>
