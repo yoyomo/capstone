@@ -72,7 +72,7 @@ app.get('/db/update/newcrop/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);
 	setup.serverUpdateNewCrop(crop);
 	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.status(200).write("Calculated first rec for crop " + crop.cropid);
+	res.status(200).write(JSON.stringify({"message":"Calculated first rec for crop " + crop.cropid}, null, "    "));
 	res.end();
 });
 

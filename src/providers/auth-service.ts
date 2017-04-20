@@ -47,7 +47,8 @@ export class AuthService {
 
   private accessDatabase(url, data) {
     this.clearJSON(data);
-    return this.accessDatabaseURL(url+JSON.stringify(data));
+    url = url+JSON.stringify(data);
+    return this.accessDatabaseURL(url);
   }
  
   public login(credentials) {
@@ -167,6 +168,11 @@ export class AuthService {
   public getHistory(history) {
     var url = '/db/get/history/';
     return this.accessDatabase(url,history);
+  }
+
+  public updateNewCrop(crop) {
+    var url = '/db/update/newcrop/';
+    return this.accessDatabase(url,crop);
   }
   
 }

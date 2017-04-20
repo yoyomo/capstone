@@ -25,35 +25,46 @@ setupCrop:any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private auth: AuthService) {
 		this.crop = navParams.get("crop");
-    console.log(this.crop);
-    console.log(JSON.stringify(this.crop));
-    if(this.crop.currentday==0){
-      this.setup();
-    }
   }
 
   // Set Up if first time
   setup() {
     console.log('Setting up first irrigation...');
-  }
-
-  ionViewWillEnter(){
-    this.auth.readSpecificCrop(this.crop).subscribe(data => {
-      this.crop = data[0];
-
-      this.history.cropid = this.crop.cropid;
-      this.history.uid = this.crop.uid;
-      this.history.recommendedet = this.crop.cumulativeet;
-      this.history.irrigatedet = this.crop.cumulativeet;
-      this.history.seasonday = this.crop.currentday;
-
-      this.rec.amount = this.history.irrigatedet;
-      this.changeAmountType();
+    this.auth.updateNewCrop(this.crop).subscribe(data => {
+      console.log(data[0].message);
+      this.loadCrop();
     },
     error => {
       console.log(error);
     });
-    
+  }
+
+  loadCrop(){
+    this.auth.readSpecificCrop(this.crop).subscribe(data => {
+      this.crop = data[0];
+      console.log(this.crop);
+
+      if(this.crop.currentday ==0) {
+        this.setup();
+      }
+      else {
+        this.history.cropid = this.crop.cropid;
+        this.history.uid = this.crop.uid;
+        this.history.recommendedet = this.crop.cumulativeet;
+        this.history.irrigatedet = this.crop.cumulativeet;
+        this.history.seasonday = this.crop.currentday;
+
+        this.rec.amount = this.history.irrigatedet;
+        this.changeAmountType();
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  ionViewWillEnter(){
+    this.loadCrop();
   }
 
   private getDailyRecommendation() {
