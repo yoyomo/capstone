@@ -68,7 +68,10 @@ loading: Loading;
         this.setup();
       }
       else {
-        this.closeSetup();
+        if(this.settingUp){
+          this.settingUp = false;
+          this.closeSetup();
+        }
         this.history.cropid = this.crop.cropid;
         this.history.uid = this.crop.uid;
         this.history.recommendedet = this.crop.cumulativeet;
