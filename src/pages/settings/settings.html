@@ -2,16 +2,22 @@
 
   <ion-navbar color="secondary">
     <ion-title>Account Info</ion-title>
+
+  <ion-buttons end>
+      <button ion-button icon-only (click)="enable()">
+        <ion-icon name="paper"></ion-icon>
+      </button>
+     </ion-buttons>
+
     </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
 
- <ion-list>
+ <ion-card *ngIf="!unHide">
 
-<ion-item-sliding *ngFor="let set of settings">
+ <ion-list *ngFor="let set of settings">
  
   <ion-item>
     Full Name: {{fullname}}
@@ -25,31 +31,50 @@
     Email: {{email}}
   </ion-item>
 
-   <ion-item>
+   <ion-item >
     Password: {{password}}
-  </ion-item>
-
-  <ion-item-options>
-                <button ion-button icon-only (click)="editNote(set)" light>
-                    <ion-icon name="paper"></ion-icon>
-                </button>
-                <button ion-button icon-only (click)="deleteNote(set)" danger>
-                    <ion-icon name="trash"></ion-icon>
-                </button>
-    </ion-item-options>
-
-  </ion-item-sliding>
- 
+  </ion-item> 
     </ion-list>
     </ion-card>
 
+<form #formCtrl="ngForm" *ngIf="unHide">
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked>Full Name</ion-label>
+   <ion-input type="text"  [disabled]="!inputDisabled" placeholder="{{set.fullname}}" [(ngModel)]="userInfo.fullname" name="fullName" required >{{set.fullname}}</ion-input>
+</ion-item>
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked>Username</ion-label>
+   <ion-input type="text" [disabled]="!inputDisabled" placeholder="{{set.username}}" [(ngModel)]="userInfo.username" name="userName" required >{{set.username}}</ion-input>
+</ion-item>
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked>Email</ion-label>
+   <ion-input type="text" [disabled]="!inputDisabled" placeholder="{{set.email}}" [(ngModel)]="userInfo.email" name="email" required >{{set.email}}</ion-input>
+</ion-item>
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked *ngIf="!unHide">Password</ion-label>
+   <ion-input type="text" *ngIf="!unHide" [disabled]="!inputDisabled" placeholder="{{set.password}}" [(ngModel)]="userInfo.password" name="password" required >{{set.username}}</ion-input>
+</ion-item>
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked *ngIf="unHide"> Old Password</ion-label>
+   <ion-input type="password" [(ngModel)]="userInfo.password" name="Oldpassword" required ></ion-input>
+</ion-item>
+<ion-item *ngFor="let set of settings">
+   <ion-label stacked *ngIf="unHide"> New Password</ion-label>
+   <ion-input type="text" [(ngModel)]="userInfo.password" name="Newpassword" required ></ion-input>
+</ion-item>
 
-  
+</form>
+
+<button ion-button *ngIf="unHide" (click)="save()" round>Save</button>
+<button ion-button *ngIf="unHide" (click)="cancel()" round>Cancel</button>
+
+<button ion-button *ngIf="!unHide" (click)="settingsDone()" round>Done</button>
+
+</ion-content>
+
 
  
-        
 
-  <button ion-button (click)="settingsDone()" round>Done</button>
-        
-</ion-content>
+
+
 
