@@ -24517,6 +24517,23 @@ ion-navbar.toolbar {
   }
 }
 
+.ios page-add p, .md page-add p {
+  font-size: 0.8em;
+  color: #d2d2d2;
+}
+
+.ios page-add ion-label, .ios page-add .select-text, .md page-add ion-label, .md page-add .select-text {
+  margin-left: 10px;
+}
+
+.ios page-add ion-input, .ios page-add ion-select, .ios page-add ion-textarea, .md page-add ion-input, .md page-add ion-select, .md page-add ion-textarea {
+  padding: 5px 10px;
+}
+
+.ios page-add .icon, .md page-add .icon {
+  font-size: 32px;
+}
+
 .ios page-add-farm .scroll, .md page-add-farm .scroll {
   height: 100%;
 }

@@ -26,16 +26,15 @@ setupCrop:any = [];
     private auth: AuthService) {
 		this.crop = navParams.get("crop");
     console.log(this.crop);
-    this.setup();
+    console.log(JSON.stringify(this.crop));
+    if(this.crop.currentday==0){
+      this.setup();
+    }
   }
 
   // Set Up if first time
   setup() {
-    if(this.crop.currentday==0){
-      // require('child_process');
-      // const setup = require('../../../updateServer.js');
-      // setup.serverUpdateNewCrop(this.crop)
-    }
+    console.log('Setting up first irrigation...');
   }
 
   ionViewWillEnter(){

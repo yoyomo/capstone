@@ -62,6 +62,22 @@ app.get('/sendAlert/:alert',function(req,res){
 });
 
 /*************************************************************
+ * ************************ SET UP **************************
+ *************************************************************
+ */
+
+// Update New Crop
+const setup = require('./updateServer.js');
+app.get('/db/update/newcrop/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
+	setup.serverUpdateNewCrop(crop);
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.status(200).write("Calculated first rec for crop " + crop.cropid);
+	res.end();
+});
+
+
+/*************************************************************
  * ************************ QUERIES **************************
  *************************************************************
  */
@@ -216,7 +232,9 @@ app.get('/db/edit/crop/:crop', function (req,res) {
 app.get('/db/get/crop/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);
 	call("select *\
-		from crop natural join farm natural join irrigationzone natural join cropinfo\
+		from crop natural join cropinfo natural join irrigationzone \
+		 natural join farm natural join soilwatercharacteristics \
+		 natural join latitude natural join longitude\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;",req,res);
 });

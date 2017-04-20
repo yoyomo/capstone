@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Http} from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 
@@ -25,25 +25,37 @@ export class User {
 export class AuthService {
   currentUser: User;
 
-  constructor(private http:Http) {
+  constructor(private http: Http) {
       
-    }
+  }
 
   public createUser(uid, fullname, username, email, password){
     this.currentUser = new User(uid, fullname, username, email, password);
   }
 
+  public clearJSON(data){
+    for(var d in data){
+      if(typeof data[d] === "string") {
+        data[d] = data[d].split('/').join('%2F');
+      }
+    }
+  }
 
-  private accessDatabase(url) {
+  private accessDatabaseURL(url) {
     return this.http.get(url).map(res => res.json());
+  }
+
+  private accessDatabase(url, data) {
+    this.clearJSON(data);
+    return this.accessDatabaseURL(url+JSON.stringify(data));
   }
  
   public login(credentials) {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      var url = '/db/get/farmer/'+JSON.stringify(credentials);
-      return this.accessDatabase(url);
+      var url = '/db/get/farmer/';
+      return this.accessDatabase(url,credentials);
     }
   }
  
@@ -53,8 +65,8 @@ export class AuthService {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!
-      var url = '/db/add/farmer/'+JSON.stringify(credentials);
-      return this.accessDatabase(url);
+      var url = '/db/add/farmer/';
+      return this.accessDatabase(url,credentials);
     }
   }
 
@@ -83,78 +95,78 @@ export class AuthService {
   }
 
   public getUserCrops(user) {
-    var url = '/db/get/crops/'+JSON.stringify(user);
-    return this.accessDatabase(url);
+    var url = '/db/get/crops/';
+    return this.accessDatabase(url,user);
   }
 
   public getUserFarms(user) {
-    var url = '/db/get/farms/'+JSON.stringify(user);
-    return this.accessDatabase(url);
+    var url = '/db/get/farms/';
+    return this.accessDatabase(url,user);
   }
 
   public getUserZones(iz) {
-    var url = '/db/get/iz/'+JSON.stringify(iz);
-    return this.accessDatabase(url);
+    var url = '/db/get/iz/';
+    return this.accessDatabase(url,iz);
   }
 
   public getCropInfos() {
     var url = '/db/get/cropinfo';
-    return this.accessDatabase(url);
+    return this.accessDatabaseURL(url);
   }
 
   public addCrop(crop) {
-    var url = '/db/add/crop/'+JSON.stringify(crop);
-    return this.accessDatabase(url);
+    var url = '/db/add/crop/';
+    return this.accessDatabase(url,crop);
   }
 
   public getSoils() {
     var url = '/db/get/soils';
-    return this.accessDatabase(url);
+    return this.accessDatabaseURL(url);
   }
 
   public getLatitudes() {
     var url = '/db/get/latitude';
-    return this.accessDatabase(url);
+    return this.accessDatabaseURL(url);
   }
 
   public getLongitudes() {
     var url = '/db/get/longitude';
-    return this.accessDatabase(url);
+    return this.accessDatabaseURL(url);
   }
 
   public addFarm(farm) {
-    var url = '/db/add/farm/'+JSON.stringify(farm);
-    return this.accessDatabase(url);
+    var url = '/db/add/farm/';
+    return this.accessDatabase(url,farm);
   }
 
   public getIrrigationMethods() {
     var url = '/db/get/irrigationmethod';
-    return this.accessDatabase(url);
+    return this.accessDatabaseURL(url);
   }
 
   public addIrrigationZone(iz) {
-    var url = '/db/add/iz/'+JSON.stringify(iz);
-    return this.accessDatabase(url);
+    var url = '/db/add/iz/';
+    return this.accessDatabase(url,iz);
   }
 
   public readSpecificCrop(crop) {
-    var url = '/db/get/crop/'+JSON.stringify(crop);
-    return this.accessDatabase(url);
+    var url = '/db/get/crop/';
+    return this.accessDatabase(url,crop);
   }
 
   public addHistory(history) {
-    var url = '/db/add/history/'+JSON.stringify(history);
-    return this.accessDatabase(url);
+    var url = '/db/add/history/';
+    return this.accessDatabase(url,history);
   }
 
   public updateCrop(crop) {
-    var url = '/db/update/crop/'+JSON.stringify(crop);
-    return this.accessDatabase(url);
+    var url = '/db/update/crop/';
+    return this.accessDatabase(url,crop);
   }
 
   public getHistory(history) {
-    var url = '/db/get/history/'+JSON.stringify(history);
-    return this.accessDatabase(url);
+    var url = '/db/get/history/';
+    return this.accessDatabase(url,history);
   }
   
 }

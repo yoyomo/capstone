@@ -5,8 +5,6 @@ import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
 import { DailyRecPage } from '../daily-rec/daily-rec';
 
-
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

@@ -102,6 +102,7 @@ function readAllCrops() {
     accessDatabase('/db/get/allcrops',function(result) {
     	var allcrops = result;
         for(var i=0;i<allcrops.length;i++){
+        	updateHistory(allcrops[i]);
         	updateNewData(allcrops[i]);
         }
     });
@@ -113,6 +114,46 @@ function clearSpaces(data){
 			data[d] = data[d].split(' ').join('%20');
 		}
 	}
+}
+
+function updateHistory(crop) {
+	var prevDay, rec, history = [];
+
+	//store values before launching asynchronous call
+	// to avoid update of new data
+	prevDay = crop.currentday;
+	rec = crop.cumulativeet;
+
+	//clear for URL Launch
+	clearSpaces(crop);
+
+	// check if it has been irrigated
+	accessDatabase('/db/get/history/'+JSON.stringify(crop), function(result){
+		history = result[result.length-1];
+		if(!history) { //there is no history... make first
+			history = {
+				cropid: crop.cropid,
+				uid: crop.uid,
+				seasonday: prevDay - 1,
+				recommendedet: 0,
+				irrigatedet: 0,
+			};
+			
+		}
+
+		if(prevDay > history.seasonday){
+			history.recommendedet = rec;
+			history.irrigatedet = 0; // assumes it was not irrigated
+			history.seasonday = prevDay;
+			
+			accessDatabase('/db/add/history/'+JSON.stringify(history), function(result) {
+				console.log('Updated history of crop '+history.cropid+
+				' rec '+history.recommendedet+
+				' irrigated '+history.irrigatedet+
+				' for day '+history.seasonday);
+			});
+		}
+	});
 }
 
 function updateNewData(crop){
@@ -234,6 +275,6 @@ exports.serverUpdate = function(){
 exports.serverUpdateNewCrop = function(crop){
 	setup = true;
 	newCrop = crop;
-	console.log(crop);
+	console.log(newCrop);
 	getTodaysFiles();
 }

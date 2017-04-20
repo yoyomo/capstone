@@ -24,7 +24,7 @@
  
   <h1>{{user.username}}'s crops</h1>
 
-  <ion-card *ngFor="let crop of crops" >
+  <ion-card *ngFor="let crop of crops"  (click)="dailyRec(crop)">
 
     <ion-list>
       <ion-item-sliding >
@@ -45,7 +45,7 @@
       </ion-item-sliding>
 
       <ion-item-sliding >
-          <ion-item  (click)="dailyRec(crop)">
+          <ion-item>
             <ion-icon name="flower" item-left></ion-icon>
             {{crop.cropname}}
           </ion-item>
