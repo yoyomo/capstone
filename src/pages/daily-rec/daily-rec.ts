@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { CropHistoryPage } from '../crop-history/crop-history';
 import { AuthService } from '../../providers/auth-service';
 
@@ -20,23 +20,43 @@ rec = {amount: 0, type: this.types.gal};
 crop: any = [];
 history = {cropid: '', uid: '', recommendedet: 0,
 irrigatedet: 0, seasonday: 0};
-setupCrop:any = [];
+settingUp = false;
+loading: Loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    private auth: AuthService) {
+    private auth: AuthService, private loadingCtrl: LoadingController) {
 		this.crop = navParams.get("crop");
   }
 
   // Set Up if first time
   setup() {
-    console.log('Setting up first irrigation...');
-    this.auth.updateNewCrop(this.crop).subscribe(data => {
-      console.log(data[0].message);
+    if(!this.settingUp){
+      console.log('Setting up first irrigation...');
+      this.settingUp = true;
+      this.showSetup();
+      this.auth.updateNewCrop(this.crop).subscribe(data => {
+        console.log(data.message);
+        this.loadCrop();
+      },
+      error => {
+        console.log(error);
+      });
+    }
+    else{
+      //recheck until it has been updated
       this.loadCrop();
-    },
-    error => {
-      console.log(error);
+    }
+  }
+
+  showSetup(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Setting up first irrigation...'
     });
+    this.loading.present();
+  }
+
+  closeSetup(){
+    this.loading.dismiss();
   }
 
   loadCrop(){
@@ -48,6 +68,7 @@ setupCrop:any = [];
         this.setup();
       }
       else {
+        this.closeSetup();
         this.history.cropid = this.crop.cropid;
         this.history.uid = this.crop.uid;
         this.history.recommendedet = this.crop.cumulativeet;
