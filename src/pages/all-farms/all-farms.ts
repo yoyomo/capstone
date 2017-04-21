@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { Sorting } from "../../pipes/sorting";
+import { HomePage } from '../home/home';
+import { EditFarmPage } from '../edit-farm/edit-farm';
+import { EditZonePage } from '../edit-zone/edit-zone';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-all-farms',
@@ -15,7 +19,7 @@ crops: any = [];
 pipes: [Sorting]
 groups: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
 
     this.user = this.auth.getUserInfo();
     console.log(this.user);
@@ -73,9 +77,71 @@ console.log(group_to_values);
 // console.log(groupArray);
 // }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AllFarmsPage');
+  home(){
+    this.navCtrl.setRoot(HomePage)
   }
+
+editFarm(crops){
+  this.navCtrl.push(EditFarmPage, {
+      crop: crops
+    });
+
+}
+  editZone(crops){
+    this.navCtrl.push(EditZonePage, {
+      crop: crops
+    });
+ 
+           
+ 
+    }
+ 
+    deleteFarm(crop){
+      let prompt = this.alertCtrl.create({
+            title: 'Delete Farm',
+            message: "All Zones and Crops under this farm will also be deleted. Are you sure you want to delete this Farm?",
+            
+            buttons: [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'Delete',
+                    handler: data => {
+                       //add delete actions here
+                    }
+                }
+            ]
+        });
+ 
+        prompt.present();  
+ 
+    }
+
+    deleteZone(crop){
+      let prompt = this.alertCtrl.create({
+            title: 'Delete Zone',
+            message: "All  Crops under this farm will also be deleted. Are you sure you want to delete this Zone?",
+            
+            buttons: [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'Delete',
+                    handler: data => {
+                       //add delete actions here
+                    }
+                }
+            ]
+        });
+ 
+        prompt.present(); 
+ 
+    }
+
+    
+
 
 }
 

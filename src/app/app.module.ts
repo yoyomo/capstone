@@ -15,6 +15,8 @@ import { DailyRecPage } from '../pages/daily-rec/daily-rec';
 import { AuthService } from '../providers/auth-service';
 import { SettingsPage } from '../pages/settings/settings';
 import { AllFarmsPage } from '../pages/all-farms/all-farms';
+import { EditFarmPage } from '../pages/edit-farm/edit-farm';
+import { EditZonePage } from '../pages/edit-zone/edit-zone';
 import { Sorting } from "../pipes/sorting";
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
@@ -39,7 +41,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     DailyRecPage,
     SettingsPage,
     AllFarmsPage,
-    Sorting
+    Sorting,
+    EditFarmPage,
+    EditZonePage
   
   ],
   imports: [
@@ -59,7 +63,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CropHistoryPage,
     DailyRecPage,
     SettingsPage,
-    AllFarmsPage
+    AllFarmsPage,
+    EditFarmPage,
+    EditZonePage
   ],
   providers: [
     StatusBar,
