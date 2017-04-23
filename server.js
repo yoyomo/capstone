@@ -41,11 +41,11 @@ app.get('/sendAlert/:alert',function(req,res){
 	var alert = JSON.parse(req.params.alert);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
-	    from: 'bulletinboarduprm@gmail.com', // sender address
+	    from: 'h2ocrop.pr@gmail.com', // sender address
 	    to: alert.email, // list of receivers
 	    subject: 'Your crop needs irrigation!', // Subject line
 	    text: 'Hello '+alert.username+',\
-	    \nYour '+alert.cropname+' crop at '+alert.farmname+' \
+	    \n\nYour '+alert.cropname+' crop at '+alert.farmname+' \
 	    needs irrigation.\
 	    '
 	    //, // plaintext body
@@ -58,6 +58,49 @@ app.get('/sendAlert/:alert',function(req,res){
 	        return console.log(error);
 	    }
 	    console.log('Message sent: ' + info.response);
+	});
+});
+
+app.get('/sendVerify/:verify',function(req,res){
+	var verify = JSON.parse(req.params.verify);
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+	    from: 'bulletinboarduprm@gmail.com', // sender address
+	    to: verify.email, // list of receivers
+	    subject: 'Welcome to H2OCrop, '+verify.username+'!', // Subject line
+	    // text: 'Hello '+verify.username+',\
+	    // \n\nPlease verify your account by clicking\
+	    // '
+	    // , // plaintext body
+	    html: '<h1>H2OCrop</h1>\
+	    </br></br>\
+	    <p>Hello '+verify.username+',</br></br>\
+	    Please click the button below to verify your account</br></br>\
+	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/{%22email%22:%22'+verify.email+'%22}">\
+		    <input type="submit" \
+		    style="background-color: #006699;\
+		    border: none;\
+		    color: white;\
+		    padding: 15px 32px;\
+		    text-align: center;\
+		    text-decoration: none;\
+		    display: inline-block;\
+		    font-size: 16px;\
+		    margin: 4px 2px;\
+		    cursor: pointer;" value="Verify" />\
+		</form>\
+	    </p>' // html body
+	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        return console.log(error);
+	    }
+	    console.log('Verify account message sent to ' + verify.email);
+	    res.writeHead(200, {'Content-Type': 'text/plain'});
+		res.status(200).write(JSON.stringify({"message":"Verify account message sent to " + verify.email}, null, "    "));
+		res.end();
 	});
 });
 
@@ -108,6 +151,26 @@ app.get('/db/add/farmer/:farmer', function (req,res) {
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
 		'"+farmer.password+"')\
 		;",req,res);
+});
+
+// Verify Account
+app.get('/db/verifyaccount/:verify', function (req,res) {
+	var verify = JSON.parse(req.params.verify);
+	call("update farmer\
+		set verified='Yes'\
+		where email='"+verify.email+"'\
+		;",req,res); 
+}); 
+
+// Forgot Password
+app.get('/db/forgotpassword/:farmer', function(req,res) {
+	var farmer = JSON.parse(req.params.farmer);
+	var stringQuery = 
+		"update farmer\
+		set password='"+farmer.password+"'\
+		where email='"+farmer.email+"'\
+		;";
+	call(stringQuery, req, res);
 });
 
 // Log In
@@ -291,7 +354,7 @@ app.get('/db/edit/history/:history', function(req,res) {
 	call(firstQuery + secondQuery, req, res);
 });
 
-// Edit Farmer (used for settings/forgotten)
+// Edit Farmer (used for settings)
 app.get('/db/edit/farmer/:farmer', function(req,res) {
 	var farmer = JSON.parse(req.params.farmer);
 	var stringQuery = 
