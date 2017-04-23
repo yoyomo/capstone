@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 
 
@@ -11,47 +10,80 @@ import { HomePage } from '../home/home';
 })
 export class SettingsPage {
 
-inputDisabled: boolean;
-unHide: boolean;
+  edit: boolean;
+  changePassword: boolean;
 
-  fullname = '';
-  username = '';
-  email = '';
-  password = '';
-  settings: any = [];
-
-  public userInfo = {uid: 1, fullname : '', username: '', email: '', password: ''};
+  verifyPassword = '';
+  newPassword = '';
+  confirmNewPassword = '';
+  settings: any = {uid: 0, fullname : '', username: '', email: '', password: ''};
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+   private auth: AuthService,public alertCtrl: AlertController) {
   
-    let info = this.auth.getUserInfo();
-    this.fullname = info.fullname;
-    this.username = info.username;
-    this.email = info.email;
-    this.password = info.password;
-    this.settings.push(info);
+    this.settings = this.auth.getUserInfo();
    
   }
 
- settingsDone() {
-  
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [{text: 'OK'}]
+    });
+    alert.present();
+  }
+
+  settingsDone() {
     this.navCtrl.setRoot(HomePage)
   }  
-enable(){
-  this.inputDisabled = true;
-  this.unHide = true;
-}
+  enable(){
+    this.edit = true;
+  }
 
-cancel(){
-  this.inputDisabled = false;
-  this.unHide = false;
-}
+  cancel(){
+    this.edit = false;
+  }
 
-save(){
-  this.inputDisabled = false;
-  this.unHide = false;
-}
+  save(){
+    
+    //make sure current password is verified
+    if(this.verifyPassword===this.settings.password){
+
+      //make sure change of password is desired
+      if (this.changePassword) {
+        if(this.newPassword && this.confirmNewPassword){
+          if(this.newPassword===this.confirmNewPassword){
+            this.settings.password = this.newPassword;
+          }
+          else{
+            this.showPopup("New Password must be confirmed","If change of password is\
+            desired, both New Password and Confirm New Password must match.");
+            return;
+          }
+        }
+        else{
+          this.showPopup("New Password must be confirmed","If change of password is\
+            desired, both New Password and Confirm New Password must match.");
+          return;
+        }
+      }
+
+      this.auth.editFarmer(this.settings).subscribe(data => {
+        console.log("Settings saved.");
+        this.edit = false;
+      },
+      error => {
+        console.log(error);
+      });
+    }
+    else{ // password was not met
+      this.showPopup("Current Password must be verified","If change of settings is\
+            desired, your account's password must be filled.");
+          return;
+    }
+  }
 }
 
 

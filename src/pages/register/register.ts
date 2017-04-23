@@ -15,7 +15,8 @@ export class RegisterPage {
     password: '',
     confirmpassword: ''};
  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController) {}
+  constructor(private nav: NavController, private auth: AuthService,
+   private alertCtrl: AlertController) {}
  
   public register() {
     if(this.registerCredentials.password === this.registerCredentials.confirmpassword) {

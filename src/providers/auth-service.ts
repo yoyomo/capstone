@@ -176,5 +176,9 @@ export class AuthService {
     var url = '/send/forgotpassword/';
     return this.accessDatabase(url,forgotpassword);
   }
-  
+
+  public editFarmer(farmer) {
+    var url = '/db/edit/farmer/';
+    return this.accessDatabase(url,farmer);
+  }
 }

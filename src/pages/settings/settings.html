@@ -4,7 +4,7 @@
     <ion-title>Account Info</ion-title>
 
   <ion-buttons end>
-      <button ion-button icon-only (click)="enable()">
+      <button ion-button icon-only *ngIf="!edit" (click)="enable()">
         <ion-icon name="paper"></ion-icon>
       </button>
      </ion-buttons>
@@ -14,61 +14,65 @@
 </ion-header>
 
 <ion-content padding>
-
- <ion-card *ngIf="!unHide">
-
- <ion-list *ngFor="let set of settings">
- 
-  <ion-item>
-    Full Name: {{fullname}}
-  </ion-item>
-
-   <ion-item>
-    Username: {{username}}
-  </ion-item>
-
-   <ion-item>
-    Email: {{email}}
-  </ion-item>
-
-   <ion-item >
-    Password: {{password}}
-  </ion-item> 
+  <div *ngIf="!edit">
+  <ion-card >
+    <ion-list>
+      <ion-item>
+        <b>Full Name:</b> {{settings.fullname}}
+      </ion-item>
+       <ion-item>
+        <b>Username:</b> {{settings.username}}
+      </ion-item>
+       <ion-item>
+        <b>Email:</b> {{settings.email}}
+      </ion-item>
     </ion-list>
-    </ion-card>
+  </ion-card>
+  <button ion-button (click)="settingsDone()" round>Done</button>
+  </div>
 
-<form #formCtrl="ngForm" *ngIf="unHide">
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked>Full Name</ion-label>
-   <ion-input type="text"  [disabled]="!inputDisabled" placeholder="{{set.fullname}}" [(ngModel)]="userInfo.fullname" name="fullName" required >{{set.fullname}}</ion-input>
-</ion-item>
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked>Username</ion-label>
-   <ion-input type="text" [disabled]="!inputDisabled" placeholder="{{set.username}}" [(ngModel)]="userInfo.username" name="userName" required >{{set.username}}</ion-input>
-</ion-item>
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked>Email</ion-label>
-   <ion-input type="text" [disabled]="!inputDisabled" placeholder="{{set.email}}" [(ngModel)]="userInfo.email" name="email" required >{{set.email}}</ion-input>
-</ion-item>
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked *ngIf="!unHide">Password</ion-label>
-   <ion-input type="text" *ngIf="!unHide" [disabled]="!inputDisabled" placeholder="{{set.password}}" [(ngModel)]="userInfo.password" name="password" required >{{set.username}}</ion-input>
-</ion-item>
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked *ngIf="unHide"> Old Password</ion-label>
-   <ion-input type="password" [(ngModel)]="userInfo.password" name="Oldpassword" required ></ion-input>
-</ion-item>
-<ion-item *ngFor="let set of settings">
-   <ion-label stacked *ngIf="unHide"> New Password</ion-label>
-   <ion-input type="text" [(ngModel)]="userInfo.password" name="Newpassword" required ></ion-input>
-</ion-item>
+  <div *ngIf="edit">
+  <form #formCtrl="ngForm">
+  <ion-item>
+     <ion-label stacked>Full Name</ion-label>
+     <ion-input type="text" [(ngModel)]="settings.fullname" name="fullName" required ></ion-input>
+  </ion-item>
+  <ion-item>
+     <ion-label stacked>Username</ion-label>
+     <ion-input type="text" [(ngModel)]="settings.username" name="userName" required ></ion-input>
+  </ion-item>
+  <ion-item>
+     <ion-label stacked>Email</ion-label>
+     <ion-input type="email" [(ngModel)]="settings.email" name="email" required ></ion-input>
+  </ion-item>
 
-</form>
+  <ion-item *ngIf="!changePassword">
+     <button ion-button (click)="changePassword=true">Change Password</button>
+  </ion-item>
+  <div *ngIf="changePassword">
+    
+    <ion-item>
+       <ion-label stacked>New Password</ion-label>
+       <ion-input type="password" [(ngModel)]="newPassword" name="newpassword" ></ion-input>
+    </ion-item>
+    <ion-item>
+       <ion-label stacked>Confirm New Password</ion-label>
+       <ion-input type="password" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" ></ion-input>
+    </ion-item>
+    <ion-item>
+       <button ion-button (click)="changePassword=false">Cancel</button>
+    </ion-item>
+  </div>
 
-<button ion-button *ngIf="unHide" (click)="save()" round>Save</button>
-<button ion-button *ngIf="unHide" (click)="cancel()" round>Cancel</button>
+  <ion-item>
+     <ion-label stacked>Current Password</ion-label>
+     <ion-input type="password" [(ngModel)]="verifyPassword" name="verifyPassword" required></ion-input>
+  </ion-item>
+  </form>
 
-<button ion-button *ngIf="!unHide" (click)="settingsDone()" round>Done</button>
+  <button ion-button [disabled]="!formCtrl.form.valid" (click)="save()" round>Save</button>
+  <button ion-button (click)="cancel()" round>Cancel</button>
+  </div>
 
 </ion-content>
 
