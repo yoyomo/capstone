@@ -119,7 +119,7 @@ app.get('/send/forgotpassword/:forgotpassword',function(req,res){
 	    </br></br>\
 	    <p>Hello '+forgotpassword.email+',</br></br>\
 	    Below you will find your new password. Please change in settings\
-	     to not forget again.</br></br>'+forgotpassword.password+'\
+	     to not forget again. </br></br>'+forgotpassword.password+'\
 	    </p>' // html body
 	};
 
