@@ -70,19 +70,6 @@ export class AuthService {
       return this.accessDatabase(url,credentials);
     }
   }
-
-  public forgotPassword(credentials) {
-    if ( credentials.email === null || credentials.email != "illary.lopes@gmail.com") {
-      return Observable.throw("Please insert credentials");
-    } else {
-      // At this point store the credentials to your backend!
-      return Observable.create(observer => {
-        let success = (credentials.email === "illary.lopes@gmail.com")
-        observer.next(success);
-        observer.complete();
-      });
-    }
-  }
  
   public getUserInfo() : User {
     return this.currentUser;
@@ -173,6 +160,21 @@ export class AuthService {
   public updateNewCrop(crop) {
     var url = '/db/update/newcrop/';
     return this.accessDatabase(url,crop);
+  }
+
+  public sendVerify(verify) {
+    var url = '/send/verify/';
+    return this.accessDatabase(url,verify);
+  }
+
+  public forgotPassword(forgotpassword) {
+    var url = '/db/forgotpassword/';
+    return this.accessDatabase(url,forgotpassword);
+  }
+
+  public sendForgotPassword(forgotpassword) {
+    var url = '/send/forgotpassword/';
+    return this.accessDatabase(url,forgotpassword);
   }
   
 }

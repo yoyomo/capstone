@@ -182,14 +182,14 @@ function updateNewData(crop){
 
 	if(crop.cumulativeet >= RAW){
 		//alert user to irrigate
-		accessDatabase('/sendAlert/'+JSON.stringify(crop),function(result){
+		accessDatabase('/send/alert/'+JSON.stringify(crop),function(result){
 			console.log('Alerted user '+crop.username+' at '+crop.email);
 		});
 	}
 	// if(true){
 	// 	//alert user to irrigate
 	// 	crop.email = 'armando.ortiz1@upr.edu';
-	// 	accessDatabase('/sendAlert/'+JSON.stringify(crop),function(r){});
+	// 	accessDatabase('/send/alert/'+JSON.stringify(crop),function(r){});
 	// }
 
 }

@@ -37,7 +37,7 @@ var transporter = nodemailer.createTransport({
 	}
 });
 
-app.get('/sendAlert/:alert',function(req,res){
+app.get('/send/alert/:alert',function(req,res){
 	var alert = JSON.parse(req.params.alert);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
@@ -61,11 +61,11 @@ app.get('/sendAlert/:alert',function(req,res){
 	});
 });
 
-app.get('/sendVerify/:verify',function(req,res){
+app.get('/send/verify/:verify',function(req,res){
 	var verify = JSON.parse(req.params.verify);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
-	    from: 'bulletinboarduprm@gmail.com', // sender address
+	    from: 'h2ocrop.pr@gmail.com', // sender address
 	    to: verify.email, // list of receivers
 	    subject: 'Welcome to H2OCrop, '+verify.username+'!', // Subject line
 	    // text: 'Hello '+verify.username+',\
@@ -100,6 +100,37 @@ app.get('/sendVerify/:verify',function(req,res){
 	    console.log('Verify account message sent to ' + verify.email);
 	    res.writeHead(200, {'Content-Type': 'text/plain'});
 		res.status(200).write(JSON.stringify({"message":"Verify account message sent to " + verify.email}, null, "    "));
+		res.end();
+	});
+});
+
+app.get('/send/forgotpassword/:forgotpassword',function(req,res){
+	var forgotpassword = JSON.parse(req.params.forgotpassword);
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+	    from: 'h2ocrop.pr@gmail.com', // sender address
+	    to: forgotpassword.email, // list of receivers
+	    subject: 'Your new H2OCrop password', // Subject line
+	    // text: 'Hello '+verify.username+',\
+	    // \n\nPlease verify your account by clicking\
+	    // '
+	    // , // plaintext body
+	    html: '<h1>H2OCrop</h1>\
+	    </br></br>\
+	    <p>Hello '+forgotpassword.email+',</br></br>\
+	    Below you will find your new password. Please change in settings\
+	     to not forget again.</br></br>'+forgotpassword.password+'\
+	    </p>' // html body
+	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        return console.log(error);
+	    }
+	    console.log('New password sent to ' + forgotpassword.email);
+	    res.writeHead(200, {'Content-Type': 'text/plain'});
+		res.status(200).write(JSON.stringify({"message":"New password sent to " + forgotpassword.email}, null, "    "));
 		res.end();
 	});
 });
@@ -163,12 +194,12 @@ app.get('/db/verifyaccount/:verify', function (req,res) {
 }); 
 
 // Forgot Password
-app.get('/db/forgotpassword/:farmer', function(req,res) {
-	var farmer = JSON.parse(req.params.farmer);
+app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
+	var forgotpassword = JSON.parse(req.params.forgotpassword);
 	var stringQuery = 
 		"update farmer\
-		set password='"+farmer.password+"'\
-		where email='"+farmer.email+"'\
+		set password='"+forgotpassword.password+"'\
+		where email='"+forgotpassword.email+"'\
 		;";
 	call(stringQuery, req, res);
 });

@@ -34,19 +34,33 @@ export class LoginPage {
  
   public login() {
     var user;
-    this.showLoading()
+    this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(data => {
       user = data[0];
       if (user) {
-        console.log('Logged in: '+user.fullname);
-        this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
-        setTimeout(() => {
-          localStorage.setItem("loggedInUser",JSON.stringify(user));
-        this.loading.dismiss();
-        this.nav.setRoot(HomePage);
-        });
+        if(user.verified==='Yes') {
+          console.log('Logged in: '+user.fullname);
+          this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
+          setTimeout(() => {
+            localStorage.setItem("loggedInUser",JSON.stringify(user));
+          this.loading.dismiss();
+          this.nav.setRoot(HomePage);
+          });
+        }
+        else if (user.verified==='No'){
+          console.log("User not verified.");
+          this.auth.sendVerify(user).subscribe(data => {
+            this.showError("Account is not verified.\n\
+           Please check your email and click the verify button.");
+          },
+          error => {
+            this.showError(error);
+          });
+        }
+
       } else {
-        this.showError("Access Denied");
+        this.showError("Access Denied!\n\
+          User does not exist. Please Create New Account.");
       }
     },
     error => {

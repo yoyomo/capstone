@@ -11,18 +11,17 @@ import { LoadingController, Loading } from 'ionic-angular';
 export class ForgotPasswordPage {
 
 emailSentSuccess = false;
-forgotPasswordCredentials = {name: '', lastName: '', username: '', email: '', password: ''};
+forgotPasswordCredentials = { email: '',password: ''};
 
   constructor(private nav: NavController, private auth: AuthService, 
   private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
-
-
-
- 
   
  public resetPassword() {
-   this.auth.forgotPassword(this.forgotPasswordCredentials).subscribe(success => {
-      if (success) {
+   //reset the password
+
+  this.auth.forgotPassword(this.forgotPasswordCredentials).subscribe(data => {
+    this.auth.sendForgotPassword(this.forgotPasswordCredentials).subscribe(data => {
+      if (data) {
         setTimeout(() => {
           
          this.emailSentSuccess = true;
@@ -30,14 +29,16 @@ forgotPasswordCredentials = {name: '', lastName: '', username: '', email: '', pa
         });
       } else {
         this.emailSentSuccess = false;
-        this.showPopup("Error", "try agian.")
-        //this.emailSentSuccess = false;
-        //this.showPopup("Error", "Email does not exist.");
+        this.showPopup("Error", "try again.")
       }
     },
     error => {
-      this.showPopup("Error","error");
+      this.showPopup("Error",error);
     });
+  },
+  error => {
+    this.showPopup("Error",error);
+  });
   }
 
 

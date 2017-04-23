@@ -27,7 +27,9 @@ export class RegisterPage {
           //console.log("Registered user: "+success)
           console.log(success);
           this.createSuccess = true;
-          this.showPopup("Success", "Account created.");
+          this.auth.sendVerify(this.registerCredentials).subscribe(data => {
+            this.showPopup("Success", "Account created. Please verify your account in the email we sent you at "+this.registerCredentials.email+"");
+          });
         }
       },
       error => {
