@@ -2,10 +2,6 @@
 
   <ion-navbar color="secondary">
     <ion-title>Edit Farm</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)= "cancel()">
-        <ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -14,35 +10,35 @@
 <form #formCtrl="ngForm">
 <ion-item>
    <ion-label floating>Farm Name</ion-label>
-   <ion-input type="text" [(ngModel)]="farmInfo.farmname" name="farmName" required></ion-input>
+   <ion-input type="text" [(ngModel)]="farm.farmname" name="farmName" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label>Soil Type</ion-label>
-        <ion-select [(ngModel)]="farmInfo.soiltype" name="soilType" required>
+        <ion-select [(ngModel)]="farm.soiltype" name="soilType" required>
           <ion-option *ngFor="let soilType of soilTypes" value="{{soilType.soiltype}}">{{soilType.soiltype}}</ion-option>
         </ion-select>
 </ion-item>
 
 <ion-item>
   <ion-label stacked>Latitude</ion-label>
-    <ion-select [(ngModel)]="farmInfo.latindex" name="latIndex" (ionChange)="reloadMap()" required>
+    <ion-select [(ngModel)]="farm.latindex" name="latIndex" (ionChange)="reloadMap()" required>
       <ion-option *ngFor="let lat of latitudes" value="{{lat.latindex}}">{{lat.latcoordinate}}</ion-option>
     </ion-select>
 </ion-item>
 <ion-item>
   <ion-label stacked>Longitude</ion-label>
-    <ion-select [(ngModel)]="farmInfo.lonindex" name="lonIndex" (ionChange)="reloadMap()" required>
+    <ion-select [(ngModel)]="farm.lonindex" name="lonIndex" (ionChange)="reloadMap()" required>
       <ion-option *ngFor="let lon of longitudes" value="{{lon.lonindex}}">{{lon.loncoordinate}}</ion-option>
     </ion-select>
+</ion-item>
+<ion-item>
+  <button ion-button block (click)="getGPS()">Use GPS</button>
 </ion-item>
 
 </form>
 
 <div #map id="map"></div>
 
-<button ion-button block (click)="backToAllFarms()" [disabled]="!formCtrl.form.valid">Save</button>
-
-
-
+<button ion-button block (click)="editFarm()" [disabled]="!formCtrl.form.valid">Save</button>
 
 </ion-content>

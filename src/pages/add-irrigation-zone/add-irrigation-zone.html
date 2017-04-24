@@ -2,10 +2,6 @@
 
   <ion-navbar color="secondary">
     <ion-title>Irrigation Zone</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)= "closeModal()">
-        <ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -26,14 +22,14 @@
 </ion-item>
 <ion-item>
   <ion-label>Irrigation Method</ion-label>
-        <ion-select [(ngModel)]="zoneInfo.method" name="irrigationMethod" (ionChange)="updateEfficiency()" required>
+        <ion-select [(ngModel)]="zoneInfo.irrigationmethod" name="irrigationMethod" (ionChange)="updateEfficiency()" required>
           <ion-option *ngFor="let method of irrigationMethods" value="{{method.irrigationmethod}}">{{method.irrigationmethod}} (~%{{method.ea}})</ion-option>
         </ion-select>
 </ion-item>
 
 <ion-item>
   <ion-label floating>Irrigation Efficiency</ion-label>
-          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.eff" name="irrigationEff" required></ion-input>
+          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
 <button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>
 </form>

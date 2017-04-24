@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController,
+ Loading, LoadingController} from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { AllFarmsPage } from '../all-farms/all-farms';
 /*
@@ -14,22 +15,21 @@ import { AllFarmsPage } from '../all-farms/all-farms';
 })
 export class EditZonePage {
 
-public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', method: '', eff: '' };
-
+zone = { farmid: '', uid: '', izname: '',acres: '',
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: '' };
 private irrigationMethods: any = [];
+loadingMethods: Loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  public viewCtrl: ViewController, private auth: AuthService) {
+  public viewCtrl: ViewController, private auth: AuthService,
+  private loadingCtrl: LoadingController) {
 
-  	var user, farmid;
-  	user = this.auth.getUserInfo();
-  	farmid = this.navParams.get("farmid");
-  	this.zoneInfo.uid = user.uid;
-  	this.zoneInfo.farmid = farmid;
+  	this.zone = this.navParams.get("zone");
 
+    this.showLoadingMethods();
   	this.auth.getIrrigationMethods().subscribe(data => {
       this.irrigationMethods = data;
+      this.closeLoadingMethods();
     },
     error => {
       console.log(error);
@@ -38,17 +38,17 @@ private irrigationMethods: any = [];
 
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
-  		if(this.irrigationMethods[i].irrigationmethod == this.zoneInfo.method){
-  			this.zoneInfo.eff = this.irrigationMethods[i].ea;
+  		if(this.irrigationMethods[i].irrigationmethod == this.zone.irrigationmethod){
+  			this.zone.irrigationefficiency = this.irrigationMethods[i].ea;
   		}
   	}
   }
 
-  addIrrigationZone() {
-  	if(parseFloat(this.zoneInfo.eff) > 1 || parseFloat(this.zoneInfo.eff) < 0) return;
+  editIrrigationZone() {
+  	if(parseFloat(this.zone.irrigationefficiency) > 1 || parseFloat(this.zone.irrigationefficiency) < 0) return;
   	
-  	this.auth.addIrrigationZone(this.zoneInfo).subscribe(data => {
-      console.log("Irrigation Zone Added to farm "+this.zoneInfo.farmid);
+  	this.auth.editIrrigationZone(this.zone).subscribe(data => {
+      console.log("Irrigation Zone edited.");
       this.navCtrl.pop();
     },
     error => {
@@ -56,14 +56,16 @@ private irrigationMethods: any = [];
     });
   }
 
-   backToAllFarms(){
-     this.navCtrl.push(AllFarmsPage)
-
+  showLoadingMethods() {
+    this.loadingMethods = this.loadingCtrl.create({
+      content: "Loading Irrigation Methods..."
+    });
+    this.loadingMethods.present();
   }
 
-  cancel(){
-    this.navCtrl.pop()
+  closeLoadingMethods(){
+    console.log("Irrigation Methods loaded.");
+    this.loadingMethods.dismiss();
   }
-
 
 }

@@ -13,7 +13,10 @@ import { Events } from 'ionic-angular';
 })
 
 export class AddPage {
-loading: Loading;
+loadingCropInfo: Loading;
+loadingFarms: Loading;
+loadingZones: Loading;
+
 user: any = [];
 farms: any = [];
 zones: any = [];
@@ -40,10 +43,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   }
 
   loadFarms(){
-    this.showLoading('Loading Farms...');
+    this.showLoadingFarms();
     this.auth.getUserFarms(this.user).subscribe(data => {
       this.farms = data;
-      this.closeLoading();
+      this.closeLoadingFarms();
     },
     error => {
       console.log(error);
@@ -51,10 +54,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   }
 
   loadCropInfos(){
-    this.showLoading('Loading Crop Information...');
+    this.showLoadingCropInfo();
     this.auth.getCropInfos().subscribe(data => {
       this.cropinfos = data;
-      this.closeLoading();
+      this.closeLoadingCropInfo();
     },
     error => {
       console.log(error);
@@ -68,25 +71,14 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     };
     if(!this.crop.farmid) return;
 
-    this.showLoading('Loading Irrigation Zone...');
+    this.showLoadingZones();
     this.auth.getUserZones(iz).subscribe(data => {
       this.zones = data;
-      this.closeLoading();
+      this.closeLoadingZones();
     },
     error => {
       console.log(error);
     });
-  }
-
-  showLoading(text) {
-    this.loading = this.loadingCtrl.create({
-      content: text
-    });
-    this.loading.present();
-  }
-
-  closeLoading(){
-    this.loading.dismiss();
   }
 
   launcharFarmPage(){
@@ -112,6 +104,42 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
       error => {
         console.log(error);
       });
+  }
+
+  showLoadingCropInfo() {
+    this.loadingCropInfo = this.loadingCtrl.create({
+      content: 'Loading Crop Information...'
+    });
+    this.loadingCropInfo.present();
+  }
+
+  closeLoadingCropInfo(){
+    console.log('Crop Info loaded.');
+    this.loadingCropInfo.dismiss();
+  }
+
+  showLoadingFarms() {
+    this.loadingFarms = this.loadingCtrl.create({
+      content: 'Loading Farms...'
+    });
+    this.loadingFarms.present();
+  }
+
+  closeLoadingFarms(){
+    console.log('Farms loaded.');
+    this.loadingFarms.dismiss();
+  }
+
+  showLoadingZones() {
+    this.loadingZones = this.loadingCtrl.create({
+      content: 'Loading Irrigation Zones...'
+    });
+    this.loadingZones.present();
+  }
+
+  closeLoadingZones(){
+    console.log('Irrigation Zones loaded.');
+    this.loadingZones.dismiss();
   }
 
 }

@@ -60,10 +60,6 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
       });
   }
 
-  ionViewDidLoad() {
-    //this.loadMap(); //comment because latitudes and longitude files arent ready
-  }
-
   loadMap(){
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,

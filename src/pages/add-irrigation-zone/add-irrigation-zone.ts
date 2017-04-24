@@ -9,7 +9,7 @@ import { AuthService } from '../../providers/auth-service';
 export class AddIrrigationZonePage {
 
 public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', method: '', eff: '' };
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: '' };
 
 private irrigationMethods: any = [];
 
@@ -32,14 +32,14 @@ private irrigationMethods: any = [];
 
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
-  		if(this.irrigationMethods[i].irrigationmethod == this.zoneInfo.method){
-  			this.zoneInfo.eff = this.irrigationMethods[i].ea;
+  		if(this.irrigationMethods[i].irrigationmethod == this.zoneInfo.irrigationmethod){
+  			this.zoneInfo.irrigationefficiency = this.irrigationMethods[i].ea;
   		}
   	}
   }
 
   addIrrigationZone() {
-  	if(parseFloat(this.zoneInfo.eff) > 1 || parseFloat(this.zoneInfo.eff) < 0) return;
+  	if(parseFloat(this.zoneInfo.irrigationefficiency) > 1 || parseFloat(this.zoneInfo.irrigationefficiency) < 0) return;
   	
   	this.auth.addIrrigationZone(this.zoneInfo).subscribe(data => {
       console.log("Irrigation Zone Added to farm "+this.zoneInfo.farmid);

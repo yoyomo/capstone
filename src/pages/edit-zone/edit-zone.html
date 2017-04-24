@@ -2,10 +2,6 @@
 
   <ion-navbar color="secondary">
     <ion-title>Edit Zone</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)= "cancel()">
-        <ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -14,28 +10,28 @@
 <form #formCtrl="ngForm">
 <ion-item>
   <ion-label floating>Zone Name</ion-label>
-          <ion-input type="text" [(ngModel)]="zoneInfo.izname" name="zoneName" required></ion-input>
+          <ion-input type="text" [(ngModel)]="zone.izname" name="zoneName" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label floating>Acre</ion-label>
-        <ion-input type="number" [(ngModel)]="zoneInfo.acres" name="acres" required></ion-input>
+        <ion-input type="number" [(ngModel)]="zone.acres" name="acres" required></ion-input>
 </ion-item>
 <ion-item>
 <ion-label floating>Waterflow</ion-label>
-        <ion-input type="number" [(ngModel)]="zoneInfo.waterflow" name="waterFlow" required></ion-input>
+        <ion-input type="number" [(ngModel)]="zone.waterflow" name="waterFlow" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label>Irrigation Method</ion-label>
-        <ion-select [(ngModel)]="zoneInfo.method" name="irrigationMethod" (ionChange)="updateEfficiency()" required>
+        <ion-select [(ngModel)]="zone.irrigationmethod" name="irrigationMethod" (ionChange)="updateEfficiency()" required>
           <ion-option *ngFor="let method of irrigationMethods" value="{{method.irrigationmethod}}">{{method.irrigationmethod}} (~%{{method.ea}})</ion-option>
         </ion-select>
 </ion-item>
 
 <ion-item>
   <ion-label floating>Irrigation Efficiency</ion-label>
-          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.eff" name="irrigationEff" required></ion-input>
+          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zone.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
-<button ion-button block (click)="backToAllFarms()" [disabled] = "!formCtrl.form.valid" >Save</button>
+<button ion-button block (click)="editIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Save</button>
 </form>
 
 </ion-content>

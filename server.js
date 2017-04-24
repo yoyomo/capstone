@@ -267,7 +267,7 @@ app.get('/db/add/iz/:iz', function (req,res) {
 	call("insert into irrigationzone \
 		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)\
 		values ("+iz.farmid+","+iz.uid+",'"+iz.izname+"',"+iz.acres+",\
-		"+iz.waterflow+",'"+iz.method+"',"+iz.eff+")\
+		"+iz.waterflow+",'"+iz.irrigationmethod+"',"+iz.irrigationefficiency+")\
 		;",req,res);
 });
 
@@ -428,7 +428,7 @@ app.get('/db/edit/iz/:iz', function (req,res) {
 	call("update irrigationzone\
 		set farmid="+iz.farmid+", izname='"+iz.izname+"', \
 		acres="+iz.acres+", waterflow="+iz.waterflow+", \
-		irrigationmethod='"+iz.method+"', irrigationefficiency="+iz.eff+"\
+		irrigationmethod='"+iz.irrigationmethod+"', irrigationefficiency="+iz.irrigationefficiency+"\
 		where izid="+iz.izid+" and uid="+iz.uid+"\
 		;",req,res);
 });

@@ -27,12 +27,10 @@ md: any = [];
     console.log(this.user);
     this.auth.getUserCrops(this.user).subscribe(data => {
       this.crops = data; 
-      this.md = data; 
-   
-      this.filter();
-
-      //console.log(this.crops);
-      console.log(this.md);
+      //this.md = data; 
+      //this.filter();
+      console.log(this.crops);
+      //console.log(this.md);
         },
     error => {
       console.log(error);
@@ -41,16 +39,16 @@ md: any = [];
 
   }
 
-filter(){
+// filter(){
     
-var cars = [{ make: 'audi', model: 'r8', year: '2012' }, { make: 'audi', model: 'rs5', year: '2013' }, { make: 'ford', model: 'mustang', year: '2012' }, { make: 'ford', model: 'fusion', year: '2015' }, { make: 'kia', model: 'optima', year: '2012' }],
-    result = this.md.reduce(function (r, a) {
-        r[a.category] = r[a.category] || [];
-        r[a.category].push(a);
-        return r;
-    }, Object.create(null));
+// var cars = [{ make: 'audi', model: 'r8', year: '2012' }, { make: 'audi', model: 'rs5', year: '2013' }, { make: 'ford', model: 'mustang', year: '2012' }, { make: 'ford', model: 'fusion', year: '2015' }, { make: 'kia', model: 'optima', year: '2012' }],
+//     result = this.md.reduce(function (r, a) {
+//         r[a.category] = r[a.category] || [];
+//         r[a.category].push(a);
+//         return r;
+//     }, Object.create(null));
 
-console.log(result);
+// console.log(result);
 
 
 
@@ -93,7 +91,7 @@ console.log(result);
 // });
 
 
-}
+// }
 
   launcharAddPage(){
     this.navCtrl.push(AddPage);
@@ -106,7 +104,7 @@ console.log(result);
 
   }
 
-editNote(note){
+editCrop(note){
  
         let prompt = this.alertCtrl.create({
             title: 'Edit Note',
@@ -143,7 +141,7 @@ editNote(note){
  
     }
  
-    deleteNote(crop){
+    deleteCrop(crop){
  
         let index = this.crops.indexOf(crop);
  
