@@ -35,7 +35,7 @@ export class SettingsPage {
     alert.present();
   }
 
-  settingsDone() {
+  home() {
     this.navCtrl.setRoot(HomePage)
   }  
   enable(){
@@ -44,6 +44,7 @@ export class SettingsPage {
 
   cancel(){
     this.edit = false;
+    this.settings = this.auth.getUserInfo();
   }
 
   save(){
@@ -72,6 +73,10 @@ export class SettingsPage {
 
       this.auth.editFarmer(this.settings).subscribe(data => {
         console.log("Settings saved.");
+        //update local storage and authservice
+        this.auth.createUser(this.settings.uid,this.settings.fullname,
+          this.settings.username,this.settings.email,this.settings.password);
+        localStorage.setItem("loggedInUser",JSON.stringify(this.auth.getUserInfo()));
         this.edit = false;
       },
       error => {

@@ -5,7 +5,8 @@
     
     <ion-buttons start>
       <button ion-button icon-only (click)= "home()">
-        <ion-icon name="home"></ion-icon></button>
+        <ion-icon name="home"></ion-icon>
+      </button>
     </ion-buttons>
 
     <ion-title>All Farms</ion-title>
@@ -19,37 +20,33 @@
  
   <h1>{{user.username}}'s Farms</h1>
 
-  <ion-card *ngFor="let group of groups" >
-
+  <ion-card *ngFor="let farm of farms" >
     <ion-list>
       <ion-item-sliding >
-        
         <ion-item>
-            <ion-icon name="leaf" item-left></ion-icon>
-            {{group.farmname}}
-          </ion-item> 
-
+          <ion-icon name="leaf" item-left></ion-icon>
+          {{farm.farmname}}
+        </ion-item> 
         <ion-item-options>
-            <button ion-button icon-only (click)="editFarm(crop)" light>
-                <ion-icon name="paper"></ion-icon>
-            </button>
-            <button ion-button icon-only (click)="deleteFarm(crop)" danger>
-                <ion-icon name="trash"></ion-icon>
-            </button>
+          <button ion-button icon-only (click)="editFarm(farm)" light>
+              <ion-icon name="paper"></ion-icon>
+          </button>
+          <button ion-button icon-only (click)="deleteFarm(farm)" danger>
+              <ion-icon name="trash"></ion-icon>
+          </button>
         </ion-item-options>
       </ion-item-sliding>
 
-      <ion-item-sliding >
-          <ion-item>
-            <ion-icon name="flower" item-left></ion-icon>
-            {{group.izname}}
-          </ion-item>
-                 
+      <ion-item-sliding *ngFor="let zone of farm.zones">
+        <ion-item>
+          <ion-icon name="water" item-left></ion-icon>
+          {{zone.izname}}
+        </ion-item>
         <ion-item-options>
-            <button ion-button icon-only (click)="editZone(crop)" light>
+            <button ion-button icon-only (click)="editZone(zone)" light>
                 <ion-icon name="paper"></ion-icon>
             </button>
-            <button ion-button icon-only (click)="deleteZone(crop)" danger>
+            <button ion-button icon-only (click)="deleteZone(zone)" danger>
                 <ion-icon name="trash"></ion-icon>
             </button>
         </ion-item-options>

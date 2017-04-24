@@ -250,6 +250,7 @@ app.get('/db/get/farms/:farms', function (req,res) {
 	call("select *\
 		from farm\
 		where uid="+farms.uid+"\
+		order by farmid desc\
 		;",req,res);
 });
 
@@ -276,6 +277,7 @@ app.get('/db/get/iz/:iz', function (req,res) {
 	call("select *\
 		from irrigationzone\
 		where farmid="+iz.farmid+" and uid="+iz.uid+"\
+		order by izid desc\
 		;",req,res);
 });
 
@@ -436,6 +438,22 @@ app.get('/db/delete/crop/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);
 	call("delete from crop\
 		where cropid="+crop.cropid+" and uid="+crop.uid+" and izid="+crop.izid+"\
+		;",req,res);
+});
+
+// Delete User's Irrigation Zone
+app.get('/db/delete/iz/:iz', function (req,res) {
+	var iz = JSON.parse(req.params.iz);
+	call("delete from irrigationzone\
+		where uid="+iz.uid+" and izid="+iz.izid+"\
+		;",req,res);
+});
+
+// Delete User's Crop
+app.get('/db/delete/farm/:farm', function (req,res) {
+	var farm = JSON.parse(req.params.farm);
+	call("delete from farm\
+		where uid="+farm.uid+" and farmid="+farm.farmid+"\
 		;",req,res);
 });
 

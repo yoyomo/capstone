@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams,
-   ViewController } from 'ionic-angular';
+   ViewController, LoadingController, Loading } from 'ionic-angular';
 import { AddFarmPage } from '../add-farm/add-farm';
 import { AddIrrigationZonePage } from '../add-irrigation-zone/add-irrigation-zone';
 import { AuthService } from '../../providers/auth-service';
@@ -13,7 +13,7 @@ import { Events } from 'ionic-angular';
 })
 
 export class AddPage {
-
+loading: Loading;
 user: any = [];
 farms: any = [];
 zones: any = [];
@@ -25,8 +25,9 @@ cropname = '';
 crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
-   public navParams: NavParams, private auth:AuthService, public viewCtrl: ViewController,
-   public events: Events) {
+   public navParams: NavParams, private auth:AuthService, 
+   public viewCtrl: ViewController, public events: Events, 
+   private loadingCtrl: LoadingController) {
 
     this.user = this.auth.getUserInfo();
     this.crop.uid = this.user.uid;
@@ -39,9 +40,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   }
 
   loadFarms(){
+    this.showLoading('Loading Farms...');
     this.auth.getUserFarms(this.user).subscribe(data => {
       this.farms = data;
-      console.log(this.farms);
+      this.closeLoading();
     },
     error => {
       console.log(error);
@@ -49,8 +51,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   }
 
   loadCropInfos(){
+    this.showLoading('Loading Crop Information...');
     this.auth.getCropInfos().subscribe(data => {
       this.cropinfos = data;
+      this.closeLoading();
     },
     error => {
       console.log(error);
@@ -64,15 +68,26 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     };
     if(!this.crop.farmid) return;
 
+    this.showLoading('Loading Irrigation Zone...');
     this.auth.getUserZones(iz).subscribe(data => {
       this.zones = data;
-      console.log(this.zones);
+      this.closeLoading();
     },
     error => {
       console.log(error);
     });
   }
 
+  showLoading(text) {
+    this.loading = this.loadingCtrl.create({
+      content: text
+    });
+    this.loading.present();
+  }
+
+  closeLoading(){
+    this.loading.dismiss();
+  }
 
   launcharFarmPage(){
     this.navCtrl.push(AddFarmPage);

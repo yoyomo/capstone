@@ -1,13 +1,19 @@
 <ion-header>
 
   <ion-navbar color="secondary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)= "home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <ion-title>Account Info</ion-title>
 
-  <ion-buttons end>
+    <ion-buttons end>
       <button ion-button icon-only *ngIf="!edit" (click)="enable()">
         <ion-icon name="paper"></ion-icon>
       </button>
-     </ion-buttons>
+    </ion-buttons>
 
     </ion-navbar>
 
@@ -28,7 +34,6 @@
       </ion-item>
     </ion-list>
   </ion-card>
-  <button ion-button (click)="settingsDone()" round>Done</button>
   </div>
 
   <div *ngIf="edit">
