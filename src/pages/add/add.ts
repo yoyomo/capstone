@@ -20,6 +20,7 @@ loadingZones: Loading;
 user: any = [];
 farms: any = [];
 zones: any = [];
+farmZones: any = [];
 cropinfos: any = [];
 
 farmname = '';
@@ -65,20 +66,27 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   }
 
   loadZones(){
-    var iz = {
-      uid:this.crop.uid,
-      farmid:this.crop.farmid
-    };
-    if(!this.crop.farmid) return;
-
     this.showLoadingZones();
-    this.auth.getFarmZones(iz).subscribe(data => {
+    this.auth.getUserZones(this.user).subscribe(data => {
       this.zones = data;
+      console.log(this.zones);
       this.closeLoadingZones();
     },
     error => {
       console.log(error);
     });
+  }
+
+  loadFarmZones(){
+    if(!this.crop.farmid) return;
+
+    this.farmZones = [];
+    for(var zoneIndex = this.zones.length - 1; zoneIndex >= 0; zoneIndex--) {
+      if(this.zones[zoneIndex].farmid === this.crop.farmid){
+        this.farmZones.push(this.zones[zoneIndex]);
+      }
+    }
+    
   }
 
   launcharFarmPage(){

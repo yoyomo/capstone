@@ -20,7 +20,7 @@
        
        <ion-label floating>Farm Name</ion-label>
        
-        <ion-select [(ngModel)]="crop.farmid" name="farmid" (ionChange)="loadZones()" required>
+        <ion-select [(ngModel)]="crop.farmid" name="farmid" (ionChange)="loadFarmZones()" required>
           <ion-option *ngFor="let farm of farms" value="{{farm.farmid}}">{{farm.farmname}}</ion-option>
         </ion-select>
 
@@ -40,7 +40,7 @@
         <ion-label floating>Irrigation Zone</ion-label>
             
         <ion-select [(ngModel)]="crop.izid" name="izid" required>
-          <ion-option *ngFor="let zone of zones" value="{{zone.izid}}">{{zone.izname}}</ion-option>
+          <ion-option *ngFor="let zone of farmZones" value="{{zone.izid}}">{{zone.izname}}</ion-option>
         </ion-select>
 
       </ion-item>

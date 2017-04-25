@@ -4,6 +4,8 @@ import { AddPage } from '../add/add';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
 import { DailyRecPage } from '../daily-rec/daily-rec';
+import { EditFarmPage } from '../edit-farm/edit-farm';
+import { EditZonePage } from '../edit-zone/edit-zone';
 
 @Component({
   selector: 'page-home',
@@ -15,119 +17,64 @@ export class HomePage {
 
 user: any = [];
 crops: any = [];
+zones: any = [];
 farms: any = [];
-
-zone: any = {
-  izid: '',
-  farmid: '',
-  uid: '',
-  izname: '',
-  acres: '',
-  waterflow: '',
-  irrigationmethod: '',
-  irrigationefficiency: '',
-  crops: []
-};
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
     
     this.user = this.auth.getUserInfo();
     console.log(this.user);
-    this.auth.getUserCrops(this.user).subscribe(data => {
-      this.crops = data; 
-      console.log(this.crops);
-      this.sortCards();
+    this.auth.getUserFarms(this.user).subscribe(data => {
+      this.farms = data;
+
+      this.auth.getUserZones(this.user).subscribe(data => {
+        this.zones = data;
+
+        this.auth.getUserCrops(this.user).subscribe(data => {
+          this.crops = data; 
+          console.log(this.crops);
+
+          this.includeCropsToZones();
+          this.includeZonesToFarms();
+        },
+        error => {
+          console.log(error);
+        });
+      },
+      error => {
+        console.log(error);
+      });
     },
     error => {
       console.log(error);
     });
-    
-
   }
 
-  sortCards() {
-    var info:any = [], farmIndex,zoneIndex;
-    for(var i = this.crops.length-1; i >= 0; i--){
-      info = this.crops[i];
+  includeCropsToZones() {
 
-      //create farm in farms if not existing and get farmIndex
-      //create zone in farm if not existing and get zoneIndex
-      //add crop to zone
-      farmIndex = this.getFarmIndex(info);
-      zoneIndex = this.getZoneIndex(info,farmIndex);
-      this.farms[farmIndex].zones[zoneIndex].crops.push(info);
-    }
-
-
-  }
-
-  //passes farm & zon values from info to current farm & zone
-  passFarm(farmInfo) {
-    return {
-      farmid : farmInfo.farmid,
-      uid : farmInfo.uid,
-      farmname : farmInfo.farmname,
-      soiltype : farmInfo.soiltype,
-      latindex : farmInfo.latindex,
-      lonindex : farmInfo.lonindex,
-      zones : []
-    };
-  }
-
-  //passes farm & zon values from info to current farm & zone
-  passZone(zoneInfo) {
-    return {
-      izid : zoneInfo.izid,
-      farmid : zoneInfo.farmid,
-      uid : zoneInfo.uid,
-      izname : zoneInfo.izname,
-      acres : zoneInfo.acres,
-      waterflow : zoneInfo.waterflow,
-      irrigationmethod : zoneInfo.irrigationmethod,
-      irrigationefficiency : zoneInfo.irrigationefficiency,
-      crops: []
-    };
-  }
-
-  //returns index of farm in farms
-  getFarmIndex(info) {
-    var farmFound, farmIndex;
-    farmFound = this.farms.find(function(item, i){
-      if(item.farmid === info.farmid){
-        farmIndex = i;
-        return i;
+    for(var zoneIndex = this.zones.length-1; zoneIndex >= 0; zoneIndex--) {
+      this.zones[zoneIndex].crops = [];
+      for(var cropIndex = this.crops.length-1; cropIndex >= 0; cropIndex--) {
+        if(this.crops[cropIndex].izid === this.zones[zoneIndex].izid){
+          this.zones[zoneIndex].crops.push(this.crops[cropIndex]);
+        }
       }
-    });
-    if(!farmFound){
-      this.farms.push(this.passFarm(info));
-      farmIndex = 0;
     }
-    
-    console.log(farmFound);
-    console.log(farmIndex);
-    return farmIndex;
-
   }
 
-  //returns index of zone in farm
-  getZoneIndex(info, farmIndex){
-    var zoneFound, zoneIndex;
-    zoneFound = this.farms[farmIndex].zones.find(function(item, i){
-      if(item.izid === info.izid){
-        zoneIndex = i;
-        return i;
+  includeZonesToFarms() {
+    for(var farmIndex = this.farms.length-1; farmIndex >= 0; farmIndex--) {
+      this.farms[farmIndex].zones = [];
+      for(var zoneIndex = this.zones.length-1; zoneIndex >= 0; zoneIndex--) {
+        if(this.zones[zoneIndex].farmid === this.farms[farmIndex].farmid){
+          this.farms[farmIndex].zones.push(this.zones[zoneIndex]);
+        }
       }
-    });
-    if(!zoneFound){
-      this.farms[farmIndex].zones.push(this.passZone(info));
-      zoneIndex = 0;
     }
-    
-    console.log(zoneFound);
-    console.log(zoneIndex);
-    return zoneIndex;
   }
+
+  
 
   launcharAddPage(){
     this.navCtrl.push(AddPage);
@@ -140,51 +87,102 @@ zone: any = {
 
   }
 
-editCrop(note){
+  editFarm(farm){
+    this.navCtrl.push(EditFarmPage, {
+      farm: farm
+    });
+  }
+  editZone(zone){
+    this.navCtrl.push(EditZonePage, {
+      zone: zone
+    });
+  }
  
-        let prompt = this.alertCtrl.create({
-            title: 'Edit Note',
-            inputs: [{
-                 name: 'farmName',
-                 value: note.farmName
-           },
-            {
-                name: "irrigationZone",
-                value: note.irrigationZone
-            },
-            {
-                name: 'crop',
-                value: note.crop
-            }],
-            buttons: [
-                {
-                    text: 'Cancel'
-                },
-                {
-                    text: 'Save',
-                    handler: data => {
-                        let index = this.crops.indexOf(note);
+  deleteFarm(farm){
+    let prompt = this.alertCtrl.create({
+          title: 'Delete Farm?',
+          message: "All Irrigation Zones & Crops & History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteFarm(farm).subscribe(data => {
+                      console.log("Farm & all its irrigation zones & \
+                        all its crops & all its histories deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
+  deleteZone(zone){
+    let prompt = this.alertCtrl.create({
+          title: 'Delete Irrigation Zone?',
+          message: "All Crops & History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteIrrigationZone(zone).subscribe(data => {
+                      console.log("Irrigation Zone & all its crops & \
+                        all its histories deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present(); 
+
+  }
  
-                        if(index > -1){
-                          this.crops[index] = data;
-                        }
-                    }
-                }
-            ]
-        });
- 
-        prompt.present();       
- 
-    }
- 
-    deleteCrop(crop){
- 
-        let index = this.crops.indexOf(crop);
- 
-        if(index > -1){
-            this.crops.splice(index, 1);
-        }
-    }
+  deleteCrop(crop){
+      let prompt = this.alertCtrl.create({
+          title: 'Delete Crop?',
+          message: "All History under this Crop will also be deleted. Are you sure you want to delete this Crop?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteCrop(crop).subscribe(data => {
+                      console.log("Crops & \
+                        all its History deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present();
+  }
 
 
 }

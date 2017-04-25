@@ -206,4 +206,9 @@ export class AuthService {
     var url = '/db/delete/iz/';
     return this.accessDatabase(url,iz);
   }
+
+  public deleteCrop(crop) {
+    var url = '/db/delete/crop/';
+    return this.accessDatabase(url,crop);
+  }
 }

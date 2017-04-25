@@ -23,29 +23,53 @@
   <h1>{{user.username}}'s Crops</h1>
 
   <ion-card *ngFor="let farm of farms">
-    <ion-card-header>
-      <ion-icon name="leaf" class="leaf" item-left></ion-icon>
-      {{farm.farmname}}
-    </ion-card-header>
+    
 
     <ion-card-content>
-      <ion-list *ngFor="let zone of farm.zones">
-        <ion-item>
-          <ion-icon name="water" class="water" item-left></ion-icon>
-          {{zone.izname}}
-        </ion-item> 
-        
-        <ion-item-sliding *ngFor="let crop of zone.crops">
-          <ion-item (click)="dailyRec(crop)">
-            <ion-icon name="flower" class="flower" item-left></ion-icon>
-            {{crop.cropname}}
+
+      <ion-list>
+        <ion-item-sliding>
+          <ion-item>
+            <ion-icon name="leaf" class="leaf" item-left></ion-icon>
+            {{farm.farmname}}
           </ion-item>
           <ion-item-options>
-              <button ion-button icon-only (click)="deleteCrop(crop)" danger>
-                  <ion-icon name="trash"></ion-icon>
-              </button>
+            <button ion-button icon-only (click)="editFarm(farm)" color="light">
+                <ion-icon name="paper"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="deleteFarm(farm)" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </button>
           </ion-item-options>
         </ion-item-sliding>
+        <div *ngFor="let zone of farm.zones">
+          <ion-item-sliding>
+            <ion-item>
+              <ion-icon name="water" class="water" item-left></ion-icon>
+              {{zone.izname}}
+            </ion-item>
+            <ion-item-options>
+                <button ion-button icon-only (click)="editZone(zone)" color="light">
+                    <ion-icon name="paper"></ion-icon>
+                </button>
+                <button ion-button icon-only (click)="deleteZone(zone)" color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-item-options>
+          </ion-item-sliding> 
+          
+          <ion-item-sliding *ngFor="let crop of zone.crops">
+            <ion-item (click)="dailyRec(crop)">
+              <ion-icon name="flower" class="flower" item-left></ion-icon>
+              {{crop.cropname}}
+            </ion-item>
+            <ion-item-options>
+                <button ion-button icon-only (click)="deleteCrop(crop)" color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
       </ion-list>
     </ion-card-content>
   </ion-card>

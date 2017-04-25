@@ -7,7 +7,6 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { SettingsPage } from '../pages/settings/settings';
-import { AllFarmsPage } from '../pages/all-farms/all-farms';
 import {AuthService} from '../providers/auth-service'
 
 @Component({
@@ -28,7 +27,6 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Account', component: SettingsPage },
-      { title: 'All Farms', component: AllFarmsPage },
       { title: 'Logout', component: LogoutPage }
 
     ];
