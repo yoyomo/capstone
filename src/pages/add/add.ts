@@ -72,7 +72,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     if(!this.crop.farmid) return;
 
     this.showLoadingZones();
-    this.auth.getUserZones(iz).subscribe(data => {
+    this.auth.getFarmZones(iz).subscribe(data => {
       this.zones = data;
       this.closeLoadingZones();
     },

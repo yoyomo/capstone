@@ -24559,3 +24559,15 @@ page-daily-rec ion-card-header {
   width: 100%;
   height: 100%;
 }
+
+.flower {
+  color: #ffa126;
+}
+
+.water {
+  color: #316ec4;
+}
+
+.leaf {
+  color: #2e7a38;
+}

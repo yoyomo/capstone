@@ -87,14 +87,19 @@ export class AuthService {
     return this.accessDatabase(url,user);
   }
 
-  public getUserFarms(user) {
+  public getUserFarms(farms) {
     var url = '/db/get/farms/';
-    return this.accessDatabase(url,user);
+    return this.accessDatabase(url,farms);
   }
 
-  public getUserZones(iz) {
+  public getFarmZones(iz) {
     var url = '/db/get/iz/';
     return this.accessDatabase(url,iz);
+  }
+
+  public getUserZones(izs) {
+    var url = '/db/get/izs/';
+    return this.accessDatabase(url,izs);
   }
 
   public getCropInfos() {

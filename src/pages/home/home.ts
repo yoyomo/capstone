@@ -15,11 +15,20 @@ export class HomePage {
 
 user: any = [];
 crops: any = [];
-md: any = [];
+farms: any = [];
 
+zone: any = {
+  izid: '',
+  farmid: '',
+  uid: '',
+  izname: '',
+  acres: '',
+  waterflow: '',
+  irrigationmethod: '',
+  irrigationefficiency: '',
+  crops: []
+};
 
-
- 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
     
@@ -27,11 +36,9 @@ md: any = [];
     console.log(this.user);
     this.auth.getUserCrops(this.user).subscribe(data => {
       this.crops = data; 
-      //this.md = data; 
-      //this.filter();
       console.log(this.crops);
-      //console.log(this.md);
-        },
+      this.sortCards();
+    },
     error => {
       console.log(error);
     });
@@ -39,59 +46,88 @@ md: any = [];
 
   }
 
-// filter(){
+  sortCards() {
+    var info:any = [], farmIndex,zoneIndex;
+    for(var i = this.crops.length-1; i >= 0; i--){
+      info = this.crops[i];
+
+      //create farm in farms if not existing and get farmIndex
+      //create zone in farm if not existing and get zoneIndex
+      //add crop to zone
+      farmIndex = this.getFarmIndex(info);
+      zoneIndex = this.getZoneIndex(info,farmIndex);
+      this.farms[farmIndex].zones[zoneIndex].crops.push(info);
+    }
+
+
+  }
+
+  //passes farm & zon values from info to current farm & zone
+  passFarm(farmInfo) {
+    return {
+      farmid : farmInfo.farmid,
+      uid : farmInfo.uid,
+      farmname : farmInfo.farmname,
+      soiltype : farmInfo.soiltype,
+      latindex : farmInfo.latindex,
+      lonindex : farmInfo.lonindex,
+      zones : []
+    };
+  }
+
+  //passes farm & zon values from info to current farm & zone
+  passZone(zoneInfo) {
+    return {
+      izid : zoneInfo.izid,
+      farmid : zoneInfo.farmid,
+      uid : zoneInfo.uid,
+      izname : zoneInfo.izname,
+      acres : zoneInfo.acres,
+      waterflow : zoneInfo.waterflow,
+      irrigationmethod : zoneInfo.irrigationmethod,
+      irrigationefficiency : zoneInfo.irrigationefficiency,
+      crops: []
+    };
+  }
+
+  //returns index of farm in farms
+  getFarmIndex(info) {
+    var farmFound, farmIndex;
+    farmFound = this.farms.find(function(item, i){
+      if(item.farmid === info.farmid){
+        farmIndex = i;
+        return i;
+      }
+    });
+    if(!farmFound){
+      this.farms.push(this.passFarm(info));
+      farmIndex = 0;
+    }
     
-// var cars = [{ make: 'audi', model: 'r8', year: '2012' }, { make: 'audi', model: 'rs5', year: '2013' }, { make: 'ford', model: 'mustang', year: '2012' }, { make: 'ford', model: 'fusion', year: '2015' }, { make: 'kia', model: 'optima', year: '2012' }],
-//     result = this.md.reduce(function (r, a) {
-//         r[a.category] = r[a.category] || [];
-//         r[a.category].push(a);
-//         return r;
-//     }, Object.create(null));
+    console.log(farmFound);
+    console.log(farmIndex);
+    return farmIndex;
 
-// console.log(result);
+  }
 
-
-
-
-// var myArray = [
-//     {group: "one", color: "red"},
-//     {group: "two", color: "blue"},
-//     {group: "one", color: "green"},
-//     {group: "one", color: "black"}
-// ];
-
-// var group_to_values = myArray.reduce(function(obj,item){
-//     obj[item.group] = obj[item.group] || [];
-//     obj[item.group].push(item.color);
-//     return obj;
-// }, {});
-
-// var groups = Object.keys(group_to_values).map(function(key){
-//     return {group: key, color: group_to_values[key]};
-// });
-
-// var pre = document.createElement('pre');
-// pre.innerHTML = 'groups:\n\n' + JSON.stringify(groups, null, 4);
-// document.body.appendChild(pre);
-
-
-
-// var res = myArray.reduce(function(groups, currentValue) {
-//     if ( groups.indexOf(currentValue.group) === -1 ) {
-//       groups.push(currentValue.group);
-//     }
-//     return groups;
-// }, []).map(function(group) {
-//     return {
-//         group: group,
-//         color: myArray.filter(function(_el) {
-//           return _el.group === group;
-//         }).map(function(_el) { return _el.color; })
-//     }
-// });
-
-
-// }
+  //returns index of zone in farm
+  getZoneIndex(info, farmIndex){
+    var zoneFound, zoneIndex;
+    zoneFound = this.farms[farmIndex].zones.find(function(item, i){
+      if(item.izid === info.izid){
+        zoneIndex = i;
+        return i;
+      }
+    });
+    if(!zoneFound){
+      this.farms[farmIndex].zones.push(this.passZone(info));
+      zoneIndex = 0;
+    }
+    
+    console.log(zoneFound);
+    console.log(zoneIndex);
+    return zoneIndex;
+  }
 
   launcharAddPage(){
     this.navCtrl.push(AddPage);

@@ -281,6 +281,16 @@ app.get('/db/get/iz/:iz', function (req,res) {
 		;",req,res);
 });
 
+// Get user's irrigation zones by farm
+app.get('/db/get/izs/:izs', function (req,res) {
+	var izs = JSON.parse(req.params.izs);
+	call("select *\
+		from irrigationzone\
+		where uid="+izs.uid+"\
+		order by izid desc\
+		;",req,res);
+});
+
 // Get all crop info
 app.get('/db/get/cropinfo/', function (req,res) {
 	call("select *\
