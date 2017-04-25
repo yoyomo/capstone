@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController,
  Loading, LoadingController} from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { AllFarmsPage } from '../all-farms/all-farms';
-/*
-  Generated class for the EditZone page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-edit-zone',
   templateUrl: 'edit-zone.html'

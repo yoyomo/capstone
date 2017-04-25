@@ -191,4 +191,14 @@ export class AuthService {
     var url = '/db/edit/iz/';
     return this.accessDatabase(url,iz);
   }
+
+  public deleteFarm(farm) {
+    var url = '/db/delete/farm/';
+    return this.accessDatabase(url,farm);
+  }
+
+  public deleteIrrigationZone(iz) {
+    var url = '/db/delete/iz/';
+    return this.accessDatabase(url,iz);
+  }
 }

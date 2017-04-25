@@ -2,7 +2,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, ViewController, Loading, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AuthService } from '../../providers/auth-service';
-import { AllFarmsPage } from '../all-farms/all-farms';
  
 declare var google;
 

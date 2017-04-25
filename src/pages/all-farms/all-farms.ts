@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { Sorting } from "../../pipes/sorting";
 import { HomePage } from '../home/home';
 import { EditFarmPage } from '../edit-farm/edit-farm';
 import { EditZonePage } from '../edit-zone/edit-zone';
@@ -65,10 +64,10 @@ export class AllFarmsPage {
     });
   }
  
-  deleteFarm(crop){
+  deleteFarm(farm){
     let prompt = this.alertCtrl.create({
-          title: 'Delete Farm',
-          message: "All Zones and Crops under this farm will also be deleted. Are you sure you want to delete this Farm?",
+          title: 'Delete Farm?',
+          message: "All Irrigation Zones & Crops & History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
           
           buttons: [
               {
@@ -77,8 +76,14 @@ export class AllFarmsPage {
               {
                   text: 'Delete',
                   handler: data => {
-                     //add delete actions here
-
+                    this.auth.deleteFarm(farm).subscribe(data => {
+                      console.log("Farm & all its irrigation zones & \
+                        all its crops & all its histories deleted.");
+                      this.navCtrl.setRoot(AllFarmsPage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
                   }
               }
           ]
@@ -88,10 +93,10 @@ export class AllFarmsPage {
 
   }
 
-  deleteZone(crop){
+  deleteZone(zone){
     let prompt = this.alertCtrl.create({
-          title: 'Delete Zone',
-          message: "All  Crops under this farm will also be deleted. Are you sure you want to delete this Zone?",
+          title: 'Delete Irrigation Zone?',
+          message: "All Crops & History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
           
           buttons: [
               {
@@ -100,7 +105,14 @@ export class AllFarmsPage {
               {
                   text: 'Delete',
                   handler: data => {
-                     //add delete actions here
+                    this.auth.deleteIrrigationZone(zone).subscribe(data => {
+                      console.log("Irrigation Zone & all its crops & \
+                        all its histories deleted.");
+                      this.navCtrl.setRoot(AllFarmsPage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
                   }
               }
           ]

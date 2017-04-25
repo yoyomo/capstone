@@ -445,11 +445,11 @@ app.get('/db/delete/crop/:crop', function (req,res) {
 app.get('/db/delete/iz/:iz', function (req,res) {
 	var iz = JSON.parse(req.params.iz);
 	call("delete from irrigationzone\
-		where uid="+iz.uid+" and izid="+iz.izid+"\
+		where uid="+iz.uid+" and farmid="+iz.farmid+" and izid="+iz.izid+"\
 		;",req,res);
 });
 
-// Delete User's Crop
+// Delete User's Farm
 app.get('/db/delete/farm/:farm', function (req,res) {
 	var farm = JSON.parse(req.params.farm);
 	call("delete from farm\
