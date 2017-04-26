@@ -376,7 +376,7 @@ app.get('/db/add/auto/history/:history', function(req,res) {
 // Get Crop's History
 app.get('/db/get/history/:history', function(req,res) {
 	var history = JSON.parse(req.params.history);
-	call("orselect *\
+	call("select *\
 		from history\
 		where cropid="+history.cropid+" and uid="+history.uid+"\
 		order by histdate asc\
