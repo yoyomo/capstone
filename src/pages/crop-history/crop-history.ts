@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { AlertController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -18,7 +19,7 @@ export class CropHistoryPage {
   history: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-   private auth: AuthService) {
+   private auth: AuthService, public alertCtrl: AlertController) {
 		this.crop = navParams.get("crop"); 
   }
 
@@ -44,6 +45,7 @@ export class CropHistoryPage {
       dates.push(date.getDate()+'/'+date.getMonth());
     }
 
+    
     this.historyChart = new Chart(this.historyCanvas.nativeElement, {
       type: 'line',
         data: {
@@ -98,5 +100,28 @@ export class CropHistoryPage {
       });
     
   }
+
+edit(header){
+ 
+        let prompt = this.alertCtrl.create({
+            title: 'Edit Irrigation Amount',
+            inputs: [{
+                name: 'Irirgation Amount',
+                value: header.irrigatedet
+            }],
+            buttons: [
+                {
+                    text: 'Edit'
+                },
+                {
+                    text: 'cancel',
+                   }
+            ]
+        });
+ 
+        prompt.present();       
+ 
+    }
+
 }
   

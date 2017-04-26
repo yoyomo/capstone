@@ -18,8 +18,9 @@ user: any = [];
 soilTypes: any = [];
 latitudes: any = [];
 longitudes: any = [];
+micro: boolean
 
-public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: ''};
+public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: '', ipaddress: ''};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
@@ -174,7 +175,17 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
     });
    
   }
+  
+  enable(){
+    console.log(this.micro)
+    if (this.micro == true){
+      this.micro = false
+        
+    }
+    else{
+    this.micro = true;}
 
+  }
   }
 
 

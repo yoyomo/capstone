@@ -15,17 +15,42 @@
 </ion-header>
 
 <ion-content padding>
+
   <h1>{{crop.cropname}}</h1>
   <h3>@ {{crop.izname}}, {{crop.farmname}}</h3>
 
   <canvas #historyCanvas width="100%" height="100%"></canvas> 
+  
+   <ion-card>
+    <ion-card-header>
+      <h3>Crop History</h3>
+      </ion-card-header>
+        <ion-card-content>
 
-  <h3>Crop History</h3>
+<ion-list>
   <ion-row>
     <ion-col *ngFor="let header of headers">{{header}}</ion-col>
   </ion-row>
-  <ion-row button *ngFor="let h of history">
-    <ion-col *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
-  </ion-row> 
+   <ion-item>
+        <ion-item-sliding *ngFor="let h of history">
+         <ion-item>
+            <ion-row button>
+           <ion-col *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
+          </ion-row> 
+          </ion-item>
+          <ion-item-options>
+            <button ion-button icon-only (click)="edit(h)" color="light">
+                <ion-icon name="paper"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+        </ion-item>
+        </ion-list>
+        </ion-card-content>
+  </ion-card>
+
+
+  
 
 </ion-content>
+ 

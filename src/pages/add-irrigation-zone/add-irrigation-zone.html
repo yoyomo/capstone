@@ -31,6 +31,22 @@
   <ion-label floating>Irrigation Efficiency</ion-label>
           <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
+
+<ion-item>
+  <ion-label> Valve Control</ion-label>
+  <ion-toggle checked="false" (click)="enable()" ></ion-toggle>
+</ion-item>
+<div *ngIf="micro">
+<ion-item>
+   <ion-label floating>Control Id</ion-label>
+   <ion-input type="text" [(ngModel)]="zoneInfo.controlID" name="controlID" required></ion-input>
+</ion-item>
+<ion-item>
+   <ion-label floating>Valve Id</ion-label>
+   <ion-input type="text" [(ngModel)]="zoneInfo.valveID" name="valveID" required></ion-input>
+</ion-item>
+</div>
+
 <button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>
 </form>
 

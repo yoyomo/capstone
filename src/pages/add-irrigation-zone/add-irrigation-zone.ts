@@ -7,9 +7,10 @@ import { AuthService } from '../../providers/auth-service';
   templateUrl: 'add-irrigation-zone.html'
 })
 export class AddIrrigationZonePage {
+micro: boolean
 
 public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: '' };
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: '', controlID: '', valveID: '' };
 
 private irrigationMethods: any = [];
 
@@ -48,6 +49,17 @@ private irrigationMethods: any = [];
     error => {
       console.log(error);
     });
+  }
+
+   enable(){
+    console.log(this.micro)
+    if (this.micro == true){
+      this.micro = false
+        
+    }
+    else{
+    this.micro = true;}
+
   }
 
 }
