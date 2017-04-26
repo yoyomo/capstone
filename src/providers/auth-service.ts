@@ -211,4 +211,9 @@ export class AuthService {
     var url = '/db/delete/crop/';
     return this.accessDatabase(url,crop);
   }
+
+  public editHistory(history) {
+    var url = '/db/edit/history/';
+    return this.accessDatabase(url,history);
+  }
 }

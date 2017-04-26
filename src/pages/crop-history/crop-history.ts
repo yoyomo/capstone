@@ -12,8 +12,8 @@ export class CropHistoryPage {
   @ViewChild('historyCanvas') historyCanvas;
   historyChart: any;
 
-  public headers:Array<any> = ['Season Day','Date','Recommended','Irrigated'];
-  public trueHeaders:Array<any> = ['seasonday','histdate','recommendedet','irrigatedet'];
+  public headers:Array<any> = ['Season Day','Date\n(DD-MM-YY)','Recommended\n(mm)','Irrigated\n(mm)'];
+  public trueHeaders:Array<any> = ['seasonday','cleandate','recommendedet','irrigatedet'];
 
   crop:any = [];
   history: any = [];
@@ -40,9 +40,11 @@ export class CropHistoryPage {
     for(var i=0; i < this.history.length; i++){
       h = this.history[i];
       date = new Date(h.histdate);
+      dates.push(date.getDate()+'/'+date.getMonth());
       recommended.push(h.recommendedet);
       irrigated.push(h.irrigatedet);
-      dates.push(date.getDate()+'/'+date.getMonth());
+      
+      h.cleandate = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear().toString().substr(-2);
     }
 
     
@@ -101,27 +103,37 @@ export class CropHistoryPage {
     
   }
 
-edit(header){
+  editHistory(history){
  
-        let prompt = this.alertCtrl.create({
-            title: 'Edit Irrigation Amount',
-            inputs: [{
-                name: 'Irirgation Amount',
-                value: header.irrigatedet
-            }],
-            buttons: [
-                {
-                    text: 'Edit'
-                },
-                {
-                    text: 'cancel',
-                   }
-            ]
-        });
+    let prompt = this.alertCtrl.create({
+      title: 'Edit Irrigation Amount at \n'+history.histdate,
+      inputs: [{
+        name: 'editedAmount',
+        value: history.irrigatedet
+      }],
+      buttons: [
+        {
+          text: 'Edit',
+          handler: data => {
+            history.irrigatedet = data.editedAmount;
+            this.auth.editHistory(history).subscribe(data => {
+              console.log("History edited");
+              this.displayData();
+            },
+            error => {
+              console.log(error);
+            });
+          }
+        },
+        {
+          text: 'cancel',
+        }
+      ]
+    });
  
-        prompt.present();       
+    prompt.present();       
  
-    }
+  }
 
 }
   

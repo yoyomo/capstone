@@ -145,12 +145,19 @@ function updateHistory(crop) {
 			history.recommendedet = rec;
 			history.irrigatedet = 0; // assumes it was not irrigated
 			history.seasonday = prevDay;
+
+			var date = new Date();
+			date.setDate(date.getDate() - 1);
+			date.setHours(23,59,59);
+			history.histdate = date;
+			console.log(history.histdate);
 			
-			accessDatabase('/db/add/history/'+JSON.stringify(history), function(result) {
+			accessDatabase('/db/add/auto/history/'+JSON.stringify(history), function(result) {
 				console.log('Updated history of crop '+history.cropid+
 				' rec '+history.recommendedet+
 				' irrigated '+history.irrigatedet+
-				' for day '+history.seasonday);
+				' for day '+history.seasonday+
+				' at '+history.histdate);
 			});
 		}
 	});

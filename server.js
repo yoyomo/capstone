@@ -363,12 +363,23 @@ app.get('/db/add/history/:history', function(req,res) {
 		;", req, res);
 });
 
+// Add to History Automatically
+app.get('/db/add/auto/history/:history', function(req,res) {
+	var history = JSON.parse(req.params.history);
+	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,histdate)\
+		values ("+history.cropid+","+history.uid+",\
+		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
+		"+history.histdate+")\
+		;", req, res);
+});
+
 // Get Crop's History
 app.get('/db/get/history/:history', function(req,res) {
 	var history = JSON.parse(req.params.history);
-	call("select *\
+	call("orselect *\
 		from history\
 		where cropid="+history.cropid+" and uid="+history.uid+"\
+		order by histdate asc\
 		;", req, res);
 });
 
