@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="addAdmin()" >
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>
+      All Crops
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addCrops()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+     </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+   <ion-card >
+    
+
+    <ion-card-content>
+
+      <ion-list>
+        <ion-item-sliding>
+          <ion-item>
+            <ion-icon name="leaf" class="leaf" item-left></ion-icon>
+            Here goes crop Name
+          </ion-item>
+          <ion-item-options>
+            <button ion-button icon-only (click)="editCrop()" color="light">
+                <ion-icon name="paper"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="deleteCrop()" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+       
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
+
+
