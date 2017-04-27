@@ -193,7 +193,6 @@ loading: Loading;
     });
   }
 
-  
   public irrigate(){
     this.auth.addHistory(this.history).subscribe(data => {
       console.log("History added.");
@@ -214,6 +213,91 @@ loading: Loading;
     /*
      * Send to microcontroller
      */
+    this.sendToMasterControl();
+    
+  }
+
+  comm:any ={
+    uid: '',
+    izid: '',
+    comamount: '',
+    ipaddress: '',
+    valveid: ''
+  };
+
+  sendToMasterControl() {
+    this.auth.getControl(this.crop).subscribe(data => {
+      if(data.length != 0) {
+        console.log("Control loaded.");
+        this.comm.uid = this.crop.uid;
+        this.comm.izid = this.crop.izid;
+        this.comm.comamount = parseInt(this.getDailyRecommendation().L);
+        this.comm.ipaddress = data[0].ipaddress;
+        this.comm.valveid = data[0].valveid;
+
+        console.log(this.comm);
+
+        this.auth.irrigateCommunication(this.comm).subscribe(data => {
+          console.log(data);
+          console.log("Irrigate Communication sent.");
+          
+          this.auth.sendControl(this.comm).subscribe(data => {
+            console.log(data);
+            console.log("Control sent.");
+            this.refreshStatus(data.status);
+          },
+          error => {
+            console.log(error);
+          });
+        },
+        error => {
+          console.log(error);
+        });
+      }
+      else{
+        console.log('No hardware control found.');
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  refreshStatus(status){
+    if(status==='received'){
+      this.auth.receivedCommunication(this.comm).subscribe(data => {
+        console.log(data);
+        console.log("Received communication.");
+        // recheck status from master control
+        // and then call this.refreshStatus(status)
+      },
+      error => {
+        console.log(error);
+      });
+    }
+    else if(status === 'irrigating') {
+      this.auth.irrigatingCommunication(this.comm).subscribe(data => {
+        console.log(data);
+        console.log("Irrigating communication.");
+        // recheck status from master control
+        // and then call this.refreshStatus(status)
+      },
+      error => {
+        console.log(error);
+      });
+
+    }
+    else if(status==='finished'){
+      this.auth.finishedCommunication(this.comm).subscribe(data => {
+        console.log(data);
+        console.log("Finished communication.");
+        // end refresh
+      },
+      error => {
+        console.log(error);
+      });
+    }
+
   }
    
 }

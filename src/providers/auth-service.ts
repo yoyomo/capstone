@@ -275,7 +275,36 @@ export class AuthService {
     return this.accessDatabase(url,valve);
   }
 
-  
+  public getControl(crop) {
+    var url = '/db/get/crop/control/';
+    return this.accessDatabase(url,crop);
+  }
 
+  public sendControl(comm) {
+    var url = 'http://'+comm.ipaddress+'/micro/'+comm.valveid+comm.comamount;
+    return this.accessDatabaseURL(url);
+  }
+
+  public irrigateCommunication(comm) {
+    var url = '/db/add/comm/';
+    return this.accessDatabase(url,comm);
+  }  
+
+  public receivedCommunication(comm) {
+    var url = '/db/update/comm/received/';
+    return this.accessDatabase(url,comm);
+  } 
+
+  public irrigatingCommunication(comm) {
+    var url = '/db/update/comm/irrigating/';
+    return this.accessDatabase(url,comm);
+  } 
+
+  public finishedCommunication(comm) {
+    var url = '/db/update/comm/finished/';
+    return this.accessDatabase(url,comm);
+  }  
+
+  
   
 }

@@ -6,6 +6,13 @@
 var express = require('express');
 var app = express();
 app.use(express.static('www'));
+app.use(function(req, res, next) {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   next();
+});
+
 app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), function () {
 	
@@ -576,8 +583,8 @@ app.get('/db/add/comm/:comm', function (req,res) {
 		;",req,res);
 });
 
-// Add Communication (Send Irrigation Amount)
-app.get('/db/add/comm/:comm/stop', function (req,res) {
+// Add Communication (Stop Irrigation)
+app.get('/db/add/comm/stop/:comm', function (req,res) {
 	var comm = JSON.parse(req.params.comm);
 	call("insert into communication (uid,izid,command,comamount)\
 		values ("+comm.uid+","+comm.izid+",'Stop',0)\
@@ -588,13 +595,13 @@ app.get('/db/add/comm/:comm/stop', function (req,res) {
 app.get('/db/get/comm/:comm', function (req,res) {
 	var comm = JSON.parse(req.params.comm);
 	call("select *\
-		from communication\
+		from communication natural join mastercontrol natural join valvecontrol\
 		where uid="+comm.uid+" and izid="+comm.izid+"\
 		;",req,res);
 });
 
 // Update Communication status to Received
-app.get('/db/update/comm/:comm/received', function (req,res) {
+app.get('/db/update/comm/received/:comm', function (req,res) {
 	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Received', datereceived='now()'\
@@ -605,7 +612,7 @@ app.get('/db/update/comm/:comm/received', function (req,res) {
 });
 
 // Update Communication to Irrigating
-app.get('/db/update/comm/:comm/irrigating', function (req,res) {
+app.get('/db/update/comm/irrigating/:comm', function (req,res) {
 	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Irrigating'\
@@ -616,7 +623,7 @@ app.get('/db/update/comm/:comm/irrigating', function (req,res) {
 });
 
 // Update Communication to Finished
-app.get('/db/update/comm/:comm/finished', function (req,res) {
+app.get('/db/update/comm/finished/:comm', function (req,res) {
 	var comm = JSON.parse(req.params.comm);
 	call("update communication\
 		set comstatus='Finished'\
@@ -624,6 +631,14 @@ app.get('/db/update/comm/:comm/finished', function (req,res) {
 			from communication\
 			where uid="+comm.uid+" and izid="+comm.izid+")\
 		;",req,res);
+});
+
+// ******TEMP***********
+// Send irrigation to microcontrol
+app.get('/micro/:comm', function (req,res) {
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.status(200).write(JSON.stringify({"status":"received"}, null, "    "));
+	res.end(); 
 });
 
 
@@ -660,7 +675,7 @@ app.get('/db/admin/edit/cropinfo/:admin', function (req,res) {
 		;",req,res);
 });
 
-// Edit Crop Info
+// Delete Crop Info
 app.get('/db/admin/delete/cropinfo/:admin', function (req,res) {
 	var admin = JSON.parse(req.params.admin);
 	call("delete from cropinfo \
