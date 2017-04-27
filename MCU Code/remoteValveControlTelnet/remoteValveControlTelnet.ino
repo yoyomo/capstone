@@ -15,13 +15,20 @@ char password[] = "rntxgfFh38pq";
 
 // other variables
 char clientBuffer[BUFF_SIZE];
-int valve[] = {0, 1, 2, 3, 4};
+int valves[] = {19, 18, 17, 14}; // Pins that control the valves P18, P06, P45, P07
+
 
 WiFiServer server(23);
 
 boolean alreadyConnected = false;
 
 void setup() {
+  // Set GPIO
+  pinMode(valves[0], OUTPUT);
+  pinMode(valves[1], OUTPUT);
+  pinMode(valves[2], OUTPUT);
+  pinMode(valves[3], OUTPUT);
+  
   // reset variables
   clearClientBuffer();
   
@@ -63,9 +70,11 @@ void loop() {
 
     if(client.available() > 0){
       int index = 0; 
-      clientBuffer[index] = client.read();
-      index = (index+1) % 128;
-      Serial.write(clientBuffer[index - 1]);
+      Serial.write(client.read());
+      //clientBuffer[index] = client.read();
+      //index = (index+1) % 128;
+      //Serial.write(clientBuffer[index]);
+      //valveOperation((int)clientBuffer[0]);
       
     }
   }
@@ -76,6 +85,13 @@ void loop() {
 
    
   
+}
+
+// Operate indicated valve and turn off after enough water goes through
+void valveOperation(int valve){
+  digitalWrite(valves[valve], HIGH);
+  delay(2000);
+  digitalWrite(valves[valve], LOW);
 }
 
 // Utility Functions
