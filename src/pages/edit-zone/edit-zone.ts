@@ -124,20 +124,7 @@ control: any = {
       if(data.length != 0){
         console.log(data);
         if(data.constraint==='izid_unique'){
-          this.auth.editValveIPControl(this.control).subscribe(data => {
-            if(data.length != 0){
-              console.log(data);
-              this.showPopup('ERROR',data.detail);
-            }
-            else{
-              console.log('Valve Control edited.');
-              this.getValveID();
-              this.showPopup('Success!','Valve Control edited.');
-            }
-          },
-          error => {
-            console.log(error);
-          });
+          this.showIPOption();
         }
         else{
           this.showPopup('ERROR',data.detail);
@@ -156,19 +143,54 @@ control: any = {
   }
 
   showPopup(title,message){
-     let prompt = this.alertCtrl.create({
-          title: title,
-          message: message,
-          
-          buttons: [
-              {
-                text: 'OK'
+   let prompt = this.alertCtrl.create({
+        title: title,
+        message: message,
+        
+        buttons: [
+            {
+              text: 'OK'
+            }
+        ]
+    });
+
+    prompt.present();  
+
+  }
+
+  showIPOption(){
+    let prompt = this.alertCtrl.create({
+      title: 'New IP',
+      message: 'Irrigation Zone is already occupied. Want to change IP address?',
+      
+      buttons: [
+        {
+          text: 'No'
+        },
+        {
+          text: 'Yes',
+          handler: data =>{
+            this.auth.editValveIPControl(this.control).subscribe(data => {
+              if(data.length != 0){
+                console.log(data);
+                this.showPopup('ERROR',data.detail);
               }
-          ]
-      });
+              else{
+                console.log('Valve Control edited.');
+                this.getValveID();
+                this.showPopup('Success!','Valve Control edited.');
+              }
+            },
+            error => {
+              console.log(error);
+            });
+          }
+        }
+      ]
+    });
 
-      prompt.present();  
-
+    prompt.present(); 
+    
   }
 
 }
