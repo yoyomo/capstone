@@ -158,8 +158,8 @@ farms: any = [];
  
   deleteCrop(crop){
       let prompt = this.alertCtrl.create({
-          title: 'Delete Crop?',
-          message: "All History under this Crop will also be deleted. Are you sure you want to delete this Crop?",
+          title: 'Delete Crop Info?',
+          message: "All User Crops & History under this Crop Info will also be deleted. Are you sure you want to delete this Crop Info?",
           
           buttons: [
               {
@@ -169,7 +169,7 @@ farms: any = [];
                   text: 'Delete',
                   handler: data => {
                     this.auth.deleteCrop(crop).subscribe(data => {
-                      console.log("Crops & \
+                      console.log("Crop Info &Crops & \
                         all its History deleted.");
                       this.navCtrl.setRoot(HomePage);
                     },

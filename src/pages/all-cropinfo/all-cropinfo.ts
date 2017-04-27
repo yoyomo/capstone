@@ -29,7 +29,9 @@ export class AllCropInfoPage {
   }
 
   addCropInfo(){
-    this.navCtrl.push(AddCropInfoPage);
+    this.navCtrl.push(AddCropInfoPage ,{
+      info: this.cropinfos[0]
+    });
   }
 
   editCropInfo(info){
@@ -45,12 +47,19 @@ export class AllCropInfoPage {
           
           buttons: [
               {
-                  text: 'Cancel'
+                text: 'Cancel'
               },
               {
-                  text: 'Delete',
-                  
-                   }
+                text: 'Delete',
+                handler: data => {
+                  this.auth.deleteCropInfo(info).subscribe(data => {
+                    this.navCtrl.setRoot(AllCropInfoPage);
+                  },
+                  error => {
+                    console.log(error);
+                  });
+                }
+              }
           ]
       });
 

@@ -229,4 +229,9 @@ export class AuthService {
     var url = '/db/admin/add/cropinfo/';
     return this.accessDatabase(url,cropinfo);
   }
+
+  public deleteCropInfo(cropinfo) {
+    var url = '/db/admin/delete/cropinfo/';
+    return this.accessDatabase(url,cropinfo);
+  }
 }

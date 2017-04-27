@@ -295,8 +295,20 @@ app.get('/db/get/izs/:izs', function (req,res) {
 app.get('/db/get/cropinfo/', function (req,res) {
 	call("select *\
 		from cropinfo\
+		order by category asc, infoid asc\
 		;",req,res);
 });
+
+// Get all crop info categories
+app.get('/db/get/cropinfo/category/', function (req,res) {
+	call("select category\
+		from cropinfo\
+		group by category\
+		order by category asc\
+		;",req,res);
+});
+
+
 
 // Add Crop
 app.get('/db/add/crop/:crop', function (req,res) {
