@@ -50,9 +50,7 @@ export class AllCropInfoPage {
   }
 
   addCropInfo(){
-    this.navCtrl.push(AddCropInfoPage ,{
-      info: this.cropinfos[0]
-    });
+    this.navCtrl.push(AddCropInfoPage);
   }
 
   editCropInfo(info){

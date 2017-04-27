@@ -239,4 +239,36 @@ export class AuthService {
     var url = '/db/admin/delete/cropinfo/';
     return this.accessDatabase(url,cropinfo);
   }
+
+  public getMasterControl(mc) {
+    var url = '/db/get/mc/';
+    return this.accessDatabase(url,mc);
+  }
+
+  public addMasterControl(mc) {
+    var url = '/db/add/mc/';
+    return this.accessDatabase(url,mc);
+  }
+
+  public editMasterControl(mc) {
+    var url = '/db/edit/mc/';
+    return this.accessDatabase(url,mc);
+  }
+
+  public getValveControl(valve) {
+    var url = '/db/get/valve/';
+    return this.accessDatabase(url,valve);
+  }
+
+  public addValveControl(valve) {
+    var url = '/db/add/valve/';
+    return this.accessDatabase(url,valve);
+  }
+
+  public editValveControl(valve) {
+    var url = '/db/edit/valve/';
+    return this.accessDatabase(url,valve);
+  }
+
+  
 }

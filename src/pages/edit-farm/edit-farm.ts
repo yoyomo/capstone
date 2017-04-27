@@ -2,7 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, ViewController, Loading, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AuthService } from '../../providers/auth-service';
- 
+import { AlertController } from 'ionic-angular';
+
 declare var google;
 
 @Component({
@@ -16,14 +17,23 @@ map: any;
 soilTypes: any = [];
 latitudes: any = [];
 longitudes: any = [];
-farm = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: ''};
+farm = {uid: 0, farmid: '', farmname : '', soiltype: '', latindex: '', lonindex: ''};
+mastercontrols: any = [];
+mastercontrol: any = {
+  controlid: '',
+  ipaddress: '',
+  uid: '',
+  farmid: ''
+};
+
 loadingSoils: Loading;
 loadingLat: Loading;
 loadingLon: Loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
-    private auth: AuthService, private loadingCtrl: LoadingController) {
+    private auth: AuthService, private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController) {
     this.farm = this.navParams.get("farm");
     console.log(this.farm);
 
@@ -53,6 +63,10 @@ loadingLon: Loading;
     error => {
       console.log(error);
     });
+
+    this.loadMasterControl();
+
+    
   }
 
   editFarm() {
@@ -211,5 +225,78 @@ loadingLon: Loading;
     console.log("Longitudes loaded.");
     this.loadingLon.dismiss();
   }
+
+  loadMasterControl() {
+    this.auth.getMasterControl(this.farm).subscribe(data => {
+      this.mastercontrols = data;
+      this.mastercontrol.uid = this.farm.uid;
+      this.mastercontrol.farmid = this.farm.farmid;
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  getIP(){
+    if(this.mastercontrol.controlid==='new') return;
+
+    for(var i=0; i<this.mastercontrols.length;i++){
+      if(this.mastercontrols[i].controlid===this.mastercontrol.controlid){
+        this.mastercontrol.ipaddress = this.mastercontrols[i].ipaddress;
+      }
+    }
+  }
+
+  editMasterControl() {
+    this.auth.editMasterControl(this.mastercontrol).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Master Control edited.');
+        this.loadMasterControl();
+        this.showPopup('Success!','Master Control edited.');
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  addMasterControl() {
+    this.auth.addMasterControl(this.mastercontrol).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Master Control added.');
+        this.loadMasterControl();
+        this.showPopup('Success!','Master Control added.');
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  showPopup(title,message){
+     let prompt = this.alertCtrl.create({
+          title: title,
+          message: message,
+          
+          buttons: [
+              {
+                text: 'OK'
+              }
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
+  
 
 }

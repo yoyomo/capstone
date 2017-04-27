@@ -39,6 +39,27 @@
 
 <div #map id="map"></div>
 
+<ion-item>
+  <ion-label> Master Control</ion-label>
+  <ion-select [(ngModel)]="mastercontrol.controlid" (ionChange)="getIP()">
+    <ion-option *ngFor="let mc of mastercontrols" value="{{mc.controlid}}">
+      #{{mc.controlid}} // {{mc.ipaddress}}
+    </ion-option>
+    <ion-option  value="new">
+      New MasterControl
+    </ion-option>
+  </ion-select>
+</ion-item>
+<div *ngIf="this.mastercontrol.controlid">
+  <ion-item >
+     <ion-label floating>Static IP Address</ion-label>
+     <ion-input type="text" [(ngModel)]="mastercontrol.ipaddress" name="ipAddress" required></ion-input>
+     
+  </ion-item>
+  <button *ngIf="mastercontrol.controlid != 'new'" ion-button round (click)="editMasterControl()">Edit</button>
+   <button *ngIf="mastercontrol.controlid==='new'" ion-button round (click)="addMasterControl()">Add</button>
+</div>
+
 <button ion-button block (click)="editFarm()" [disabled]="!formCtrl.form.valid">Save</button>
 
 </ion-content>

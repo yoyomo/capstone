@@ -31,7 +31,26 @@
   <ion-label floating>Irrigation Efficiency</ion-label>
           <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zone.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
-<button ion-button block (click)="editIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Save</button>
 </form>
+
+<ion-item>
+  <ion-label> Valve Control</ion-label>
+  <ion-select [(ngModel)]="control.controlid" (ionChange)="getValveID()">
+    <ion-option *ngFor="let mc of mastercontrols" value="{{mc.controlid}}">
+      #{{mc.controlid}} // {{mc.ipaddress}}
+    </ion-option>
+  </ion-select>
+</ion-item>
+<div *ngIf="this.control.controlid">
+  <ion-item >
+     <ion-label floating>Local Valve ID</ion-label>
+     <ion-input type="number" [(ngModel)]="control.valveid" name="ipAddress" required></ion-input>
+  </ion-item>
+  <button *ngIf="!control.new" ion-button round (click)="editValveControl()">Edit</button>
+   <button *ngIf="control.new" ion-button round (click)="addValveControl()">Add</button>
+</div>
+
+<button ion-button block (click)="editIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Save</button>
+
 
 </ion-content>

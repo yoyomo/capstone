@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController,
- Loading, LoadingController} from 'ionic-angular';
+ Loading, LoadingController, AlertController} from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 
 @Component({
@@ -9,14 +9,23 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class EditZonePage {
 
-zone = { farmid: '', uid: '', izname: '',acres: '',
+zone = { izid: '', farmid: '', uid: '', izname: '',acres: '',
 		waterflow: '0', irrigationmethod: '', irrigationefficiency: '' };
 private irrigationMethods: any = [];
 loadingMethods: Loading;
 
+mastercontrols: any = [];
+control: any = {
+  controlid: '',
+  valveid: '',
+  izid: '',
+  uid: '',
+  new: true
+};
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
   public viewCtrl: ViewController, private auth: AuthService,
-  private loadingCtrl: LoadingController) {
+  private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
 
   	this.zone = this.navParams.get("zone");
 
@@ -28,6 +37,8 @@ loadingMethods: Loading;
     error => {
       console.log(error);
     });
+
+    this.loadMasterControl();
   }
 
   updateEfficiency() {
@@ -60,6 +71,82 @@ loadingMethods: Loading;
   closeLoadingMethods(){
     console.log("Irrigation Methods loaded.");
     this.loadingMethods.dismiss();
+  }
+
+  loadMasterControl() {
+    this.auth.getMasterControl(this.zone).subscribe(data => {
+      this.mastercontrols = data;
+      this.control.uid = this.zone.uid;
+      this.control.izid = this.zone.izid;
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  getValveID(){
+    this.auth.getValveControl(this.control).subscribe(data => {
+      if(data.length != 0){
+        this.control.valveid = data[0].valveid;
+        this.control.new = false;
+      }
+      else{
+        this.control.new = true;
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  editValveControl() {
+    this.auth.editValveControl(this.control).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Valve Control edited.');
+        this.loadMasterControl();
+        this.showPopup('Success!','Valve Control edited.');
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  addValveControl() {
+    this.auth.addValveControl(this.control).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Valve Control added.');
+        this.loadMasterControl();
+        this.showPopup('Success!','Valve Control added.');
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  showPopup(title,message){
+     let prompt = this.alertCtrl.create({
+          title: title,
+          message: message,
+          
+          buttons: [
+              {
+                text: 'OK'
+              }
+          ]
+      });
+
+      prompt.present();  
+
   }
 
 }

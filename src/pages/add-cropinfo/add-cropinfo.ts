@@ -15,7 +15,6 @@ export class AddCropInfoPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController, private auth: AuthService) {
-    this.cropInfo = this.navParams.get("info");
   }
 
 
@@ -23,7 +22,7 @@ export class AddCropInfoPage {
   addCropInfo(){
     this.auth.addCropInfo(this.cropInfo).subscribe(data => {
       console.log(data);
-      if(data){
+      if(data.length != 0){
         console.log(data);
         this.showError(data.detail);
       }

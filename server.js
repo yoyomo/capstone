@@ -509,7 +509,7 @@ app.get('/db/get/mc/:mc', function (req,res) {
 	var mc = JSON.parse(req.params.mc);
 	call("select *\
 		from mastercontrol\
-		where uid="+mc.uid+"\
+		where uid="+mc.uid+" and farmid="+mc.farmid+"\
 		;",req,res);
 });
 
@@ -535,7 +535,8 @@ app.get('/db/get/valve/:valve', function (req,res) {
 	var valve = JSON.parse(req.params.valve);
 	call("select *\
 		from valvecontrol\
-		where uid="+valve.uid+" and controlid="+valve.controlid+"\
+		where uid="+valve.uid+" and controlid="+valve.controlid+" and \
+		izid="+valve.izid+"\
 		;",req,res);
 });
 
@@ -545,6 +546,16 @@ app.get('/db/edit/valve/:valve', function (req,res) {
 	call("update valvecontrol\
 		set valveid="+valve.valveid+"\
 		where uid="+valve.uid+" and controlid="+valve.controlid+" and izid="+valve.izid+"\
+		;",req,res);
+});
+
+// Get Crop's IP Address and valve id
+app.get('/db/get/crop/control/:crop', function (req,res) {
+	var crop = JSON.parse(req.params.crop);
+	call("select *\
+		from crop natural join irrigationzone natural join farm \
+		natural join valvecontrol natural join mastercontrol\
+		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;",req,res);
 });
 

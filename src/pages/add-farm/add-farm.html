@@ -31,16 +31,6 @@
       <ion-option *ngFor="let lon of longitudes" value="{{lon.lonindex}}">{{lon.loncoordinate}}</ion-option>
     </ion-select>
 </ion-item>
-<ion-item>
-  <ion-label> Master Control</ion-label>
-  <ion-toggle checked="false" (click)="enable()" ></ion-toggle>
-</ion-item>
-<div *ngIf="micro">
-<ion-item>
-   <ion-label floating>IP Address</ion-label>
-   <ion-input type="text" [(ngModel)]="farmInfo.ipaddress" name="ipAddress" required></ion-input>
-</ion-item>
-</div>
 
 </form>
 
