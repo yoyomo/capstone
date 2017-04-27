@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { HomePage } from '../home/home';
-
+import { AllCropInfoPage } from '../all-cropinfo/all-cropinfo';
 
 @Component({
   selector: 'page-settings',
@@ -35,9 +34,10 @@ export class SettingsPage {
     alert.present();
   }
 
-  home() {
-    this.navCtrl.setRoot(HomePage)
-  }  
+  allCrops() {
+    this.navCtrl.push(AllCropInfoPage);
+  } 
+
   enable(){
     this.edit = true;
   }
@@ -75,7 +75,8 @@ export class SettingsPage {
         console.log("Settings saved.");
         //update local storage and authservice
         this.auth.createUser(this.settings.uid,this.settings.fullname,
-          this.settings.username,this.settings.email,this.settings.password);
+          this.settings.username,this.settings.email,this.settings.password,
+           this.settings.typeofuser);
         localStorage.setItem("loggedInUser",JSON.stringify(this.auth.getUserInfo()));
         this.edit = false;
       },

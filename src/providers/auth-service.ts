@@ -10,13 +10,16 @@ export class User {
   username: string;
   email: string;
   password: string;
+  typeofuser: string;
  
-  constructor(uid: number, fullname: string, username: string, email: string, password:string) {
+  constructor(uid: number, fullname: string, username: string, 
+    email: string, password:string, typeofuser: string) {
     this.uid = uid;
     this.fullname = fullname;
     this.username = username;
     this.email = email;
     this.password = password;
+    this.typeofuser = typeofuser
     
   }
 }
@@ -29,8 +32,8 @@ export class AuthService {
       
   }
 
-  public createUser(uid, fullname, username, email, password){
-    this.currentUser = new User(uid, fullname, username, email, password);
+  public createUser(uid, fullname, username, email, password, typeofuser){
+    this.currentUser = new User(uid, fullname, username, email, password, typeofuser);
   }
 
   public clearJSON(data){
@@ -215,5 +218,15 @@ export class AuthService {
   public editHistory(history) {
     var url = '/db/edit/history/';
     return this.accessDatabase(url,history);
+  }
+
+  public editCropInfo(cropinfo) {
+    var url = '/db/admin/edit/cropinfo/';
+    return this.accessDatabase(url,cropinfo);
+  }
+
+  public addCropInfo(cropinfo) {
+    var url = '/db/admin/add/cropinfo/';
+    return this.accessDatabase(url,cropinfo);
   }
 }

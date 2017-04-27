@@ -28,7 +28,6 @@ export class CropHistoryPage {
     this.auth.getHistory(this.crop).subscribe(data => {
       this.history = data;
       console.log("History loaded.");
-      console.log(this.history);
       this.displayData();
     },
     error => {

@@ -604,11 +604,11 @@ app.get('/db/update/comm/:comm/finished', function (req,res) {
 // Add Crop Info
 app.get('/db/admin/add/cropinfo/:admin', function (req,res) {
 	var admin = JSON.parse(req.params.admin);
-	call("insert into cropinfo (infoid,cropname,category,\
+	call("insert into cropinfo (cropname,category,\
 		lini,ldev,lmid,llate,total,\
 		plantdate,region,kcini,kcmid,kcend,\
 		maxcropheight,zr,p)\
-		values("+admin.infoid+",'"+admin.cropname+"','"+admin.category+"',\
+		values('"+admin.cropname+"','"+admin.category+"',\
 		"+admin.lini+","+admin.ldev+","+admin.lmid+","+admin.llate+","+admin.total+",\
 		'"+admin.plantdate+"','"+admin.region+"',"+admin.kcini+","+admin.kcmid+","+admin.kcend+",\
 		"+admin.maxcropheight+","+admin.zr+","+admin.p+")\
@@ -628,12 +628,20 @@ app.get('/db/admin/edit/cropinfo/:admin', function (req,res) {
 		;",req,res);
 });
 
-// Make Farmer Admin
-app.get('/db/admin/makeadmin/:admin', function (req,res) {
+// Edit Crop Info
+app.get('/db/admin/delete/cropinfo/:admin', function (req,res) {
 	var admin = JSON.parse(req.params.admin);
-	call("update farmer\
-		set typeofuser='Admin'\
-		where uid="+admin.uid+"\
+	call("delete from cropinfo \
+		where infoid="+admin.infoid+"\
 		;",req,res);
 });
+
+// // Make Farmer Admin
+// app.get('/db/admin/makeadmin/:admin', function (req,res) {
+// 	var admin = JSON.parse(req.params.admin);
+// 	call("update farmer\
+// 		set typeofuser='Admin'\
+// 		where uid="+admin.uid+"\
+// 		;",req,res);
+// });
 

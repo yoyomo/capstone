@@ -1,0 +1,41 @@
+
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>Admins</ion-title>
+  
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addAdmin()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+     </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+   <ion-card >
+    
+
+    <ion-card-content>
+
+      <ion-list>
+        <ion-item-sliding>
+          <ion-item>
+            <ion-icon name="person"></ion-icon>
+            Here goes Admin name if ther are any
+          </ion-item>
+          <ion-item-options>
+            <button ion-button icon-only (click)="editAdmin()" color="light">
+                <ion-icon name="paper"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="deleteAdmin()" color="danger">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+       
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

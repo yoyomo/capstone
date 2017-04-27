@@ -1,0 +1,76 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>Edit Crop Info</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+<form #formCtrl="ngForm">
+
+<ion-item>
+  <ion-label floating>Crop Name</ion-label>
+        <ion-input type="text" [(ngModel)]="cropInfo.cropname" name="cropName" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Category</ion-label>
+        <ion-input type="text" [(ngModel)]="cropInfo.category" name="category" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Length ini</ion-label>
+        <ion-input type="number" step="1" [(ngModel)]="cropInfo.lini" name="lini" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>ldev</ion-label>
+        <ion-input type="number" step="1" min="0" [(ngModel)]="cropInfo.ldev" name="ldev" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Length mid</ion-label>
+        <ion-input type="number" step="1" min="0" [(ngModel)]="cropInfo.lmid" name="lmid" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Length late</ion-label>
+        <ion-input type="number" step="1" min="0" [(ngModel)]="cropInfo.llate" name="llate" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Total</ion-label>
+        <ion-input type="number" step="1" min="0" [(ngModel)]="cropInfo.total" name="total" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Plant Date</ion-label>
+        <ion-input type="text" [(ngModel)]="cropInfo.plantdate" name="plantDate" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Region</ion-label>
+        <ion-input type="text" [(ngModel)]="cropInfo.region" name="region" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Kc ini</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.kcini" name="kcini" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Kc mid</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.kcmid" name="kcmid" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Kc end</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.kcend" name="kcend" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Max Crop Height</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.maxcropheight" name="maxCropHeight" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Zr</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.zr" name="zr" required></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>p</ion-label>
+        <ion-input type="number" step="0.0001" min="0" [(ngModel)]="cropInfo.p" name="p" required></ion-input>
+</ion-item>
+<button ion-button block (click)="editCropInfo()" [disabled] = "!formCtrl.form.valid" >Edit</button>
+</form>
+
+
+</ion-content>

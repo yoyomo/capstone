@@ -18,7 +18,7 @@ export class LoginPage {
    var user = JSON.parse(localStorage.getItem("loggedInUser"));
     if(user){
       if(user.uid){
-        this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
+        this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password, user.typeofuser);
         this.nav.setRoot(HomePage);
       }
     } 
@@ -40,7 +40,7 @@ export class LoginPage {
       if (user) {
         if(user.verified==='Yes') {
           console.log('Logged in: '+user.fullname);
-          this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password);
+          this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password, user.typeofuser);
           setTimeout(() => {
             localStorage.setItem("loggedInUser",JSON.stringify(user));
           this.loading.dismiss();

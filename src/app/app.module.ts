@@ -16,10 +16,9 @@ import { AuthService } from '../providers/auth-service';
 import { SettingsPage } from '../pages/settings/settings';
 import { EditFarmPage } from '../pages/edit-farm/edit-farm';
 import { EditZonePage } from '../pages/edit-zone/edit-zone';
-import { AllCropsPage } from '../pages/all-crops/all-crops';
-import { EditCropsPage } from '../pages/edit-crops/edit-crops';
-import { AddCropsPage } from '../pages/add-crops/add-crops';
-import { AddAdminPage } from '../pages/add-admin/add-admin';
+import { AllCropInfoPage } from '../pages/all-cropinfo/all-cropinfo';
+import { EditCropInfoPage } from '../pages/edit-cropinfo/edit-cropinfo';
+import { AddCropInfoPage } from '../pages/add-cropinfo/add-cropinfo';
 import { Sorting } from "../pipes/sorting";
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
@@ -46,10 +45,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     Sorting,
     EditFarmPage,
     EditZonePage,
-    AllCropsPage,
-    EditCropsPage,
-    AddCropsPage,
-    AddAdminPage
+    AllCropInfoPage,
+    EditCropInfoPage,
+    AddCropInfoPage,
   
   ],
   imports: [
@@ -71,11 +69,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SettingsPage,
     EditFarmPage,
     EditZonePage,
-    AllCropsPage,
-    EditCropsPage,
-    AddCropsPage,
-    AddAdminPage
-    
+    AllCropInfoPage,
+    EditCropInfoPage,
+    AddCropInfoPage,    
   
   ],
   providers: [
