@@ -270,5 +270,12 @@ export class AuthService {
     return this.accessDatabase(url,valve);
   }
 
+  public editValveIPControl(valve) {
+    var url = '/db/edit/valve/control/';
+    return this.accessDatabase(url,valve);
+  }
+
+  
+
   
 }

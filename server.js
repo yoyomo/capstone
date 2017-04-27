@@ -549,6 +549,15 @@ app.get('/db/edit/valve/:valve', function (req,res) {
 		;",req,res);
 });
 
+// Edit user's Valve & Master Control
+app.get('/db/edit/valve/control/:valve', function (req,res) {
+	var valve = JSON.parse(req.params.valve);
+	call("update valvecontrol\
+		set valveid="+valve.valveid+", controlid="+valve.controlid+" \
+		where uid="+valve.uid+" and izid="+valve.izid+"\
+		;",req,res);
+});
+
 // Get Crop's IP Address and valve id
 app.get('/db/get/crop/control/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);

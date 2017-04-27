@@ -20,6 +20,7 @@ control: any = {
   valveid: '',
   izid: '',
   uid: '',
+  farmid: '',
   new: true
 };
 
@@ -78,6 +79,7 @@ control: any = {
       this.mastercontrols = data;
       this.control.uid = this.zone.uid;
       this.control.izid = this.zone.izid;
+      this.control.farmid = this.zone.farmid;
     },
     error => {
       console.log(error);
@@ -91,6 +93,7 @@ control: any = {
         this.control.new = false;
       }
       else{
+        this.control.valveid = '';
         this.control.new = true;
       }
     },
@@ -107,7 +110,7 @@ control: any = {
       }
       else{
         console.log('Valve Control edited.');
-        this.loadMasterControl();
+        this.getValveID();
         this.showPopup('Success!','Valve Control edited.');
       }
     },
@@ -120,11 +123,30 @@ control: any = {
     this.auth.addValveControl(this.control).subscribe(data => {
       if(data.length != 0){
         console.log(data);
-        this.showPopup('ERROR',data.detail);
+        if(data.constraint==='izid_unique'){
+          this.auth.editValveIPControl(this.control).subscribe(data => {
+            if(data.length != 0){
+              console.log(data);
+              this.showPopup('ERROR',data.detail);
+            }
+            else{
+              console.log('Valve Control edited.');
+              this.getValveID();
+              this.showPopup('Success!','Valve Control edited.');
+            }
+          },
+          error => {
+            console.log(error);
+          });
+        }
+        else{
+          this.showPopup('ERROR',data.detail);
+        }
+        
       }
       else{
         console.log('Valve Control added.');
-        this.loadMasterControl();
+        this.getValveID();
         this.showPopup('Success!','Valve Control added.');
       }
     },
