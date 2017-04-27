@@ -110,6 +110,11 @@ export class AuthService {
     return this.accessDatabaseURL(url);
   }
 
+  public getCropInfoCategory() {
+    var url = '/db/get/cropinfo/category';
+    return this.accessDatabaseURL(url);
+  }
+
   public addCrop(crop) {
     var url = '/db/add/crop/';
     return this.accessDatabase(url,crop);

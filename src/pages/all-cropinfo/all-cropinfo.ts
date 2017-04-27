@@ -13,19 +13,40 @@ import { AuthService } from '../../providers/auth-service'
 export class AllCropInfoPage {
 
   cropinfos: any = [];
+  categories: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
    public alertCtrl: AlertController, private auth: AuthService) {}
 
   ionViewWillEnter() {
-    this.auth.getCropInfos().subscribe(data => {
-      this.cropinfos = data;
-      console.log("Crop Info loaded.");
-      
+
+    this.auth.getCropInfoCategory().subscribe(data => {
+      this.categories = data;
+      this.auth.getCropInfos().subscribe(data => {
+        this.cropinfos = data;
+        console.log("Crop Info loaded.");
+        this.sortByCategory();
+      },
+      error => {
+        console.log(error);
+      });
     },
     error => {
       console.log(error);
     });
+  }
+
+  sortByCategory() {
+    for(var i=this.categories.length-1; i>=0; i--){
+      this.categories[i].cropinfos = [];
+      for(var j=this.cropinfos.length-1; j>=0; j--){
+        if(this.cropinfos[j].category===this.categories[i].category){
+          this.categories[i].cropinfos.push(this.cropinfos[j]);
+        }
+      }
+    }
+
+    console.log("Crop Info sorted.");
   }
 
   addCropInfo(){
