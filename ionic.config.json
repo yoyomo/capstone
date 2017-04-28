@@ -6,7 +6,8 @@
   "proxies": [
     {
       "path": "/",
-      "proxyUrl": "http://h2ocrop.herokuapp.com/"
+      "proxyUrl": "http://h2ocrop.herokuapp.com/",
+      "proxyUrl": "http://24.137.233.12:80/"
     }
   ]
 }
