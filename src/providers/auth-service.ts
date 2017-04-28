@@ -281,7 +281,8 @@ export class AuthService {
   }
 
   public sendControl(comm) {
-    var url = 'http://'+comm.ipaddress+'/micro/'+comm.valveid+comm.comamount;
+    var url = 'http://'+comm.ipaddress+'/micro/'+
+    JSON.stringify({"valveid":comm.valveid,"amount":comm.comamount});
     return this.accessDatabaseURL(url);
   }
 

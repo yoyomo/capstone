@@ -639,6 +639,7 @@ app.get('/db/update/comm/finished/:comm', function (req,res) {
 // ******TEMP***********
 // Send irrigation to microcontrol
 app.get('/micro/:comm', function (req,res) {
+	var comm = JSON.parse(req.params.comm);
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.status(200).write(JSON.stringify({"status":"received"}, null, "    "));
 	res.end(); 
