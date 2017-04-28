@@ -76,6 +76,7 @@ void setup() {
 }
 
 void loop() {
+  //Serial.println(pulseCount[0]);
   int i = 0;
   WiFiClient client = server.available();   // listen for incoming clients
   interrupts();
@@ -93,8 +94,8 @@ void loop() {
           if (strlen(buffer) == 0) {
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
-//            client.println("HTTP/1.1 200 OK");
-//            client.println("Content-type:text/html");
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/html");
 //            client.println();
 //
 //            // the content of the HTTP response follows the header:
@@ -128,7 +129,6 @@ void loop() {
               j++;
             }
             literAmount[valve_id] = atoi(ammount_string);
-            memset(ammount_string, 0, 11);
             messageOK = true;
           }
         }
@@ -138,9 +138,17 @@ void loop() {
     client.stop();
     Serial.println("client disonnected");
     if (messageOK) {
+      Serial.print("valve_id: ");
+      Serial.println(valve_id);
+      Serial.print("\nAmount: ");
+      Serial.println(literAmount[valve_id]);
       digitalWrite(valves[valve_id], HIGH);
       valveOn[valve_id] = true;
+      Serial.print("Valve on: ");
+      Serial.println(valveOn[valve_id]);
       messageOK = false;
+      memset(ammount_string, 0, 11);
+      
     }
   }
 }
@@ -187,10 +195,10 @@ void printWifiStatus() {
 
 // Interrupt Service Routines
 void sensor0_ISR() {
-  while (valveOn[0]) {
+  noInterrupts();
+  if (valveOn[0]) {
     if ((pulseCount[0] * LITER_PER_PULSE)  < literAmount[0]) {
       pulseCount[0] = pulseCount[0] + 1;
-      Serial.println(pulseCount[0]);
     }
     else {
       digitalWrite(valves[0], LOW);
@@ -198,9 +206,11 @@ void sensor0_ISR() {
       pulseCount[0] = 0;
     }
   }
+  interrupts();
 }
 void sensor1_ISR() {
-  while (valveOn[1]) {
+  noInterrupts();
+  if (valveOn[1]) {
     if ((pulseCount[1] * LITER_PER_PULSE)  < literAmount[1]) {
       pulseCount[1] = pulseCount[1] + 1;
 
@@ -211,9 +221,11 @@ void sensor1_ISR() {
       pulseCount[1] = 0;
     }
   }
+  interrupts();
 }
 void sensor2_ISR() {
-  while (valveOn[2]) {
+  noInterrupts();
+  if (valveOn[2]) {
     if ((pulseCount[2] * LITER_PER_PULSE)  < literAmount[2]) {
       pulseCount[2] = pulseCount[2] + 1;
     }
@@ -223,9 +235,11 @@ void sensor2_ISR() {
       pulseCount[2] = 0;
     }
   }
+  interrupts();
 }
 void sensor3_ISR() {
-  while (valveOn[3]) {
+  noInterrupts();
+  if (valveOn[3]) {
     if ((pulseCount[3] * LITER_PER_PULSE)  < literAmount[3]) {
       pulseCount[3] = pulseCount[3] + 1;
     }
@@ -235,5 +249,6 @@ void sensor3_ISR() {
       pulseCount[3] = 0;
     }
   }
+  interrupts();
 }
 
