@@ -19,6 +19,7 @@ import { EditZonePage } from '../pages/edit-zone/edit-zone';
 import { AllCropInfoPage } from '../pages/all-cropinfo/all-cropinfo';
 import { EditCropInfoPage } from '../pages/edit-cropinfo/edit-cropinfo';
 import { AddCropInfoPage } from '../pages/add-cropinfo/add-cropinfo';
+import { MakeAdminPage } from '../pages/make-admin/make-admin';
 import { Sorting } from "../pipes/sorting";
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
@@ -48,7 +49,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AllCropInfoPage,
     EditCropInfoPage,
     AddCropInfoPage,
-  
+    MakeAdminPage
   ],
   imports: [
     IonicModule.forRoot(MyApp), ChartsModule, HttpModule, JsonpModule
@@ -71,7 +72,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     EditZonePage,
     AllCropInfoPage,
     EditCropInfoPage,
-    AddCropInfoPage,    
+    AddCropInfoPage, 
+    MakeAdminPage   
   
   ],
   providers: [

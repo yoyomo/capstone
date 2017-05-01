@@ -8,10 +8,9 @@ import { AlertController } from 'ionic-angular';
 })
 export class MakeAdminPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {}
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAdminPage');
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+   public alertCtrl: AlertController) {
+  	
   }
 
    addAdmin(){
