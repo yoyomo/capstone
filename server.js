@@ -391,7 +391,7 @@ app.get('/db/add/auto/history/:history', function(req,res) {
 	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,histdate)\
 		values ("+history.cropid+","+history.uid+",\
 		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
-		"+history.histdate+")\
+		'"+history.histdate+"'')\
 		;", req, res);
 });
 
