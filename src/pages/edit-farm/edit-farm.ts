@@ -281,6 +281,45 @@ loadingLon: Loading;
     });
   }
 
+  deleteMasterControl() {
+    this.auth.deleteMasterControl(this.mastercontrol).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Master Control deleted.');
+        this.loadMasterControl();
+        this.mastercontrol.controlid='';
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  showConfirmDelete(){
+     let prompt = this.alertCtrl.create({
+          title: 'Delete Master Control?',
+          message: 'Deleting this master control will also delete the underlying valve controls. Are you sure you want to delete this master control?',
+          
+          buttons: [
+              {
+                text: 'Cancel'
+              },
+              {
+                text: 'Delete',
+                handler: data => {
+                  this.deleteMasterControl();
+                }
+              }
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
   showPopup(title,message){
      let prompt = this.alertCtrl.create({
           title: title,

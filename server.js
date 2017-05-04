@@ -343,7 +343,7 @@ app.get('/db/get/crops/:crops', function (req,res) {
 	call("select *\
 		from crop natural join farm natural join irrigationzone natural join cropinfo\
 		where uid="+crops.uid+"\
-		order by crop.dateplanted desc\
+		order by crop.dateplanted,crop.cropstatus desc\
 		;",req,res);
 });
 

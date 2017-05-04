@@ -142,6 +142,47 @@ control: any = {
     });
   }
 
+  deleteValveControl() {
+    this.auth.deleteValveControl(this.control).subscribe(data => {
+      if(data.length != 0){
+        console.log(data);
+        this.showPopup('ERROR',data.detail);
+      }
+      else{
+        console.log('Valve Control deleted.');
+        this.loadMasterControl();
+        this.getValveID();
+        this.control.controlid='';
+
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  showConfirmDelete(){
+     let prompt = this.alertCtrl.create({
+          title: 'Delete Valve Control?',
+          message: 'Deleting this valve control will disable any connection with a physical irrigation zone. Are you sure you want to delete this master control?',
+          
+          buttons: [
+              {
+                text: 'Cancel'
+              },
+              {
+                text: 'Delete',
+                handler: data => {
+                  this.deleteValveControl();
+                }
+              }
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
   showPopup(title,message){
    let prompt = this.alertCtrl.create({
         title: title,

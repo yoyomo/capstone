@@ -44,10 +44,16 @@
 <div *ngIf="this.control.controlid">
   <ion-item >
      <ion-label floating>Local Valve ID</ion-label>
-     <ion-input type="number" [(ngModel)]="control.valveid" name="ipAddress" required></ion-input>
+     <ion-input type="number" [(ngModel)]="control.valveid" name="valveid" required></ion-input>
   </ion-item>
-  <button *ngIf="!control.new" ion-button round (click)="editValveControl()">Edit</button>
-   <button *ngIf="control.new" ion-button round (click)="addValveControl()">Add</button>
+  <ion-buttons *ngIf="!control.new">
+    <button ion-button round (click)="editValveControl()">
+    <ion-icon name="paper"></ion-icon> Control</button>
+    <button ion-button round (click)="showConfirmDelete()" color="danger">
+    <ion-icon name="trash"></ion-icon> Control</button>
+  </ion-buttons>
+   <button *ngIf="control.new" ion-button round (click)="addValveControl()">
+   <ion-icon name="add"></ion-icon> Control</button>
 </div>
 
 <button ion-button block (click)="editIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Save</button>

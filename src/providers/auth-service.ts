@@ -306,6 +306,14 @@ export class AuthService {
     return this.accessDatabase(url,comm);
   }  
 
-  
+  public deleteMasterControl(mc) {
+    var url = '/db/delete/mc/';
+    return this.accessDatabase(url,mc);
+  } 
+
+  public deleteValveControl(valve) {
+    var url = '/db/delete/valve/';
+    return this.accessDatabase(url,valve);
+  } 
   
 }

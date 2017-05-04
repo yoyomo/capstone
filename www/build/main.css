@@ -24533,6 +24533,10 @@ ion-navbar.toolbar {
   color: #2d2d2d;
 }
 
+.finished {
+  background-color: #DDD;
+}
+
 .ios page-add p, .md page-add p {
   font-size: 0.8em;
   color: #d2d2d2;

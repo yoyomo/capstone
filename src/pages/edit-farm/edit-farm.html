@@ -50,14 +50,20 @@
     </ion-option>
   </ion-select>
 </ion-item>
-<div *ngIf="this.mastercontrol.controlid">
+<div *ngIf="mastercontrol.controlid">
   <ion-item >
      <ion-label floating>Static IP Address</ion-label>
      <ion-input type="text" [(ngModel)]="mastercontrol.ipaddress" name="ipAddress" required></ion-input>
      
   </ion-item>
-  <button *ngIf="mastercontrol.controlid != 'new'" ion-button round (click)="editMasterControl()">Edit</button>
-   <button *ngIf="mastercontrol.controlid==='new'" ion-button round (click)="addMasterControl()">Add</button>
+  <ion-buttons *ngIf="mastercontrol.controlid != 'new'">
+    <button  ion-button round (click)="editMasterControl()">
+    <ion-icon name="paper"></ion-icon> Control</button>
+    <button  ion-button round (click)="showConfirmDelete()" color="danger">
+    <ion-icon name="trash"></ion-icon> Control</button>
+  </ion-buttons>
+   <button *ngIf="mastercontrol.controlid==='new'" ion-button round (click)="addMasterControl()">
+   <ion-icon name="add"></ion-icon> Control</button>
 </div>
 
 <button ion-button block (click)="editFarm()" [disabled]="!formCtrl.form.valid">Save</button>
