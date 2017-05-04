@@ -568,6 +568,23 @@ app.get('/db/edit/valve/control/:valve', function (req,res) {
 		;",req,res);
 });
 
+// Delete user's Master Control
+app.get('/db/delete/mc/:mc', function (req,res) {
+	var mc = JSON.parse(req.params.mc);
+	call("delete from mastercontrol\
+		where controlid="+mc.controlid+"\
+		;",req,res);
+});
+
+// Delete user's Valve Control
+app.get('/db/delete/valve/:valve', function (req,res) {
+	var valve = JSON.parse(req.params.valve);
+	call("delete from valvecontrol\
+		where uid="+valve.uid+" and izid="+valve.izid+" \
+		and controlid="+valve.controlid+"\
+		;",req,res);
+});
+
 // Get Crop's IP Address and valve id
 app.get('/db/get/crop/control/:crop', function (req,res) {
 	var crop = JSON.parse(req.params.crop);
