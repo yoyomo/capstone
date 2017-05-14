@@ -136,7 +136,7 @@ function updateHistory(crop) {
 				uid: crop.uid,
 				seasonday: prevDay - 1,
 				recommendedet: 0,
-				irrigatedet: 0,
+				irrigatedet: 0
 			};
 			
 		}
@@ -145,6 +145,7 @@ function updateHistory(crop) {
 			history.recommendedet = rec;
 			history.irrigatedet = 0; // assumes it was not irrigated
 			history.seasonday = prevDay;
+			history.rainfall = crop.rainfall;
 
 			var date = new Date();
 			date.setDate(date.getDate() - 1);

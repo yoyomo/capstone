@@ -389,10 +389,10 @@ app.get('/db/add/history/:history', function(req,res) {
 // Add to History Automatically
 app.get('/db/add/auto/history/:history', function(req,res) {
 	var history = JSON.parse(req.params.history);
-	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,histdate)\
+	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,histdate,rainfall)\
 		values ("+history.cropid+","+history.uid+",\
 		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
-		'"+history.histdate+"')\
+		'"+history.histdate+"',"+history.rainfall+")\
 		;", req, res);
 });
 
