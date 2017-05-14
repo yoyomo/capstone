@@ -13,7 +13,7 @@ export class CropHistoryPage {
   historyChart: any;
 
   public headers:Array<any> = ['Season Day','Date\n(DD-MM-YY)','Recommended\n(mm)','Irrigated\n(mm)'];
-  public trueHeaders:Array<any> = ['seasonday','cleandate','recommendedet','irrigatedet'];
+  public trueHeaders:Array<any> = ['seasonday','cleandate','recommended','irrigatedet'];
 
   crop:any = [];
   history: any = [];
@@ -38,12 +38,21 @@ export class CropHistoryPage {
   displayData() {
     var recommended = [], irrigated = [], dates = [];
     var h, date;
+    var recommendedSum = 0, irrigatedSum = 0;
     for(var i=0; i < this.history.length; i++){
       h = this.history[i];
+
       date = new Date(h.histdate);
       dates.push(date.getDate()+'/'+date.getMonth());
-      recommended.push(h.recommendedet);
-      irrigated.push(h.irrigatedet);
+
+      h.recommended = h.recommendedet - h.rainfall;
+      if(h.recommended < 0) h.recommended = 0;
+
+      recommendedSum += h.recommended;
+      irrigatedSum += h.irrigatedet;
+
+      recommended.push(recommendedSum);
+      irrigated.push(irrigatedSum);
       
       h.cleandate = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear().toString().substr(-2);
     }
