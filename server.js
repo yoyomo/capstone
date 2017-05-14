@@ -449,7 +449,8 @@ app.get('/db/update/crop/:crop', function(req,res) {
 		"update crop\
 		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
 		cumulativeet="+crop.cumulativeet+", currentkc="+crop.currentkc+",\
-		cropstatus='"+crop.cropstatus+"'\
+		cropstatus='"+crop.cropstatus+"',\
+		rainfall="+crop.rainfall+"\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
 		;";
 	call(stringQuery, req, res);

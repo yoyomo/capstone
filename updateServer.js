@@ -150,7 +150,6 @@ function updateHistory(crop) {
 			date.setDate(date.getDate() - 1);
 			date.setHours(23,59,59);
 			history.histdate = date;
-			console.log(history.histdate);
 			
 			accessDatabase('/db/add/auto/history/'+JSON.stringify(history), function(result) {
 				console.log('Updated history of crop '+history.cropid+
@@ -164,14 +163,16 @@ function updateHistory(crop) {
 }
 
 function updateNewData(crop){
-	var calculated, irrigationDepth, Kc, adjusted,ETcadj,RAW;
+	var calculated, irrigationDepth, Kc, rainfall, adjusted,ETcadj,RAW;
 
 	console.log('Updating data for crop '+crop.cropid+' ...');
 	calculated = getIrrigationDepth(crop);
 	irrigationDepth = calculated.irrigationDepth;
 	Kc = calculated.Kc;
+	rainfall = calculated.rainfall;
 	crop.currentet = irrigationDepth;
 	crop.currentkc = Kc;
+	crop.rainfall = rainfall;
 
 	adjusted = adjustIrrigationDepth(crop);
 	ETcadj = adjusted.ETcadj;
@@ -184,7 +185,8 @@ function updateNewData(crop){
 	//update crop in database
 	accessDatabase('/db/update/crop/'+JSON.stringify(crop), function(result){
 			console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
-				' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet);
+				' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
+				' rainfall '+crop.rainfall);
 	});
 
 	if(crop.cumulativeet >= RAW){
@@ -193,11 +195,6 @@ function updateNewData(crop){
 			console.log('Alerted user '+crop.username+' at '+crop.email);
 		});
 	}
-	// if(true){
-	// 	//alert user to irrigate
-	// 	crop.email = 'armando.ortiz1@upr.edu';
-	// 	accessDatabase('/send/alert/'+JSON.stringify(crop),function(r){});
-	// }
 
 }
 
@@ -234,12 +231,10 @@ function getIrrigationDepth(crop){
 	}
 
 	ETc = Kc * ETo;
-	irrigationDepth = ETc - rainfall[latIndex][lonIndex];
+	irrigationDepth = ETc;
 
-	if(irrigationDepth < 0){
-		irrigationDepth = 0;
-	}
-	return {irrigationDepth: irrigationDepth, Kc: Kc};
+	return {irrigationDepth: irrigationDepth, Kc: Kc,
+	 rainfall: rainfall[latIndex][lonIndex]};
 }
 
 function adjustIrrigationDepth(crop){
