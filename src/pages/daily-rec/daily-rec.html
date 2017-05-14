@@ -15,26 +15,46 @@
       <button ion-button icon-only (click)="cropHistory()">
         <ion-icon name="calendar"></ion-icon>
       </button>
-     </ion-buttons>
+    </ion-buttons>
 
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-<h1>{{crop.cropname}}</h1>
-<h3>@ {{crop.izname}}, {{crop.farmname}}</h3>
+<ion-list>
+  <ion-list-header>
+    <h1>{{crop.cropname}}</h1>
+    <h3>@ {{crop.izname}}, {{crop.farmname}}</h3>
+  </ion-list-header>
 
   <ion-item>
-    <ion-input type="text" [(ngModel)]="rec.amount" name="todaysRec" required (change)="changeAmount()"></ion-input>
-    <ion-select (ionChange)="changeAmountType()" [(ngModel)]="rec.type" name="amountType" required>
-      <ion-option value="{{types.gal}}" selected>{{types.gal}}</ion-option>
-      <ion-option value="{{types.L}}">{{types.L}}</ion-option>
-      <ion-option [disabled]="crop.waterflow==0" value="{{types.hr}}">{{types.hr}}</ion-option>
-      <ion-option value="{{types.mm}}">{{types.mm}}</ion-option>
-      <ion-option value="{{types.in}}">{{types.in}}</ion-option>
-    </ion-select>
+    <ion-label>
+      ETc ({{types.mm}}): {{history.recommendedet}}
+    </ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>
+      Rainfall ({{types.mm}}):
+    </ion-label>
+      <ion-input type="text" [(ngModel)]="history.rainfall" name="rainfall" required (change)="changeRainfall()"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>
+      Recommended:
+    </ion-label>
+      <ion-input type="text" [(ngModel)]="rec.amount" name="todaysRec" required (change)="changeAmount()"></ion-input>
+      <ion-select (ionChange)="changeAmountType()" [(ngModel)]="rec.type" name="amountType" required>
+        <ion-option value="{{types.gal}}" selected>{{types.gal}}</ion-option>
+        <ion-option value="{{types.L}}">{{types.L}}</ion-option>
+        <ion-option [disabled]="crop.waterflow==0" value="{{types.hr}}">{{types.hr}}</ion-option>
+        <ion-option value="{{types.mm}}">{{types.mm}}</ion-option>
+        <ion-option value="{{types.in}}">{{types.in}}</ion-option>
+      </ion-select>
   </ion-item> 
+</ion-list>
 
   <button ion-button (click)="irrigate()" round>Irrigate</button>
 

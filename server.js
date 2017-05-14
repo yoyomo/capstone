@@ -379,9 +379,10 @@ app.get('/db/get/allcrops', function (req,res) {
 // Add to History
 app.get('/db/add/history/:history', function(req,res) {
 	var history = JSON.parse(req.params.history);
-	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday)\
+	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,rainfall)\
 		values ("+history.cropid+","+history.uid+",\
-		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+")\
+		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
+		"+history.rainfall+")\
 		;", req, res);
 });
 

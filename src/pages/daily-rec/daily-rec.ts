@@ -15,11 +15,11 @@ public lineChartType:string = 'line';
 public lineChartData:Array<any> = [{data: [18, 48, 27, 39, 10, 27, 40], label: 'Series'}];
 public lineChartLabels:Array<any> = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun', 'July', 'Aug.','Sep.']; 
 
-types = {gal: 'gal', L: 'L', hr: 'hr', mm: 'mm', in: 'in'};
+types = {gal: 'gallons', L: 'liters', hr: 'hours', mm: 'millimeters', in: 'inches'};
 rec = {amount: 0, type: this.types.gal};
 crop: any = [];
 history = {cropid: '', uid: '', recommendedet: 0,
-irrigatedet: 0, seasonday: 0};
+irrigatedet: 0, seasonday: 0, rainfall: 0};
 settingUp = false;
 loading: Loading;
 
@@ -72,14 +72,16 @@ loading: Loading;
           this.settingUp = false;
           this.closeSetup();
         }
+
         this.history.cropid = this.crop.cropid;
         this.history.uid = this.crop.uid;
-        this.history.recommendedet = this.crop.cumulativeet;
-        this.history.irrigatedet = this.crop.cumulativeet;
+        this.history.recommendedet = this.crop.cumulativeet;        
         this.history.seasonday = this.crop.currentday;
+        this.history.rainfall = this.crop.rainfall;
 
-        this.rec.amount = this.history.irrigatedet;
-        this.changeAmountType();
+        //calculate the difference between etc and rainfall
+        //and display amount
+        this.changeRainfall();
       }
     },
     error => {
@@ -185,6 +187,13 @@ loading: Loading;
         break;
     }
     console.log("Changed amount to " + this.history.irrigatedet);
+  }
+
+  public changeRainfall() {
+    //history.irrigatedet is used because it is always in mm
+    this.history.irrigatedet = this.history.recommendedet - this.history.rainfall;
+    if(this.history.irrigatedet < 0) this.history.irrigatedet = 0;
+    this.changeAmountType();
   }
 
   public cropHistory(){
