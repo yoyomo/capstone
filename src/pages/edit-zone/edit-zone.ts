@@ -10,7 +10,7 @@ import { AuthService } from '../../providers/auth-service';
 export class EditZonePage {
 
 zone = { izid: '', farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: '' };
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: '', crops: ''};
 private irrigationMethods: any = [];
 loadingMethods: Loading;
 
@@ -83,6 +83,7 @@ control: any = {
     },
     error => {
       console.log(error);
+
     });
   }
 

@@ -39,9 +39,18 @@ export class AuthService {
   public clearJSON(data){
     for(var d in data){
       if(typeof data[d] === "string") {
+        data[d] = data[d].split('%').join('%25');
         data[d] = data[d].split('/').join('%2F');
+
+      }else if(Array.isArray(data[d])){
+        for(var i=0;i<data[d].length;i++) {
+          data[d][i] = this.clearJSON(data[d][i]);
+          console.log(data[d][i]);
+        }
       }
     }
+    console.log(data);
+    return data;
   }
 
   private accessDatabaseURL(url) {
@@ -49,7 +58,7 @@ export class AuthService {
   }
 
   private accessDatabase(url, data) {
-    this.clearJSON(data);
+    data = this.clearJSON(data);
     url = url+JSON.stringify(data);
     return this.accessDatabaseURL(url);
   }
