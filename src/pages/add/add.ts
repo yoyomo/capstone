@@ -70,6 +70,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.auth.getUserZones(this.user).subscribe(data => {
       this.zones = data;
       console.log(this.zones);
+      this.loadFarmZones();
       this.closeLoadingZones();
     },
     error => {

@@ -28,31 +28,35 @@
     <h3>@ {{crop.izname}}, {{crop.farmname}}</h3>
   </ion-list-header>
 
+  <ion-item-divider>
+    ETc ({{types.mm}})
+  </ion-item-divider>
   <ion-item>
     <ion-label>
-      ETc ({{types.mm}}): {{history.recommendedet}}
+       {{history.recommendedet}}
     </ion-label>
   </ion-item>
 
+  <ion-item-divider>
+      Rainfall ({{types.mm}})
+    </ion-item-divider>
   <ion-item>
-    <ion-label>
-      Rainfall ({{types.mm}}):
-    </ion-label>
+    
       <ion-input type="text" [(ngModel)]="history.rainfall" name="rainfall" required (change)="changeRainfall()"></ion-input>
   </ion-item>
 
+  <ion-item-divider>
+    Recommended
+  </ion-item-divider>
   <ion-item>
-    <ion-label>
-      Recommended:
-    </ion-label>
-      <ion-input type="text" [(ngModel)]="rec.amount" name="todaysRec" required (change)="changeAmount()"></ion-input>
-      <ion-select (ionChange)="changeAmountType()" [(ngModel)]="rec.type" name="amountType" required>
-        <ion-option value="{{types.gal}}" selected>{{types.gal}}</ion-option>
-        <ion-option value="{{types.L}}">{{types.L}}</ion-option>
-        <ion-option [disabled]="crop.waterflow==0" value="{{types.hr}}">{{types.hr}}</ion-option>
-        <ion-option value="{{types.mm}}">{{types.mm}}</ion-option>
-        <ion-option value="{{types.in}}">{{types.in}}</ion-option>
-      </ion-select>
+    <ion-input type="text" [(ngModel)]="rec.amount" name="todaysRec" required (change)="changeAmount()"></ion-input>
+    <ion-select (ionChange)="changeAmountType()" [(ngModel)]="rec.type" name="amountType" required>
+      <ion-option value="{{types.gal}}" selected>{{types.gal}}</ion-option>
+      <ion-option value="{{types.L}}">{{types.L}}</ion-option>
+      <ion-option [disabled]="crop.waterflow==0" value="{{types.hr}}">{{types.hr}}</ion-option>
+      <ion-option value="{{types.mm}}">{{types.mm}}</ion-option>
+      <ion-option value="{{types.in}}">{{types.in}}</ion-option>
+    </ion-select>
   </ion-item> 
 </ion-list>
 

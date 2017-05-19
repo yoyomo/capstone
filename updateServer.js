@@ -111,6 +111,8 @@ function readAllCrops() {
 function clearSpaces(data){
 	for(d in data){
 		if(typeof data[d] === "string") {
+			data[d] = data[d].split('%').join('%25');
+			data[d] = data[d].split('/').join('%2F');
 			data[d] = data[d].split(' ').join('%20');
 		}
 	}
@@ -185,9 +187,9 @@ function updateNewData(crop){
 
 	//update crop in database
 	accessDatabase('/db/update/crop/'+JSON.stringify(crop), function(result){
-			console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
-				' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
-				' rainfall '+crop.rainfall);
+		console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
+			' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
+			' rainfall '+crop.rainfall);
 	});
 
 	if(crop.cumulativeet >= RAW){

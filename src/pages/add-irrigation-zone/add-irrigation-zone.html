@@ -17,7 +17,7 @@
         <ion-input type="number" [(ngModel)]="zoneInfo.acres" name="acres" required></ion-input>
 </ion-item>
 <ion-item>
-<ion-label floating>Waterflow</ion-label>
+<ion-label floating>Waterflow (gal/min)</ion-label>
         <ion-input type="number" [(ngModel)]="zoneInfo.waterflow" name="waterFlow" required></ion-input>
 </ion-item>
 <ion-item>
@@ -28,8 +28,8 @@
 </ion-item>
 
 <ion-item>
-  <ion-label floating>Irrigation Efficiency</ion-label>
-          <ion-input type="number" max="1" min="0" step="0.01" [(ngModel)]="zoneInfo.irrigationefficiency" name="irrigationEff" required></ion-input>
+  <ion-label floating>Irrigation Efficiency (%)</ion-label>
+          <ion-input type="number" max="100" min="0" step="1" [(ngModel)]="zoneInfo.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
 
 <button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>

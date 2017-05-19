@@ -10,7 +10,7 @@ import { AuthService } from '../../providers/auth-service';
 export class EditZonePage {
 
 zone = { izid: '', farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: '', crops: ''};
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: 0, crops: ''};
 private irrigationMethods: any = [];
 loadingMethods: Loading;
 
@@ -29,6 +29,7 @@ control: any = {
   private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
 
   	this.zone = this.navParams.get("zone");
+    this.makeIrrigationEfficiencyPercentage();
 
     this.showLoadingMethods();
   	this.auth.getIrrigationMethods().subscribe(data => {
@@ -42,17 +43,28 @@ control: any = {
     this.loadMasterControl();
   }
 
+  makeIrrigationEfficiencyPercentage() {
+    this.zone.irrigationefficiency *= 100; // make percentage
+  }
+
+  makeIrrigationEfficiencyDecimal() {
+    this.zone.irrigationefficiency /= 100; // make percentage
+  }
+
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
   		if(this.irrigationMethods[i].irrigationmethod == this.zone.irrigationmethod){
   			this.zone.irrigationefficiency = this.irrigationMethods[i].ea;
+        this.makeIrrigationEfficiencyPercentage();
+        return;
   		}
   	}
   }
 
   editIrrigationZone() {
-  	if(parseFloat(this.zone.irrigationefficiency) > 1 || parseFloat(this.zone.irrigationefficiency) < 0) return;
-  	
+  	if(this.zone.irrigationefficiency > 100 || this.zone.irrigationefficiency < 0) return;
+    this.makeIrrigationEfficiencyDecimal();
+    
   	this.auth.editIrrigationZone(this.zone).subscribe(data => {
       console.log("Irrigation Zone edited.");
       this.navCtrl.pop();

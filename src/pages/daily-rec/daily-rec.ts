@@ -75,9 +75,9 @@ loading: Loading;
 
         this.history.cropid = this.crop.cropid;
         this.history.uid = this.crop.uid;
-        this.history.recommendedet = this.crop.cumulativeet;        
+        this.history.recommendedet = (this.crop.cumulativeet).toFixed(2);        
         this.history.seasonday = this.crop.currentday;
-        this.history.rainfall = this.crop.rainfall;
+        this.history.rainfall = (this.crop.rainfall).toFixed(2);
 
         //calculate the difference between etc and rainfall
         //and display amount
@@ -150,19 +150,19 @@ loading: Loading;
   public changeAmountType() {
     switch (this.rec.type){
       case this.types.gal:
-        this.rec.amount = this.getDailyRecommendation().gal;
+        this.rec.amount = (this.getDailyRecommendation().gal).toFixed(0);
         break;
       case this.types.L:
-        this.rec.amount = this.getDailyRecommendation().L;
+        this.rec.amount = (this.getDailyRecommendation().L).toFixed(0);
         break;
       case this.types.hr:
-        this.rec.amount = this.getDailyRecommendation().hr;
+        this.rec.amount = (this.getDailyRecommendation().hr).toFixed(2);
         break;
       case this.types.mm:
-        this.rec.amount = this.getDailyRecommendation().mm;
+        this.rec.amount = (this.getDailyRecommendation().mm).toFixed(2);
         break;
       case this.types.in:
-        this.rec.amount = this.getDailyRecommendation().in;
+        this.rec.amount = (this.getDailyRecommendation().in).toFixed(2);
         break;
     }
 

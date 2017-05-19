@@ -9,7 +9,7 @@ import { AuthService } from '../../providers/auth-service';
 export class AddIrrigationZonePage {
 
 public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: '', controlID: '', valveID: '' };
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: 0, controlID: '', valveID: '' };
 
 private irrigationMethods: any = [];
 
@@ -30,17 +30,27 @@ private irrigationMethods: any = [];
     });
   }
 
+  makeIrrigationEfficiencyPercentage() {
+    this.zoneInfo.irrigationefficiency *= 100; // make percentage
+  }
+
+  makeIrrigationEfficiencyDecimal() {
+    this.zoneInfo.irrigationefficiency /= 100; // make percentage
+  }
+
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
   		if(this.irrigationMethods[i].irrigationmethod == this.zoneInfo.irrigationmethod){
   			this.zoneInfo.irrigationefficiency = this.irrigationMethods[i].ea;
+        this.makeIrrigationEfficiencyPercentage();
   		}
   	}
   }
 
   addIrrigationZone() {
-  	if(parseFloat(this.zoneInfo.irrigationefficiency) > 1 || parseFloat(this.zoneInfo.irrigationefficiency) < 0) return;
-  	
+  	if(this.zoneInfo.irrigationefficiency > 100 || this.zoneInfo.irrigationefficiency < 0) return;
+  	this.makeIrrigationEfficiencyDecimal();
+    
   	this.auth.addIrrigationZone(this.zoneInfo).subscribe(data => {
       console.log("Irrigation Zone Added to farm "+this.zoneInfo.farmid);
       this.navCtrl.pop();

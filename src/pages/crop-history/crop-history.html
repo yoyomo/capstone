@@ -29,13 +29,13 @@
 
       <ion-list>
         <ion-row>
-          <ion-col *ngFor="let header of headers">{{header}}</ion-col>
+          <ion-col class="four" *ngFor="let header of headers">{{header}}</ion-col>
         </ion-row>
         <ion-item>
           <ion-item-sliding *ngFor="let h of history">
             <ion-item>
               <ion-row button>
-                <ion-col *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
+                <ion-col class="four" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
               </ion-row>
             </ion-item>
             <ion-item-options>

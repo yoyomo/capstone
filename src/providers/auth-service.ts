@@ -45,11 +45,9 @@ export class AuthService {
       }else if(Array.isArray(data[d])){
         for(var i=0;i<data[d].length;i++) {
           data[d][i] = this.clearJSON(data[d][i]);
-          console.log(data[d][i]);
         }
       }
     }
-    console.log(data);
     return data;
   }
 

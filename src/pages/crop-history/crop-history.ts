@@ -12,11 +12,12 @@ export class CropHistoryPage {
   @ViewChild('historyCanvas') historyCanvas;
   historyChart: any;
 
-  public headers:Array<any> = ['Season Day','Date\n(DD-MM-YY)','Recommended\n(mm)','Irrigated\n(mm)'];
+  public headers:Array<any> = ['Season Day','Date\n(DD-MM)','Recommended\n(mm)','Irrigated\n(mm)'];
   public trueHeaders:Array<any> = ['seasonday','cleandate','recommended','irrigatedet'];
 
   crop:any = [];
   history: any = [];
+  dateModule = 7;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
    private auth: AuthService, public alertCtrl: AlertController) {
@@ -43,18 +44,24 @@ export class CropHistoryPage {
       h = this.history[i];
 
       date = new Date(h.histdate);
-      dates.push(date.getDate()+'/'+date.getMonth());
+      if(i % this.dateModule ===0){
+        dates.push(date.getDate()+'/'+date.getMonth());
+      }else{
+        dates.push('');
+      }
 
-      h.recommended = h.recommendedet - h.rainfall;
+      h.recommended = parseFloat((h.recommendedet - h.rainfall).toFixed(2));
       if(h.recommended < 0) h.recommended = 0;
+      h.irrigatedet = parseFloat((h.irrigatedet).toFixed(2));
 
       recommendedSum += h.recommended;
       irrigatedSum += h.irrigatedet;
 
-      recommended.push(recommendedSum);
-      irrigated.push(irrigatedSum);
+      recommended.push((recommendedSum).toFixed(2));
+      irrigated.push((irrigatedSum).toFixed(2));
       
-      h.cleandate = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear().toString().substr(-2);
+      //h.cleandate = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear().toString().substr(-2);
+      h.cleandate = date.getDate()+'-'+date.getMonth();
     }
 
     

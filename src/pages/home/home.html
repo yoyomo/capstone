@@ -45,7 +45,7 @@
         <div *ngFor="let zone of farm.zones">
           <ion-item-sliding>
             <ion-item>
-              <ion-icon name="water" class="water" item-left></ion-icon>
+              <ion-icon name="water" class="water child" item-left></ion-icon>
               {{zone.izname}}
             </ion-item>
             <ion-item-options>
@@ -60,7 +60,7 @@
           
           <ion-item-sliding *ngFor="let crop of zone.crops">
             <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'">
-              <ion-icon  name="flower" class="flower" item-left></ion-icon>
+              <ion-icon  name="flower" class="flower grandchild" item-left></ion-icon>
               {{crop.cropname}}
             </ion-item>
             <ion-item-options>

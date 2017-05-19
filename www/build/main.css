@@ -24537,6 +24537,14 @@ ion-navbar.toolbar {
   background-color: #DDD;
 }
 
+.child {
+  padding-left: 16px;
+}
+
+.grandchild {
+  padding-left: 32px;
+}
+
 .ios page-add p, .md page-add p {
   font-size: 0.8em;
   color: #d2d2d2;
@@ -24561,6 +24569,10 @@ ion-navbar.toolbar {
 .ios page-add-farm #map, .md page-add-farm #map {
   width: 100%;
   height: 100%;
+}
+
+page-crop-history .four {
+  width: 25%;
 }
 
 page-daily-rec .scroll-content {
