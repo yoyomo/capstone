@@ -19,13 +19,13 @@ soilTypes: any = [];
 latitudes: any = [];
 longitudes: any = [];
 
-public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: ''};
+public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
     private auth: AuthService) {
     var user = this.auth.getUserInfo();
-    this.farmInfo.uid = user.uid;
+    this.farm.uid = user.uid;
 
     this.auth.getSoils().subscribe(data => {
       this.soilTypes = data;
@@ -38,7 +38,9 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
       this.latitudes = data;
       this.auth.getLongitudes().subscribe(data => {
         this.longitudes = data;
-        this.loadMap();
+        this.farm.latindex = 1;
+        this.farm.lonindex = 1;
+        this.reloadMap();
       },
       error => {
         console.log(error);
@@ -51,7 +53,7 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
 
   addFarm() {
 
-    this.auth.addFarm(this.farmInfo).subscribe(data => {
+    this.auth.addFarm(this.farm).subscribe(data => {
         console.log("Farm added.");
         this.navCtrl.pop();
       },
@@ -60,14 +62,14 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
       });
   }
 
-  loadMap(){
+  getGPS(){
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,
                   longitude: position.coords.longitude};
                   console.log(GPS);
       GPS = this.accommodateGPS(GPS);
       console.log(GPS);
-      this.relocateMap(GPS.latitude,GPS.longitude);
+      this.loadMap(GPS.latitude,GPS.longitude);
     }, (err) => {
       console.log(err);
     } );
@@ -81,7 +83,7 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
     for (latIndex = 0; GPS.latitude > this.latitudes[latIndex].latcoordinate;latIndex++);
     if (GPS.latitude === this.latitudes[latIndex].latcoordinate){
       GPS.latitude = this.latitudes[latIndex].latcoordinate;
-      this.farmInfo.latindex = latIndex + 1;
+      this.farm.latindex = latIndex + 1;
     }
     else {
       if(latIndex === 0){
@@ -92,11 +94,11 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
       diff2 = this.latitudes[latIndex].latcoordinate - GPS.latitude;
       if(diff1 < diff2){
         GPS.latitude = this.latitudes[latIndex-1].latcoordinate;
-        this.farmInfo.latindex = latIndex;
+        this.farm.latindex = latIndex;
       }
       else{
         GPS.latitude = this.latitudes[latIndex].latcoordinate;
-        this.farmInfo.latindex = latIndex + 1;
+        this.farm.latindex = latIndex + 1;
       }
     }
 
@@ -104,7 +106,7 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
     for (lonIndex = 0; GPS.longitude > this.longitudes[lonIndex].loncoordinate; lonIndex++);
     if (GPS.longitude === this.longitudes[lonIndex].loncoordinate){
       GPS.longitude = this.longitudes[lonIndex].loncoordinate;
-      this.farmInfo.lonindex = lonIndex + 1;
+      this.farm.lonindex = lonIndex + 1;
     }
     else {
       if(lonIndex === 0){
@@ -115,11 +117,11 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
       diff2 = this.longitudes[lonIndex].loncoordinate - GPS.longitude;
       if(diff1 < diff2){
         GPS.longitude = this.longitudes[lonIndex-1].loncoordinate;
-        this.farmInfo.lonindex = lonIndex;
+        this.farm.lonindex = lonIndex;
       }
       else{
         GPS.longitude = this.longitudes[lonIndex].loncoordinate;
-        this.farmInfo.lonindex = lonIndex + 1;
+        this.farm.lonindex = lonIndex + 1;
       }
     }
 
@@ -127,11 +129,11 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
   }
 
   reloadMap(){
-    this.relocateMap(this.latitudes[parseInt(this.farmInfo.latindex)-1].latcoordinate,
-     this.longitudes[parseInt(this.farmInfo.lonindex)-1].loncoordinate);
+    this.loadMap(this.latitudes[this.farm.latindex-1].latcoordinate,
+     this.longitudes[this.farm.lonindex-1].loncoordinate);
   }
 
-  relocateMap(lat,lon){
+  loadMap(lat,lon){
     let latLng = new google.maps.LatLng(lat, lon);
  
     let mapOptions = {
@@ -142,11 +144,6 @@ public farmInfo = {uid: 0, farmname : '', soiltype: '', latindex: '', lonindex: 
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.addMarker(); 
-    //this.addFarmLocation();
-  }
-
-  addFarmLocation(lat,lon){
-    this.relocateMap(lat,lon);
   }
 
   addMarker(){

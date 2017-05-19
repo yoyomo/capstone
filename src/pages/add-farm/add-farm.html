@@ -10,29 +10,32 @@
 <form #formCtrl="ngForm">
 <ion-item>
    <ion-label floating>Farm Name</ion-label>
-   <ion-input type="text" [(ngModel)]="farmInfo.farmname" name="farmName" required></ion-input>
+   <ion-input type="text" [(ngModel)]="farm.farmname" name="farmName" required></ion-input>
 </ion-item>
 <ion-item>
   <ion-label>Soil Type</ion-label>
-        <ion-select [(ngModel)]="farmInfo.soiltype" name="soilType" required>
+        <ion-select [(ngModel)]="farm.soiltype" name="soilType" required>
           <ion-option *ngFor="let soilType of soilTypes" value="{{soilType.soiltype}}">{{soilType.soiltype}}</ion-option>
         </ion-select>
 </ion-item>
 
 <ion-item>
   <ion-label stacked>Latitude</ion-label>
-    <ion-select [(ngModel)]="farmInfo.latindex" name="latIndex" (ionChange)="reloadMap()" required>
+    <ion-select [(ngModel)]="farm.latindex" name="latIndex" (ionChange)="reloadMap()" required>
       <ion-option *ngFor="let lat of latitudes" value="{{lat.latindex}}">{{lat.latcoordinate}}</ion-option>
     </ion-select>
 </ion-item>
 <ion-item>
   <ion-label stacked>Longitude</ion-label>
-    <ion-select [(ngModel)]="farmInfo.lonindex" name="lonIndex" (ionChange)="reloadMap()" required>
+    <ion-select [(ngModel)]="farm.lonindex" name="lonIndex" (ionChange)="reloadMap()" required>
       <ion-option *ngFor="let lon of longitudes" value="{{lon.lonindex}}">{{lon.loncoordinate}}</ion-option>
     </ion-select>
 </ion-item>
 
 </form>
+<ion-item>
+  <button ion-button block (click)="getGPS()">GPS Location</button>
+</ion-item>
 
 <div #map id="map"></div>
 
