@@ -72,11 +72,10 @@ app.get('/send/alert/:alert',function(req,res){
 	    }
 	    console.log('Message sent: ' + info.response);
 	    res.writeHead(200, {'Content-Type': 'text/plain'});
-		res.status(200).write(JSON.stringify({"message":"Alerted user "+alert.username+"at " + alert.email}, null, "    "));
+		res.status(200).write(JSON.stringify({"message":"Alerted user "+alert.username+" at " + alert.email}, null, "    "));
 		res.end();
 	});
 });
-
 app.get('/send/verify/:verify',function(req,res){
 	var verify = decryptToJSON(req.params.verify);
 	// setup e-mail data with unicode symbols
@@ -92,7 +91,7 @@ app.get('/send/verify/:verify',function(req,res){
 	    </br></br>\
 	    <p>Hello '+verify.username+',</br></br>\
 	    Please click the button below to verify your account</br></br>\
-	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/'+encrypt({email:verify.email})+'">\
+	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/'+setup.encrypt('{"email":"'+verify.email+'"}')+'">\
 		    <input type="submit" \
 		    style="background-color: #006699;\
 		    border: none;\
