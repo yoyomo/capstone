@@ -6,6 +6,7 @@
 const request = require('request');
 const csv = require('csvtojson');
 var http = require('http');
+var CryptoJS = require('crypto-js');
 
 var urlET = 'http://academic.uprm.edu/hdc/GOES-PRWEB_RESULTS/reference_ET_PenmanMonteith/reference_ET_PenmanMonteith';
 var urlRainfall = 'http://academic.uprm.edu/hdc/GOES-PRWEB_RESULTS/rainfall/rainfall'
@@ -97,6 +98,16 @@ function accessDatabase(restfulAPI,callback){
         });
     });
 }
+exports.encrypt = function(data){
+	return encryptToString(data);
+}
+
+function encryptToString(data) {
+	var encrypted;
+	encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234').toString();
+	encrypted = clearURL(encrypted);
+	return encrypted;
+}
 
 function readAllCrops() {
     accessDatabase('/db/get/allcrops',function(result) {
@@ -108,12 +119,17 @@ function readAllCrops() {
     });
 }
 
-function clearSpaces(data){
+function clearURL(string){
+	string = string.split('%').join('%25');
+	string = string.split('/').join('%2F');
+	string = string.split(' ').join('%20');
+	return string;
+}
+
+function clearJSON(data){
 	for(d in data){
 		if(typeof data[d] === "string") {
-			data[d] = data[d].split('%').join('%25');
-			data[d] = data[d].split('/').join('%2F');
-			data[d] = data[d].split(' ').join('%20');
+			data[d] = clearURL(data[d]);
 		}
 	}
 }
@@ -126,11 +142,9 @@ function updateHistory(crop) {
 	prevDay = crop.currentday;
 	rec = crop.cumulativeet;
 
-	//clear for URL Launch
-	clearSpaces(crop);
-
 	// check if it has been irrigated
-	accessDatabase('/db/get/history/'+JSON.stringify(crop), function(result){
+	accessDatabase('/db/get/history/'+encryptToString(crop), function(result){
+
 		history = result[result.length-1];
 		if(!history) { //there is no history... make first
 			history = {
@@ -154,7 +168,7 @@ function updateHistory(crop) {
 			date.setHours(23,59,59);
 			history.histdate = date;
 			
-			accessDatabase('/db/add/auto/history/'+JSON.stringify(history), function(result) {
+			accessDatabase('/db/add/auto/history/'+encryptToString(history), function(result) {
 				console.log('Updated history of crop '+history.cropid+
 				' rec '+history.recommendedet+
 				' irrigated '+history.irrigatedet+
@@ -182,11 +196,8 @@ function updateNewData(crop){
 	RAW = adjusted.RAW;
 	crop.cumulativeet += ETcadj;
 
-	//clear for URL Launch
-	clearSpaces(crop);
-
 	//update crop in database
-	accessDatabase('/db/update/crop/'+JSON.stringify(crop), function(result){
+	accessDatabase('/db/update/crop/'+encryptToString(crop), function(result){
 		console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
 			' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
 			' rainfall '+crop.rainfall);
@@ -194,8 +205,8 @@ function updateNewData(crop){
 
 	if(crop.cumulativeet >= RAW){
 		//alert user to irrigate
-		accessDatabase('/send/alert/'+JSON.stringify(crop),function(result){
-			console.log('Alerted user '+crop.username+' at '+crop.email);
+		accessDatabase('/send/alert/'+encryptToString(crop),function(result){
+			console.log(result.message);
 		});
 	}
 

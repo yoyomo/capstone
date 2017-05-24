@@ -35,11 +35,16 @@ export class AuthService {
     this.currentUser = new User(uid, fullname, username, email, password, typeofuser);
   }
 
+  private clearURL(string){
+    string = string.split('%').join('%25');
+    string = string.split('/').join('%2F');
+    return string;
+  }
+
   public clearJSON(data){
     for(var d in data){
       if(typeof data[d] === "string") {
-        data[d] = data[d].split('%').join('%25');
-        data[d] = data[d].split('/').join('%2F');
+        data[d] = this.clearURL(data[d]);
 
       }else if(Array.isArray(data[d])){
         for(var i=0;i<data[d].length;i++) {
@@ -50,25 +55,21 @@ export class AuthService {
     return data;
   }
 
-  private clearCrypt(string){
-    string = string.split('%').join('%25');
-    string = string.split('/').join('%2F');
-    return string;
+  private encryptToString(data) {
+    var CryptoJS = require('crypto-js');
+    var encrypted;
+    encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234').toString();
+    encrypted = this.clearURL(encrypted);
+    return encrypted;
   }
 
   private accessDatabaseURL(url) {
     return this.http.get(url).map(res => res.json());
   }
-
   
   private accessDatabase(url, data) {
-    var CryptoJS = require('crypto-js');
-    var encrypted;
+    var encrypted = this.encryptToString(data);
 
-    data = this.clearJSON(data);
-    encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234');
-    encrypted = this.clearCrypt(encrypted);
-    
     url = url+encrypted;
     return this.accessDatabaseURL(url);
   }

@@ -7,6 +7,7 @@ var express = require('express');
 var app = express();
 var cors = require('cors');
 var CryptoJS = require('crypto-js');
+const setup = require('./updateServer.js');
 
 app.use(express.static('www'));
 app.use(cors());
@@ -49,7 +50,7 @@ var transporter = nodemailer.createTransport({
 });
 
 app.get('/send/alert/:alert',function(req,res){
-	var alert = JSON.parse(req.params.alert);
+	var alert = decryptToJSON(req.params.alert);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'h2ocrop.pr@gmail.com', // sender address
@@ -70,6 +71,9 @@ app.get('/send/alert/:alert',function(req,res){
 	        return console.log(error);
 	    }
 	    console.log('Message sent: ' + info.response);
+	    res.writeHead(200, {'Content-Type': 'text/plain'});
+		res.status(200).write(JSON.stringify({"message":"Alerted user "+alert.username+"at " + alert.email}, null, "    "));
+		res.end();
 	});
 });
 
@@ -88,7 +92,7 @@ app.get('/send/verify/:verify',function(req,res){
 	    </br></br>\
 	    <p>Hello '+verify.username+',</br></br>\
 	    Please click the button below to verify your account</br></br>\
-	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/{%22email%22:%22'+verify.email+'%22}">\
+	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/'+encrypt({email:verify.email})+'">\
 		    <input type="submit" \
 		    style="background-color: #006699;\
 		    border: none;\
@@ -153,7 +157,7 @@ app.get('/send/forgotpassword/:forgotpassword',function(req,res){
  */
 
 // Update New Crop
-const setup = require('./updateServer.js');
+
 app.get('/db/update/newcrop/:crop', function (req,res) {
 	var crop = decryptToJSON(req.params.crop);
 	setup.serverUpdateNewCrop(crop);
@@ -198,8 +202,12 @@ function decryptToJSON(encryptedJSONString) {
 	return JSON.parse(decrypt(encryptedJSONString));
 }
 
+function encrypt(data){
+	return CryptoJS.AES.encrypt(data,'1234').toString();
+}
+
 app.get('/crypt/:crypto', function (req,res) {
-	var crypto = CryptoJS.AES.encrypt(req.params.crypto,'1234').toString();
+	var crypto = encrypt(req.params.crypto);
 	console.log(crypto);
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.status(200).write(JSON.stringify(decryptToJSON(crypto)), null, "    ");
@@ -217,7 +225,7 @@ app.get('/db/add/farmer/:farmer', function (req,res) {
 
 // Verify Account
 app.get('/db/verifyaccount/:verify', function (req,res) {
-	var verify = JSON.parse(req.params.verify);
+	var verify = decryptToJSON(req.params.verify);
 	call("update farmer\
 		set verified='Yes'\
 		where email='"+verify.email+"'\
