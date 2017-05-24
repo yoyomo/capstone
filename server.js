@@ -60,7 +60,7 @@ app.get('/send/alert/:alert',function(req,res){
 	    \n\nYour '+alert.cropname+' crop at '+alert.farmname+' \
 	    needs irrigation.\
 	    \n\nPlease use the H2OCrop application to irrigate the crop.\
-	   	\nhttp://www.h2ocrop.herokuapp.com'
+	   	\nhttp://h2ocrop.herokuapp.com'
 	    //, // plaintext body
 	    //html: '<b>Hello world ?</b>' // html body
 	};
@@ -136,6 +136,8 @@ app.get('/send/forgotpassword/:forgotpassword',function(req,res){
 	    <p>Hello '+forgotpassword.email+',</br></br>\
 	    Below you will find your new password. Please change in settings\
 	     to not forget again. </br></br>'+forgotpassword.password+'\
+	     \n\nPlease use the H2OCrop application to login and change the password.\
+	   	\nhttp://h2ocrop.herokuapp.com\
 	    </p>' // html body
 	};
 
