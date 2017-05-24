@@ -78,6 +78,7 @@ app.get('/send/alert/:alert',function(req,res){
 });
 app.get('/send/verify/:verify',function(req,res){
 	var verify = decryptToJSON(req.params.verify);
+	var account = setup.encrypt({"email":verify.email});
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'h2ocrop.pr@gmail.com', // sender address
@@ -91,7 +92,7 @@ app.get('/send/verify/:verify',function(req,res){
 	    </br></br>\
 	    <p>Hello '+verify.username+',</br></br>\
 	    Please click the button below to verify your account</br></br>\
-	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/'+setup.encrypt('{"email":"'+verify.email+'"}')+'">\
+	    <form action="https://h2ocrop.herokuapp.com/db/verifyaccount/'+account+'">\
 		    <input type="submit" \
 		    style="background-color: #006699;\
 		    border: none;\
