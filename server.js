@@ -6,6 +6,7 @@
 var express = require('express');
 var app = express();
 var cors = require('cors');
+var CryptoJS = require('crypto-js');
 
 app.use(express.static('www'));
 app.use(cors());
@@ -73,7 +74,7 @@ app.get('/send/alert/:alert',function(req,res){
 });
 
 app.get('/send/verify/:verify',function(req,res){
-	var verify = JSON.parse(req.params.verify);
+	var verify = decryptToJSON(req.params.verify);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'h2ocrop.pr@gmail.com', // sender address
@@ -116,7 +117,7 @@ app.get('/send/verify/:verify',function(req,res){
 });
 
 app.get('/send/forgotpassword/:forgotpassword',function(req,res){
-	var forgotpassword = JSON.parse(req.params.forgotpassword);
+	var forgotpassword = decryptToJSON(req.params.forgotpassword);
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'h2ocrop.pr@gmail.com', // sender address
@@ -154,7 +155,7 @@ app.get('/send/forgotpassword/:forgotpassword',function(req,res){
 // Update New Crop
 const setup = require('./updateServer.js');
 app.get('/db/update/newcrop/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	setup.serverUpdateNewCrop(crop);
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.status(200).write(JSON.stringify({"message":"Calculated first rec for crop " + crop.cropid}, null, "    "));
@@ -186,9 +187,28 @@ function call(stringQuery,req,res){
 	});
 }
 
+function decrypt(encryptedString){
+	var decrypted = CryptoJS.AES.decrypt(encryptedString,'1234');
+	decrypted = decrypted.toString(CryptoJS.enc.Utf8);
+	console.log(decrypted);
+	return decrypted;
+}
+
+function decryptToJSON(encryptedJSONString) {
+	return JSON.parse(decrypt(encryptedJSONString));
+}
+
+app.get('/crypt/:crypto', function (req,res) {
+	var crypto = CryptoJS.AES.encrypt(req.params.crypto,'1234').toString();
+	console.log(crypto);
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.status(200).write(JSON.stringify(decryptToJSON(crypto)), null, "    ");
+	res.end();
+});
+
 // Sign Up
 app.get('/db/add/farmer/:farmer', function (req,res) {
-	var farmer = JSON.parse(req.params.farmer);
+	var farmer = decryptToJSON(req.params.farmer);
 	call("insert into farmer (fullname, email, username, password)\
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
 		'"+farmer.password+"')\
@@ -206,7 +226,7 @@ app.get('/db/verifyaccount/:verify', function (req,res) {
 
 // Forgot Password
 app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
-	var forgotpassword = JSON.parse(req.params.forgotpassword);
+	var forgotpassword = decryptToJSON(req.params.forgotpassword);
 	var stringQuery = 
 		"update farmer\
 		set password='"+forgotpassword.password+"'\
@@ -217,7 +237,7 @@ app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
 
 // Log In
 app.get('/db/get/farmer/:farmer', function (req,res) {
-	var farmer = JSON.parse(req.params.farmer);
+	var farmer = decryptToJSON(req.params.farmer);
 	call("select *\
 		from farmer\
 		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') and password='"+farmer.password+"'\
@@ -248,7 +268,7 @@ app.get('/db/get/soils', function (req,res) {
 
 // Add Farm
 app.get('/db/add/farm/:farm', function (req,res) {
-	var farm = JSON.parse(req.params.farm);
+	var farm = decryptToJSON(req.params.farm);
 	call("insert into farm (uid,farmname,soiltype,latindex,lonindex)\
 		values ("+farm.uid+",'"+farm.farmname+"',\
 		'"+farm.soiltype+"',"+farm.latindex+","+farm.lonindex+")\
@@ -257,7 +277,7 @@ app.get('/db/add/farm/:farm', function (req,res) {
 
 // Get user's farms
 app.get('/db/get/farms/:farms', function (req,res) {
-	var farms = JSON.parse(req.params.farms);
+	var farms = decryptToJSON(req.params.farms);
 	call("select *\
 		from farm\
 		where uid="+farms.uid+"\
@@ -274,7 +294,7 @@ app.get('/db/get/irrigationmethod/', function (req,res) {
 
 // Add Irrigation Zone
 app.get('/db/add/iz/:iz', function (req,res) {
-	var iz = JSON.parse(req.params.iz);
+	var iz = decryptToJSON(req.params.iz);
 	call("insert into irrigationzone \
 		(farmID,uID,izname,acres,waterflow,irrigationMethod,irrigationEfficiency)\
 		values ("+iz.farmid+","+iz.uid+",'"+iz.izname+"',"+iz.acres+",\
@@ -284,7 +304,7 @@ app.get('/db/add/iz/:iz', function (req,res) {
 
 // Get user's irrigation zones by farm
 app.get('/db/get/iz/:iz', function (req,res) {
-	var iz = JSON.parse(req.params.iz);
+	var iz = decryptToJSON(req.params.iz);
 	call("select *\
 		from irrigationzone\
 		where farmid="+iz.farmid+" and uid="+iz.uid+"\
@@ -294,7 +314,7 @@ app.get('/db/get/iz/:iz', function (req,res) {
 
 // Get user's irrigation zones by farm
 app.get('/db/get/izs/:izs', function (req,res) {
-	var izs = JSON.parse(req.params.izs);
+	var izs = decryptToJSON(req.params.izs);
 	call("select *\
 		from irrigationzone\
 		where uid="+izs.uid+"\
@@ -323,7 +343,7 @@ app.get('/db/get/cropinfo/category/', function (req,res) {
 
 // Add Crop
 app.get('/db/add/crop/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	call("insert into crop (izid,uid,infoid)\
 		values ("+crop.izid+","+crop.uid+","+crop.infoid+")\
 		;",req,res);
@@ -331,7 +351,7 @@ app.get('/db/add/crop/:crop', function (req,res) {
 
 // Get logged in user
 app.get('/db/get/farmer/:farmer', function (req,res) {
-	var farmer = JSON.parse(req.params.farmer);
+	var farmer = decryptToJSON(req.params.farmer);
 	call("select *\
 		from farmer\
 		where uid="+farmer.uid+"\
@@ -340,7 +360,7 @@ app.get('/db/get/farmer/:farmer', function (req,res) {
 
 // Get all user's crops
 app.get('/db/get/crops/:crops', function (req,res) {
-	var crops = JSON.parse(req.params.crops);
+	var crops = decryptToJSON(req.params.crops);
 	call("select *\
 		from crop natural join farm natural join irrigationzone natural join cropinfo\
 		where uid="+crops.uid+"\
@@ -350,7 +370,7 @@ app.get('/db/get/crops/:crops', function (req,res) {
 
 // Edit Crop
 app.get('/db/edit/crop/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	call("update crop\
 		set izid="+crop.izid+",infoid="+crop.infoid+"\
 		where cropid="+crop.cropid+" and uid="+crop.uid+"\
@@ -359,7 +379,7 @@ app.get('/db/edit/crop/:crop', function (req,res) {
 
 // Read Specific Crop Information
 app.get('/db/get/crop/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	call("select *\
 		from crop natural join cropinfo natural join irrigationzone \
 		 natural join farm natural join soilwatercharacteristics \
@@ -379,7 +399,7 @@ app.get('/db/get/allcrops', function (req,res) {
 
 // Add to History
 app.get('/db/add/history/:history', function(req,res) {
-	var history = JSON.parse(req.params.history);
+	var history = decryptToJSON(req.params.history);
 	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,rainfall)\
 		values ("+history.cropid+","+history.uid+",\
 		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
@@ -389,7 +409,7 @@ app.get('/db/add/history/:history', function(req,res) {
 
 // Add to History Automatically
 app.get('/db/add/auto/history/:history', function(req,res) {
-	var history = JSON.parse(req.params.history);
+	var history = decryptToJSON(req.params.history);
 	call("insert into history (cropid,uid,recommendedet,irrigatedet,seasonday,histdate,rainfall)\
 		values ("+history.cropid+","+history.uid+",\
 		"+history.recommendedet+","+history.irrigatedet+","+history.seasonday+",\
@@ -399,7 +419,7 @@ app.get('/db/add/auto/history/:history', function(req,res) {
 
 // Get Crop's History
 app.get('/db/get/history/:history', function(req,res) {
-	var history = JSON.parse(req.params.history);
+	var history = decryptToJSON(req.params.history);
 	call("select *\
 		from history\
 		where cropid="+history.cropid+" and uid="+history.uid+"\
@@ -412,7 +432,7 @@ app.get('/db/get/history/:history', function(req,res) {
  * WARNING: CHANGING A CROP'S HISTORY AFFECTS THE CUMULATIVE ET
  */
 app.get('/db/edit/history/:history', function(req,res) {
-	var history = JSON.parse(req.params.history);
+	var history = decryptToJSON(req.params.history);
 
 	// first update cumulative crop with respect to old written value
 	var firstQuery = 
@@ -434,7 +454,7 @@ app.get('/db/edit/history/:history', function(req,res) {
 
 // Edit Farmer (used for settings)
 app.get('/db/edit/farmer/:farmer', function(req,res) {
-	var farmer = JSON.parse(req.params.farmer);
+	var farmer = decryptToJSON(req.params.farmer);
 	var stringQuery = 
 		"update farmer\
 		set email='"+farmer.email+"',password='"+farmer.password+"',\
@@ -446,7 +466,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 
 // Update Crop (called when new data is calculated everyday)
 app.get('/db/update/crop/:crop', function(req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	var stringQuery = 
 		"update crop\
 		set currentday="+crop.currentday+", currentet="+crop.currentet+",\
@@ -460,7 +480,7 @@ app.get('/db/update/crop/:crop', function(req,res) {
 
 // Edit Farm
 app.get('/db/edit/farm/:farm', function (req,res) {
-	var farm = JSON.parse(req.params.farm);
+	var farm = decryptToJSON(req.params.farm);
 	call("update farm\
 		set farmname='"+farm.farmname+"', soiltype='"+farm.soiltype+"',\
 		latindex="+farm.latindex+", lonindex="+farm.lonindex+"\
@@ -470,7 +490,7 @@ app.get('/db/edit/farm/:farm', function (req,res) {
 
 // Edit Irrigation Zone
 app.get('/db/edit/iz/:iz', function (req,res) {
-	var iz = JSON.parse(req.params.iz);
+	var iz = decryptToJSON(req.params.iz);
 	call("update irrigationzone\
 		set farmid="+iz.farmid+", izname='"+iz.izname+"', \
 		acres="+iz.acres+", waterflow="+iz.waterflow+", \
@@ -481,7 +501,7 @@ app.get('/db/edit/iz/:iz', function (req,res) {
 
 // Delete User's Crop
 app.get('/db/delete/crop/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	call("delete from crop\
 		where cropid="+crop.cropid+" and uid="+crop.uid+" and izid="+crop.izid+"\
 		;",req,res);
@@ -489,7 +509,7 @@ app.get('/db/delete/crop/:crop', function (req,res) {
 
 // Delete User's Irrigation Zone
 app.get('/db/delete/iz/:iz', function (req,res) {
-	var iz = JSON.parse(req.params.iz);
+	var iz = decryptToJSON(req.params.iz);
 	call("delete from irrigationzone\
 		where uid="+iz.uid+" and farmid="+iz.farmid+" and izid="+iz.izid+"\
 		;",req,res);
@@ -497,7 +517,7 @@ app.get('/db/delete/iz/:iz', function (req,res) {
 
 // Delete User's Farm
 app.get('/db/delete/farm/:farm', function (req,res) {
-	var farm = JSON.parse(req.params.farm);
+	var farm = decryptToJSON(req.params.farm);
 	call("delete from farm\
 		where uid="+farm.uid+" and farmid="+farm.farmid+"\
 		;",req,res);
@@ -511,7 +531,7 @@ app.get('/db/delete/farm/:farm', function (req,res) {
 
 // Add Master Control
 app.get('/db/add/mc/:mc', function (req,res) {
-	var mc = JSON.parse(req.params.mc);
+	var mc = decryptToJSON(req.params.mc);
 	call("insert into mastercontrol (farmid, uid, ipaddress)\
 		values ("+mc.farmid+","+mc.uid+",'"+mc.ipaddress+"')\
 		;",req,res);
@@ -519,7 +539,7 @@ app.get('/db/add/mc/:mc', function (req,res) {
 
 // Get user's Master Control
 app.get('/db/get/mc/:mc', function (req,res) {
-	var mc = JSON.parse(req.params.mc);
+	var mc = decryptToJSON(req.params.mc);
 	call("select *\
 		from mastercontrol\
 		where uid="+mc.uid+" and farmid="+mc.farmid+"\
@@ -528,7 +548,7 @@ app.get('/db/get/mc/:mc', function (req,res) {
 
 // Edit user's Master Control
 app.get('/db/edit/mc/:mc', function (req,res) {
-	var mc = JSON.parse(req.params.mc);
+	var mc = decryptToJSON(req.params.mc);
 	call("update mastercontrol\
 		set farmid="+mc.farmid+", ipaddress='"+mc.ipaddress+"'\
 		where controlid="+mc.controlid+" and uid="+mc.uid+"\
@@ -537,7 +557,7 @@ app.get('/db/edit/mc/:mc', function (req,res) {
 
 // Add Valve to Master Control
 app.get('/db/add/valve/:valve', function (req,res) {
-	var valve = JSON.parse(req.params.valve);
+	var valve = decryptToJSON(req.params.valve);
 	call("insert into valvecontrol (uid,izid,controlid,valveid)\
 		values ("+valve.uid+","+valve.izid+","+valve.controlid+","+valve.valveid+")\
 		;",req,res);
@@ -545,7 +565,7 @@ app.get('/db/add/valve/:valve', function (req,res) {
 
 // Get user's Valves of a Master Control
 app.get('/db/get/valve/:valve', function (req,res) {
-	var valve = JSON.parse(req.params.valve);
+	var valve = decryptToJSON(req.params.valve);
 	call("select *\
 		from valvecontrol\
 		where uid="+valve.uid+" and controlid="+valve.controlid+" and \
@@ -555,7 +575,7 @@ app.get('/db/get/valve/:valve', function (req,res) {
 
 // Edit user's Valve
 app.get('/db/edit/valve/:valve', function (req,res) {
-	var valve = JSON.parse(req.params.valve);
+	var valve = decryptToJSON(req.params.valve);
 	call("update valvecontrol\
 		set valveid="+valve.valveid+"\
 		where uid="+valve.uid+" and controlid="+valve.controlid+" and izid="+valve.izid+"\
@@ -564,7 +584,7 @@ app.get('/db/edit/valve/:valve', function (req,res) {
 
 // Edit user's Valve & Master Control
 app.get('/db/edit/valve/control/:valve', function (req,res) {
-	var valve = JSON.parse(req.params.valve);
+	var valve = decryptToJSON(req.params.valve);
 	call("update valvecontrol\
 		set valveid="+valve.valveid+", controlid="+valve.controlid+" \
 		where uid="+valve.uid+" and izid="+valve.izid+"\
@@ -573,7 +593,7 @@ app.get('/db/edit/valve/control/:valve', function (req,res) {
 
 // Delete user's Master Control
 app.get('/db/delete/mc/:mc', function (req,res) {
-	var mc = JSON.parse(req.params.mc);
+	var mc = decryptToJSON(req.params.mc);
 	call("delete from mastercontrol\
 		where controlid="+mc.controlid+"\
 		;",req,res);
@@ -581,7 +601,7 @@ app.get('/db/delete/mc/:mc', function (req,res) {
 
 // Delete user's Valve Control
 app.get('/db/delete/valve/:valve', function (req,res) {
-	var valve = JSON.parse(req.params.valve);
+	var valve = decryptToJSON(req.params.valve);
 	call("delete from valvecontrol\
 		where uid="+valve.uid+" and izid="+valve.izid+" \
 		and controlid="+valve.controlid+"\
@@ -590,7 +610,7 @@ app.get('/db/delete/valve/:valve', function (req,res) {
 
 // Get Crop's IP Address and valve id
 app.get('/db/get/crop/control/:crop', function (req,res) {
-	var crop = JSON.parse(req.params.crop);
+	var crop = decryptToJSON(req.params.crop);
 	call("select *\
 		from crop natural join irrigationzone natural join farm \
 		natural join valvecontrol natural join mastercontrol\
@@ -600,7 +620,7 @@ app.get('/db/get/crop/control/:crop', function (req,res) {
 
 // Add Communication (Send Irrigation Amount)
 app.get('/db/add/comm/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("insert into communication (uid,izid,comamount)\
 		values ("+comm.uid+","+comm.izid+","+comm.comamount+")\
 		;",req,res);
@@ -608,7 +628,7 @@ app.get('/db/add/comm/:comm', function (req,res) {
 
 // Add Communication (Stop Irrigation)
 app.get('/db/add/comm/stop/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("insert into communication (uid,izid,command,comamount)\
 		values ("+comm.uid+","+comm.izid+",'Stop',0)\
 		;",req,res);
@@ -616,7 +636,7 @@ app.get('/db/add/comm/stop/:comm', function (req,res) {
 
 // Get Communication between user and irrigation zone
 app.get('/db/get/comm/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("select *\
 		from communication natural join mastercontrol natural join valvecontrol\
 		where uid="+comm.uid+" and izid="+comm.izid+"\
@@ -625,7 +645,7 @@ app.get('/db/get/comm/:comm', function (req,res) {
 
 // Update Communication status to Received
 app.get('/db/update/comm/received/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("update communication\
 		set comstatus='Received', datereceived='now()'\
 		where comid=(select max(comid)\
@@ -636,7 +656,7 @@ app.get('/db/update/comm/received/:comm', function (req,res) {
 
 // Update Communication to Irrigating
 app.get('/db/update/comm/irrigating/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("update communication\
 		set comstatus='Irrigating'\
 		where comid=(select max(comid)\
@@ -647,7 +667,7 @@ app.get('/db/update/comm/irrigating/:comm', function (req,res) {
 
 // Update Communication to Finished
 app.get('/db/update/comm/finished/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	call("update communication\
 		set comstatus='Finished'\
 		where comid=(select max(comid)\
@@ -659,7 +679,7 @@ app.get('/db/update/comm/finished/:comm', function (req,res) {
 // ******TEMP***********
 // Send irrigation to microcontrol
 app.get('/micro/:comm', function (req,res) {
-	var comm = JSON.parse(req.params.comm);
+	var comm = decryptToJSON(req.params.comm);
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.status(200).write(JSON.stringify({"status":"received"}, null, "    "));
 	res.end(); 
@@ -674,7 +694,7 @@ app.get('/micro/:comm', function (req,res) {
 
 // Add Crop Info
 app.get('/db/admin/add/cropinfo/:admin', function (req,res) {
-	var admin = JSON.parse(req.params.admin);
+	var admin = decryptToJSON(req.params.admin);
 	call("insert into cropinfo (cropname,category,\
 		lini,ldev,lmid,llate,total,\
 		plantdate,region,kcini,kcmid,kcend,\
@@ -688,7 +708,7 @@ app.get('/db/admin/add/cropinfo/:admin', function (req,res) {
 
 // Edit Crop Info
 app.get('/db/admin/edit/cropinfo/:admin', function (req,res) {
-	var admin = JSON.parse(req.params.admin);
+	var admin = decryptToJSON(req.params.admin);
 	call("update cropinfo \
 		set cropname='"+admin.cropname+"',category='"+admin.category+"',\
 		lini="+admin.lini+",ldev="+admin.ldev+",lmid="+admin.lmid+",llate="+admin.llate+",total="+admin.total+",\
@@ -701,7 +721,7 @@ app.get('/db/admin/edit/cropinfo/:admin', function (req,res) {
 
 // Delete Crop Info
 app.get('/db/admin/delete/cropinfo/:admin', function (req,res) {
-	var admin = JSON.parse(req.params.admin);
+	var admin = decryptToJSON(req.params.admin);
 	call("delete from cropinfo \
 		where infoid="+admin.infoid+"\
 		;",req,res);
@@ -709,7 +729,7 @@ app.get('/db/admin/delete/cropinfo/:admin', function (req,res) {
 
 // // Make Farmer Admin
 // app.get('/db/admin/makeadmin/:admin', function (req,res) {
-// 	var admin = JSON.parse(req.params.admin);
+// 	var admin = decryptToJSON(req.params.admin);
 // 	call("update farmer\
 // 		set typeofuser='Admin'\
 // 		where uid="+admin.uid+"\

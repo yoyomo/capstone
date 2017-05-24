@@ -3,7 +3,6 @@ import {Observable} from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-
 export class User {
   uid: number;
   fullname: string;
@@ -51,13 +50,26 @@ export class AuthService {
     return data;
   }
 
+  private clearCrypt(string){
+    string = string.split('%').join('%25');
+    string = string.split('/').join('%2F');
+    return string;
+  }
+
   private accessDatabaseURL(url) {
     return this.http.get(url).map(res => res.json());
   }
 
+  
   private accessDatabase(url, data) {
+    var CryptoJS = require('crypto-js');
+    var encrypted;
+
     data = this.clearJSON(data);
-    url = url+JSON.stringify(data);
+    encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234');
+    encrypted = this.clearCrypt(encrypted);
+    
+    url = url+encrypted;
     return this.accessDatabaseURL(url);
   }
  

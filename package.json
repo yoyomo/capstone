@@ -41,6 +41,7 @@
     "csvtojson":"1.1.4",
     "request":"2.81.0",
     "cors": "2.8.3",
+    "crypto-js":"3.1.9-1",
     "@types/node": "6.0.69",
     "@ionic/app-scripts": "1.3.1",
     "@ionic/cli-plugin-cordova": "0.0.12",
