@@ -22,10 +22,12 @@ farms: any = [];
 zones: any = [];
 farmZones: any = [];
 cropinfos: any = [];
+allcropinfos: any = [];
 
 farmname = '';
 izname = '';
 cropname = '';
+searchCropString = '';
 crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
@@ -57,6 +59,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   loadCropInfos(){
     this.showLoadingCropInfo();
     this.auth.getCropInfos().subscribe(data => {
+      this.allcropinfos = data;
       this.cropinfos = data;
       this.closeLoadingCropInfo();
     },
@@ -99,6 +102,34 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.navCtrl.push(AddIrrigationZonePage,{
       farmid: this.crop.farmid
     });
+  }
+
+  searchCrop(){
+    // reset countries list with initial call
+    this.cropinfos = this.allcropinfos;
+    // set q to the value of the searchbar
+    var q = this.searchCropString;
+
+    // if the value is an empty string don't filter the items
+    if (q.trim() == '') {
+        return;
+    }
+
+    this.cropinfos = this.allcropinfos.filter((v) => {
+        if (v.cropname.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+            return true;
+        }
+        return false;
+    });
+
+    if(this.cropinfos.length===0){
+      this.cropinfos.push({
+        infoid: null,
+        cropname: "Crop not found, please try a similar crop.",
+        plantdate: '',
+        region: ''
+      });
+    }
   }
 
   addCrop(){

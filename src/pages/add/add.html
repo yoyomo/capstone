@@ -52,15 +52,22 @@
       </button>
   </ion-col>   
 </ion-row>
-     
+
+<ion-row>
+  <ion-col >
+    <ion-item>
+      <ion-searchbar class="transparent" [(ngModel)]="searchCropString" (ionInput)="searchCrop()" name="searchCrop" [showCancelButton]="shouldShowCancel" placeholder="Search Crop"></ion-searchbar>
+    </ion-item>
+  </ion-col>
+</ion-row>
+
 <ion-row>
   <ion-col >
     <ion-item>
       <ion-label floating>Crop</ion-label>
-          
-        <ion-select [(ngModel)]="crop.infoid" name="crop" required>
+        <ion-select [(ngModel)]="crop.infoid" name="crop" required>  
           <ion-option *ngFor="let info of cropinfos" value="{{info.infoid}}">
-            <ion-item class="item-text-wrap">{{info.cropname}} - {{info.plantdate}} @ {{info.region}}</ion-item>
+            <ion-item >{{info.cropname}} - {{info.plantdate}} @ {{info.region}}</ion-item>
           </ion-option>
         </ion-select>
     </ion-item>

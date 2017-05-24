@@ -42,3 +42,12 @@
 .grandchild {
 	padding-left:32px;
 }
+
+.transparent {
+	background-color: rgba(0,0,0,0);
+}
+
+.item-text-wrap {
+	overflow: initial;
+    white-space: initial;
+}

@@ -23,9 +23,8 @@
   <h1>{{user.username}}'s Crops</h1>
 
   <ion-card *ngFor="let farm of farms">
-    
 
-    <ion-card-content>
+    <ion-card-content >
 
       <ion-list>
         <ion-item-sliding>
@@ -43,7 +42,7 @@
           </ion-item-options>
         </ion-item-sliding>
         <div *ngFor="let zone of farm.zones">
-          <ion-item-sliding>
+          <ion-item-sliding >
             <ion-item>
               <ion-icon name="water" class="water child" item-left></ion-icon>
               {{zone.izname}}

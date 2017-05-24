@@ -24545,6 +24545,15 @@ ion-navbar.toolbar {
   padding-left: 32px;
 }
 
+.transparent {
+  background-color: transparent;
+}
+
+.item-text-wrap {
+  overflow: initial;
+  white-space: initial;
+}
+
 .ios page-add p, .md page-add p {
   font-size: 0.8em;
   color: #d2d2d2;

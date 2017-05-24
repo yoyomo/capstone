@@ -57,7 +57,8 @@ app.get('/send/alert/:alert',function(req,res){
 	    text: 'Hello '+alert.username+',\
 	    \n\nYour '+alert.cropname+' crop at '+alert.farmname+' \
 	    needs irrigation.\
-	    '
+	    \n\nPlease use the H2OCrop application to irrigate the crop.\
+	   	\nhttp://www.h2ocrop.herokuapp.com'
 	    //, // plaintext body
 	    //html: '<b>Hello world ?</b>' // html body
 	};
