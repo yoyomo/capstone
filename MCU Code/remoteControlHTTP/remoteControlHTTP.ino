@@ -2,18 +2,24 @@
 
 #define LITER_PER_PULSE 0.0745    // 1/13.42
 
-// static ip
-IPAddress staticIp(192, 168, 0, 20);
+/******************************************************
+ ************* Network variables ********************** 
+ ******************************************************/
 
+IPAddress staticIp(192, 168, 43, 203);
 
+byte mac[6];                            // mac address 
 // your network name also called SSID
-char ssid[] = "LIB-7326462";
+char ssid[] = "GALAXY_S4_4853";
 // your network password
-char password[] = "rntxgfFh38pq";
+char password[] = "lepx9639";
 
+/*****************************************************
+ *********** Sensors & Valves ************************ 
+ *****************************************************/
 // Valve variables
-int sensors[4] = {5, 6, 7, 8};          // sensor pins
-int valves[4] = {19, 18, 17, 14};       // Valve pins
+int sensors[4] = {5, 6, 7, 8};          // sensor pins: P61, P59, P05, P62
+int valves[4] = {19, 18, 17, 14};       // Valve pins: P18, P08, P45, P06
 boolean valveOn[4] = {false, false, false, false};
 int valve_id = -1;                      // initialize to invalid value
 
@@ -22,7 +28,9 @@ int literAmount[4] = { -1, -1, -1, -1}; // store amount of liters sent through t
 
 int pulseCount[4] = {0, 0, 0, 0};       // keep track of sensor pulses
 
-boolean messageOK = false;
+boolean messageOK = false;              // Received a valid message
+boolean irrigateOK = false;             // Received irrigation message
+boolean stopOK = false;                 // Received stop message
 
 
 
@@ -34,20 +42,20 @@ void setup() {
   pinMode(valves[0], OUTPUT);
   pinMode(valves[1], OUTPUT);
   pinMode(valves[2], OUTPUT);
-  pinMode(valves[3], OUTPUT);
+  //pinMode(valves[3], OUTPUT);
   pinMode(sensors[0], INPUT);
   pinMode(sensors[1], INPUT);
   pinMode(sensors[2], INPUT);
-  pinMode(sensors[3], INPUT);
+  //pinMode(sensors[3], INPUT);
   digitalWrite(valves[0], LOW);
   digitalWrite(valves[1], LOW);
   digitalWrite(valves[2], LOW);
-  digitalWrite(valves[3], LOW);
+  //digitalWrite(valves[3], LOW);
 
   attachInterrupt(sensors[0], sensor0_ISR, RISING);
   attachInterrupt(sensors[1], sensor1_ISR, RISING);
   attachInterrupt(sensors[2], sensor2_ISR, RISING);
-  attachInterrupt(sensors[3], sensor3_ISR, RISING);
+  //attachInterrupt(sensors[3], sensor3_ISR, RISING);
 
   Serial.begin(115200);      // initialize serial communication
 
@@ -107,18 +115,9 @@ void loop() {
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
-            client.println("[{\"status\":\"received\"}]");
-//            client.println();
-//
-//            // the content of the HTTP response follows the header:
-//            client.println("<html><head><title>Energia CC3200 WiFi Web Server</title></head><body align=center>");
-//            client.println("<h1 align=center><font color=\"red\">Welcome to the CC3200 WiFi Web Server</font></h1>");
-//            client.print("RED LED <button onclick=\"location.href='/H'\">HIGH</button>");
-//            client.println(" <button onclick=\"location.href='/L'\">LOW</button><br>");
-//
-//            // The HTTP response ends with another blank line:
-//            client.println();
+            client.println("Content-type:application/json");
+            client.println("{\"status\":\"received\"}");
+
             // break out of the while loop:
             break;
           }
@@ -131,26 +130,106 @@ void loop() {
           buffer[i++] = c;      // add it to the end of the currentLine
         }
 
-        // Check to see if the client request was "GET /H" or "GET /L":
+        // Check to see which of the client requests it is: irrigate, stop, or checkstatus:
         if (endsWith(buffer, "HTTP/1.1")) {
           int j = 0;
-          valve_id = buffer[28] - '0';
-          if (valve_id >= 0 && valve_id < 4) {
-            while (buffer[j + 43] != '%') {
-              ammount_string[j] = buffer[j + 43];
-              //Serial.print(ammount_string[j]);
-              j++;
-            }
+          Serial.println("reading GET header");
+          if (buffer[11] == 'i'){                       // GET /micro/irrigate/
+            Serial.println("in irrigate command");
+            Serial.println(buffer[11]);
+            Serial.println(buffer[19]);
+            if(buffer[20] == '%'){                      // if the get requests displays the { as %7D
+              Serial.println("When { is %7D");
+              if(buffer[37] == '%'){                    // if " is show as %22
+                Serial.println("when the number is surrounded by \" ");
+                Serial.println(buffer[39]);
+                valve_id = buffer[40] - '0';
+                Serial.println(valve_id);
+                if (valve_id >= 0 && valve_id < 4) {
+                  while (buffer[j + 59] != '%') {
+                    ammount_string[j] = buffer[j + 59];
+                    //Serial.print(ammount_string[j]);
+                    j++;
+                  }  
+                }
+              } // end condition for " "
+              else{                                     // if there is not " character surrounding the numbers
+                Serial.println("when the number is not surrounded by \"");
+                valve_id = buffer[37] - '0';
+                if (valve_id >= 0 && valve_id < 4) {
+                  while (buffer[j + 52] != '%') {
+                    ammount_string[j] = buffer[j + 52];
+                    //Serial.print(ammount_string[j]);
+                    j++;
+                  }  
+                }
+              } // end condition for the case where the numbers are NOT surrounded by " " 
+            } // end case where the { is displayed as %7D
+            
+            if(buffer[20] == '{'){                      // for when the message displays { as {
+              Serial.println("if { shows as {");
+              if(buffer[35] == '%'){                    // if the numbers are surrounded by " " 
+                Serial.println("number surrouded by \"");
+                valve_id = buffer[38] - '0';
+                if (valve_id >= 0 && valve_id < 4) {
+                  while (buffer[j + 59] != '}') {
+                    ammount_string[j] = buffer[j + 59];
+                    //Serial.print(ammount_string[j]);
+                    j++;
+                  }
+                }
+              } // end condition where the numbers are surrounded by " "
+              else {
+                Serial.println("number not surrounded by \" ");
+                valve_id = buffer[35] - '0';
+                if (valve_id >= 0 && valve_id < 4) {
+                  while (buffer[j + 50] != '}') {
+                    ammount_string[j] = buffer[j + 50];
+                    //Serial.print(ammount_string[j]);
+                    j++;
+                  }
+                }
+              } // end case where nothing surrounds the numbers
+            }// end case where { is displayed as is
+            
             literAmount[valve_id] = atoi(ammount_string);
-            messageOK = true;
+            irrigateOK = true;  
+            Serial.println("Exiting irrigate command");
+          
+          } // end procedure for the /micro/irrigate/ command
+          
+          if (buffer[11] == 's'){                       // GET /micro/stop/
+            Serial.println("in stop command");
+            if(buffer[16] == '%'){                      // for when the message displays { as %7D
+              if(buffer[33] == '%'){                    // check if the number is surrounded by " "  
+                valve_id = buffer[36] - '0';
+              }
+              else {
+                valve_id = buffer[33] - '0';
+              }
+            }
+            if(buffer[16] == '{'){
+              if(buffer[31] == '%'){                    // check if the number is surrounded by " "  
+                valve_id = buffer[34] - '0';
+              }
+              else {
+                valve_id = buffer[31] - '0';
+              }
+            }
+            stopOK = true;
+          }// end of /micro/stop/ command
+          if (buffer[11] == 'c'){                       // GET /micro/checkstatus
+            
           }
-        }
-      }
-    }
+         }
+       }
+     }
+   
     // close the connection:
     client.stop();
     Serial.println("client disonnected");
-    if (messageOK) {
+    if (irrigateOK) {
+      Serial.println("irrigate");
       Serial.print("valve_id: ");
       Serial.println(valve_id);
       Serial.print("\nAmount: ");
@@ -159,9 +238,16 @@ void loop() {
       valveOn[valve_id] = true;
       Serial.print("Valve on: ");
       Serial.println(valveOn[valve_id]);
-      messageOK = false;
+      irrigateOK = false;
       memset(ammount_string, 0, 11);
-      
+    }
+    if(stopOK){
+      Serial.println("stop");
+      Serial.println(valve_id);
+      digitalWrite(valves[valve_id], LOW);
+      valveOn[valve_id] = false;
+      pulseCount[valve_id] = 0; 
+      stopOK = false;
     }
   }
 }
@@ -186,6 +272,7 @@ boolean endsWith(char* inString, char* compString) {
   return true;
 }
 
+// prints Current status after connecting to a network. 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
   Serial.print("SSID: ");
@@ -204,6 +291,19 @@ void printWifiStatus() {
   // print where to go in a browser:
   Serial.print("To see this page in action, open a browser to http://");
   Serial.println(ip);
+  WiFi.macAddress(mac);
+  Serial.print("MAC: ");
+  Serial.print(mac[5],HEX);
+  Serial.print(":");
+  Serial.print(mac[4],HEX);
+  Serial.print(":");
+  Serial.print(mac[3],HEX);
+  Serial.print(":");
+  Serial.print(mac[2],HEX);
+  Serial.print(":");
+  Serial.print(mac[1],HEX);
+  Serial.print(":");
+  Serial.println(mac[0],HEX);
 }
 
 // Interrupt Service Routines
@@ -250,18 +350,18 @@ void sensor2_ISR() {
   }
   interrupts();
 }
-void sensor3_ISR() {
-  noInterrupts();
-  if (valveOn[3]) {
-    if ((pulseCount[3] * LITER_PER_PULSE)  < literAmount[3]) {
-      pulseCount[3] = pulseCount[3] + 1;
-    }
-    else {
-      digitalWrite(valves[3], LOW);
-      valveOn[3] = false;
-      pulseCount[3] = 0;
-    }
-  }
-  interrupts();
-}
+//void sensor3_ISR() {
+//  noInterrupts();
+//  if (valveOn[3]) {
+//    if ((pulseCount[3] * LITER_PER_PULSE)  < literAmount[3]) {
+//      pulseCount[3] = pulseCount[3] + 1;
+//    }
+//    else {
+//      digitalWrite(valves[3], LOW);
+//      valveOn[3] = false;
+//      pulseCount[3] = 0;
+//    }
+//  }
+//  interrupts();
+//}
 
