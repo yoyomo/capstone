@@ -259,6 +259,9 @@ stopIrrigationFlag = false;
           },
           error => {
             console.log(error);
+            console.log("Control sent.");
+            //this.refreshStatus(data.status);
+            this.stopIrrigationFlag = true;
           });
         },
         error => {
