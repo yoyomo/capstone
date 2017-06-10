@@ -104,7 +104,7 @@ exports.encrypt = function(data){
 
 function encryptToString(data) {
 	var encrypted;
-	encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234').toString();
+	encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'h2ocrop2017ICOM5047').toString();
 	encrypted = clearURL(encrypted);
 	return encrypted;
 }

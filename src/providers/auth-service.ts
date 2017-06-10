@@ -58,7 +58,7 @@ export class AuthService {
   private encryptToString(data) {
     var CryptoJS = require('crypto-js');
     var encrypted;
-    encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'1234').toString();
+    encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'h2ocrop2017ICOM5047').toString();
     encrypted = this.clearURL(encrypted);
     return encrypted;
   }
@@ -301,15 +301,26 @@ export class AuthService {
   }
 
   public sendControl(comm) {
-    var url = 'http://'+comm.ipaddress+'/micro/'+
+    var url = 'http://'+comm.ipaddress+'/micro/irrigate/'+
     JSON.stringify({"valveid":comm.valveid,"amount":comm.comamount});
+    return this.accessDatabaseURL(url);
+  }
+
+  public stopControl(comm){
+    var url = 'http://'+comm.ipaddress+'/micro/stop/'+
+    JSON.stringify({"valveid":comm.valveid});
     return this.accessDatabaseURL(url);
   }
 
   public irrigateCommunication(comm) {
     var url = '/db/add/comm/';
     return this.accessDatabase(url,comm);
-  }  
+  } 
+
+  public stopIrrigation(comm) {
+    var url = '/db/add/comm/stop/';
+    return this.accessDatabase(url,comm);
+  } 
 
   public receivedCommunication(comm) {
     var url = '/db/update/comm/received/';

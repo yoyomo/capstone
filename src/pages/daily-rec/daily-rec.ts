@@ -22,6 +22,7 @@ history = {cropid: '', uid: '', recommendedet: 0,
 irrigatedet: 0, seasonday: 0, rainfall: 0};
 settingUp = false;
 loading: Loading;
+stopIrrigationFlag = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private auth: AuthService, private loadingCtrl: LoadingController) {
@@ -213,7 +214,7 @@ loading: Loading;
     this.crop.cumulativeet -= this.history.irrigatedet;
     this.auth.updateCrop(this.crop).subscribe(data => {
       console.log("Crop updated.");
-      this.navCtrl.pop();
+      //this.navCtrl.pop();
     },
     error => {
       console.log(error);
@@ -253,7 +254,8 @@ loading: Loading;
           this.auth.sendControl(this.comm).subscribe(data => {
             console.log(data);
             console.log("Control sent.");
-            this.refreshStatus(data.status);
+            //this.refreshStatus(data.status);
+            this.stopIrrigationFlag = true;
           },
           error => {
             console.log(error);
@@ -270,6 +272,56 @@ loading: Loading;
     error => {
       console.log(error);
     });
+  }
+
+  public stopIrrigation(){
+    this.auth.stopIrrigation(this.comm).subscribe(data => {
+      console.log("Communication Stopped.");
+
+      this.auth.stopControl(this.comm).subscribe(data => {
+        console.log("Physical Irrigation Stopped.");
+      },
+      error => {
+        console.log(error);
+      });
+    },
+    error => {
+      console.log(error);
+    });
+    // this.auth.getControl(this.crop).subscribe(data => {
+    //   if(data.length != 0) {
+    //     console.log("Control loaded.");
+    //     this.comm.uid = this.crop.uid;
+    //     this.comm.izid = this.crop.izid;
+    //     this.comm.comamount = parseInt(this.getDailyRecommendation().L);
+    //     this.comm.ipaddress = data[0].ipaddress;
+    //     this.comm.valveid = data[0].valveid;
+
+    //     console.log(this.comm);
+
+    //     this.auth.stopIrrigation(this.comm).subscribe(data => {
+    //       console.log("Communication Stopped.");
+
+    //       this.auth.stopControl(this.comm).subscribe(data => {
+    //         console.log("Physical Irrigation Stopped.");
+    //       },
+    //       error => {
+    //         console.log(error);
+    //       });
+    //     },
+    //     error => {
+    //       console.log(error);
+    //     });
+    //   }
+    //   else{
+    //     console.log('No hardware control found.');
+    //   }
+    // },
+    // error => {
+    //   console.log(error);
+    // });
+    
+    
   }
 
   refreshStatus(status){

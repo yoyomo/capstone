@@ -7,6 +7,10 @@
     {
       "path": "/",
       "proxyUrl": "http://h2ocrop.herokuapp.com/"
+    },
+    {
+      "path": "/",
+      "proxyUrl": "http://192.168.43.203/"
     }
   ]
 }

@@ -194,7 +194,7 @@ function call(stringQuery,req,res){
 }
 
 function decrypt(encryptedString){
-	var decrypted = CryptoJS.AES.decrypt(encryptedString,'1234');
+	var decrypted = CryptoJS.AES.decrypt(encryptedString,'h2ocrop2017ICOM5047');
 	decrypted = decrypted.toString(CryptoJS.enc.Utf8);
 	console.log(decrypted);
 	return decrypted;
@@ -205,7 +205,7 @@ function decryptToJSON(encryptedJSONString) {
 }
 
 function encrypt(data){
-	return CryptoJS.AES.encrypt(data,'1234').toString();
+	return CryptoJS.AES.encrypt(data,'h2ocrop2017ICOM5047').toString();
 }
 
 app.get('/crypt/:crypto', function (req,res) {
