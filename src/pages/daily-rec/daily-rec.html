@@ -60,7 +60,7 @@
   </ion-item> 
 </ion-list>
 
-  <button ion-button (click)="irrigate()" round>Irrigate</button>
+  <button ion-button *ngIf="!stopIrrigationFlag" (click)="irrigate()" round>Irrigate</button>
   <button ion-button *ngIf="stopIrrigationFlag" (click)="stopIrrigation()" color="danger" round>Stop</button>
 
 </ion-content>

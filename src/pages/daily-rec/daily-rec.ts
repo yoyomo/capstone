@@ -283,9 +283,12 @@ stopIrrigationFlag = false;
 
       this.auth.stopControl(this.comm).subscribe(data => {
         console.log("Physical Irrigation Stopped.");
+        this.stopIrrigationFlag = false;
       },
       error => {
         console.log(error);
+        console.log("Physical Irrigation Stopped.");
+        this.stopIrrigationFlag = false;
       });
     },
     error => {
