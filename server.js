@@ -471,7 +471,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 		"update farmer\
 		set email='"+farmer.email+"',password=crypt('"+hashkey+"','"+farmer.password+"'),\
 		username='"+farmer.username+"', fullname='"+farmer.fullname+"'\
-		where uid="+farmer.uid+" and password=crypt('"+hashkey+"','"+farmer.currentpassword+"'),\
+		where uid="+farmer.uid+" and password=crypt('"+hashkey+"','"+farmer.currentpassword+"')\
 		;";
 	call(stringQuery, req, res);
 });
