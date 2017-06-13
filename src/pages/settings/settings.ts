@@ -53,8 +53,7 @@ export class SettingsPage {
     // if(this.verifyPassword===this.settings.password){
       this.settings.currentpassword = this.verifyPassword;
       this.settings.password = this.settings.currentpassword;
-      console.log(this.settings.password);
-      console.log(this.settings.currentpassword);
+
       //make sure change of password is desired
       if (this.changePassword) {
         if(this.newPassword && this.confirmNewPassword){
@@ -75,21 +74,24 @@ export class SettingsPage {
       }
 
       this.auth.editFarmer(this.settings).subscribe(data => {
-        console.log("Settings saved.");
+        
         if(data.length===0){
           this.showPopup("Current Password must be verified","If change of settings is\
              desired, your account's current password must be filled.");
         }
         else{
+          console.log("Settings saved.");
           //update local storage and authservice
-          this.auth.createUser(this.settings.uid,this.settings.fullname,
-            this.settings.username,this.settings.email,this.settings.password,
-             this.settings.typeofuser);
+          console.log(data[0]);
+          this.auth.createUser(data[0].uid,data[0].fullname,
+            data[0].username,data[0].email,data[0].password,
+             data[0].typeofuser);
           localStorage.setItem("loggedInUser",JSON.stringify(this.auth.getUserInfo()));
           this.verifyPassword = '';
           this.newPassword = '';
           this.confirmNewPassword = '';
           this.settings = this.auth.getUserInfo();
+          this.changePassword = false;
           this.edit = false;
         }
       },
