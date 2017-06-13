@@ -50,8 +50,8 @@ export class SettingsPage {
   save(){
     
     //make sure current password is verified
-    if(this.verifyPassword===this.settings.password){
-
+    // if(this.verifyPassword===this.settings.password){
+      this.settings.currentpassword = this.settings.password;
       //make sure change of password is desired
       if (this.changePassword) {
         if(this.newPassword && this.confirmNewPassword){
@@ -82,13 +82,15 @@ export class SettingsPage {
       },
       error => {
         console.log(error);
+        this.showPopup("Current Password must be verified","If change of settings is\
+             desired, your account's password must be filled.");
       });
-    }
-    else{ // password was not met
-      this.showPopup("Current Password must be verified","If change of settings is\
-            desired, your account's password must be filled.");
-          return;
-    }
+    // }
+    // else{ // password was not met
+    //   this.showPopup("Current Password must be verified","If change of settings is\
+    //         desired, your account's password must be filled.");
+    //       return;
+    // }
   }
 }
 
