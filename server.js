@@ -222,7 +222,7 @@ app.get('/db/add/farmer/:farmer', function (req,res) {
 	var farmer = decryptToJSON(req.params.farmer);
 	call("insert into farmer (fullname, email, username, password)\
 		values ('"+farmer.fullname+"','"+farmer.email+"','"+farmer.username+"',\
-		'"+farmer.password+"')\
+		crypt('"+hashkey+"','"+farmer.password+"'))\
 		;",req,res);
 });
 
@@ -240,19 +240,19 @@ app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
 	var forgotpassword = decryptToJSON(req.params.forgotpassword);
 	var stringQuery = 
 		"update farmer\
-		set password='"+forgotpassword.password+"'\
+		set password=crypt('"+hashkey+"','"+forgotpassword.password+"')\
 		where email='"+forgotpassword.email+"'\
 		;";
 	call(stringQuery, req, res);
 });
 
-// Log In
+// Log In login
 app.get('/db/get/farmer/:farmer', function (req,res) {
 	var farmer = decryptToJSON(req.params.farmer);
 	call("select *\
 		from farmer\
 		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') \
-		and password='"+farmer.password+"'\
+		and password=crypt('"+hashkey+"','"+farmer.password+"')\
 		;",req,res);
 });
 
@@ -469,7 +469,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 	var farmer = decryptToJSON(req.params.farmer);
 	var stringQuery = 
 		"update farmer\
-		set email='"+farmer.email+"',password=crypt('"+hashkey+"',"+farmer.password+"'),\
+		set email='"+farmer.email+"',password=crypt('"+hashkey+"','"+farmer.password+"'),\
 		username='"+farmer.username+"', fullname='"+farmer.fullname+"'\
 		where uid="+farmer.uid+"\
 		;";
