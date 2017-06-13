@@ -7,6 +7,7 @@ var express = require('express');
 var app = express();
 var cors = require('cors');
 var CryptoJS = require('crypto-js');
+var hashkey = 'h2ocrop2017ICOM5047';
 const setup = require('./updateServer.js');
 
 app.use(express.static('www'));
@@ -194,7 +195,7 @@ function call(stringQuery,req,res){
 }
 
 function decrypt(encryptedString){
-	var decrypted = CryptoJS.AES.decrypt(encryptedString,'h2ocrop2017ICOM5047');
+	var decrypted = CryptoJS.AES.decrypt(encryptedString,hashkey);
 	decrypted = decrypted.toString(CryptoJS.enc.Utf8);
 	console.log(decrypted);
 	return decrypted;
@@ -205,7 +206,7 @@ function decryptToJSON(encryptedJSONString) {
 }
 
 function encrypt(data){
-	return CryptoJS.AES.encrypt(data,'h2ocrop2017ICOM5047').toString();
+	return CryptoJS.AES.encrypt(data,hashkey).toString();
 }
 
 app.get('/crypt/:crypto', function (req,res) {
@@ -250,7 +251,8 @@ app.get('/db/get/farmer/:farmer', function (req,res) {
 	var farmer = decryptToJSON(req.params.farmer);
 	call("select *\
 		from farmer\
-		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') and password='"+farmer.password+"'\
+		where (username='"+farmer.usernameORemail+"' or email='"+farmer.usernameORemail+"') \
+		and password='"+farmer.password+"'\
 		;",req,res);
 });
 
@@ -467,7 +469,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 	var farmer = decryptToJSON(req.params.farmer);
 	var stringQuery = 
 		"update farmer\
-		set email='"+farmer.email+"',password='"+farmer.password+"',\
+		set email='"+farmer.email+"',password=crypt('"+hashkey+"',"+farmer.password+"'),\
 		username='"+farmer.username+"', fullname='"+farmer.fullname+"'\
 		where uid="+farmer.uid+"\
 		;";

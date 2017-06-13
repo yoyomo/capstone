@@ -13,8 +13,8 @@
           <ion-input type="text" [(ngModel)]="zone.izname" name="zoneName" required></ion-input>
 </ion-item>
 <ion-item>
-  <ion-label floating>Acre</ion-label>
-        <ion-input type="number" [(ngModel)]="zone.acres" name="acres" required></ion-input>
+  <ion-label floating>Acres</ion-label>
+        <ion-input type="number" min="0" [(ngModel)]="zone.acres" name="acres" required></ion-input>
 </ion-item>
 <ion-item>
 <ion-label floating>Waterflow (gal/min)</ion-label>

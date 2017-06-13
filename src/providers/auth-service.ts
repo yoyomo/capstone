@@ -55,10 +55,16 @@ export class AuthService {
     return data;
   }
 
-  private encryptToString(data) {
+  private encryptToString(data){
     var CryptoJS = require('crypto-js');
     var encrypted;
     encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'h2ocrop2017ICOM5047').toString();
+    return encrypted;
+  }
+
+  private encryptToURL(data) {
+    var encrypted;
+    encrypted = this.encryptToString(data);
     encrypted = this.clearURL(encrypted);
     return encrypted;
   }
@@ -68,7 +74,7 @@ export class AuthService {
   }
   
   private accessDatabase(url, data) {
-    var encrypted = this.encryptToString(data);
+    var encrypted = this.encryptToURL(data);
 
     url = url+encrypted;
     return this.accessDatabaseURL(url);
