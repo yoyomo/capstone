@@ -241,7 +241,7 @@ app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
 	var forgotpassword = decryptToJSON(req.params.forgotpassword);
 	var stringQuery = 
 		"update farmer\
-		set password=crypt('"+forgotpassword.password+"',password)\
+		set password=crypt('"+forgotpassword.password+"',gen_salt('bf',8))\
 		where email='"+forgotpassword.email+"'\
 		;";
 	call(stringQuery, req, res);
