@@ -242,8 +242,8 @@ app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
 	var stringQuery = 
 		"update farmer\
 		set password=crypt('"+forgotpassword.password+"',gen_salt('bf',8))\
-		where email='"+forgotpassword.email+"\
-		returning *'\
+		where email='"+forgotpassword.email+"'\
+		returning *\
 		;";
 	call(stringQuery, req, res);
 });
