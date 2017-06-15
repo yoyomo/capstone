@@ -493,6 +493,22 @@ app.get('/db/update/crop/:crop', function(req,res) {
 	call(stringQuery, req, res);
 });
 
+// Update All Other Crops (called when a crop has been irrigated2
+app.get('/db/update/allothercrops/:crop', function(req,res) {
+	var crop = decryptToJSON(req.params.crop);
+	var stringQuery = 
+		"with allOtherCrops as (update crop\
+		set cumulativeet=cumulativeet-"+crop.irrigatedet+"\
+		where izid="+crop.izid+" and cropid != "+crop.cropid+"\
+		returning *) \
+		insert into history (uid,cropid,recommendedet,irrigatedet,seasonday,rainfall)\
+			select allOtherCrops.uid,allOtherCrops.cropid,\
+			allOtherCrops.cumulativeet+"+crop.irrigatedet+","+crop.irrigatedet+",allOtherCrops.currentday,allOtherCrops.rainfall\
+			from allOtherCrops\
+		;";
+	call(stringQuery, req, res);
+});
+
 // Edit Farm
 app.get('/db/edit/farm/:farm', function (req,res) {
 	var farm = decryptToJSON(req.params.farm);

@@ -212,8 +212,11 @@ stopIrrigationFlag = false;
     });
 
     this.crop.cumulativeet -= this.history.irrigatedet;
+    this.crop.irrigatedet = this.history.irrigatedet;
     this.auth.updateCrop(this.crop).subscribe(data => {
       console.log("Crop updated.");
+      //update other crop under the same irrigation zone
+
       //this.navCtrl.pop();
     },
     error => {
