@@ -6,6 +6,9 @@
  
 <ion-content class="login-content" padding>
   <div class="login-box">
+
+  <img class="image" height="80" width="50" align="middle" src="build/imp/hoja  h20 crop .png"/>
+
     
     <form (ngSubmit)="register()" #registerForm="ngForm">
       <ion-row>
@@ -21,7 +24,7 @@
             </ion-item>
             
             <ion-item>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+              <ion-input type="email" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
             </ion-item>
             
             <ion-item>
@@ -38,7 +41,7 @@
       
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
+          <button ion-button class="submit-btn"  full type="submit" color="dark" [disabled]="!registerForm.form.valid">Register</button>
         </ion-col>
       </ion-row>
       

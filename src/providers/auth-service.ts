@@ -3,6 +3,9 @@ import {Observable} from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+declare var require: any;
+
+
 export class User {
   uid: number;
   fullname: string;

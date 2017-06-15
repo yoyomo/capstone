@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="dark">
     <ion-title>Irrigation Zone</ion-title>
   </ion-navbar>
 
@@ -32,7 +32,8 @@
           <ion-input type="number" max="100" min="0" step="1" [(ngModel)]="zoneInfo.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
 
-<button ion-button block (click)="addIrrigationZone()" [disabled] = "!formCtrl.form.valid" >Add Zone</button>
+<button ion-button round (click)="addIrrigationZone()" block [disabled] = "!formCtrl.form.valid" >Add Zone</button>
+
 </form>
 
 </ion-content>

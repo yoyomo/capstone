@@ -1,13 +1,13 @@
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="dark">
     <ion-buttons start>
       <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-title>Account Info</ion-title>
+    <ion-title>Account Info.</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only *ngIf="settings.typeofuser==='Admin'" (click)="allCrops()">
@@ -79,8 +79,14 @@
   </ion-item>
   </form>
 
-  <button ion-button [disabled]="!formCtrl.form.valid" (click)="save()" round>Save</button>
-  <button ion-button (click)="cancel()" round>Cancel</button>
+ <ion-row>
+    <ion-col col-4>
+      <button ion-button [disabled]="!formCtrl.form.valid" (click)="save()" round>Save</button>
+    </ion-col>
+    <ion-col col-8>
+    <button ion-button (click)="cancel()" round>Cancel</button>
+    </ion-col>
+  </ion-row>
   </div>
 
 </ion-content>

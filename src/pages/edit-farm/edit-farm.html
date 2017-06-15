@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="dark">
     <ion-title>Edit Farm</ion-title>
   </ion-navbar>
 
@@ -66,6 +66,6 @@
    <ion-icon name="add"></ion-icon> Control</button>
 </div>
 
-<button ion-button block (click)="editFarm()" [disabled]="!formCtrl.form.valid">Save</button>
+<button ion-button round (click)="editFarm()" block [disabled]="!formCtrl.form.valid">Save</button>
 
 </ion-content>

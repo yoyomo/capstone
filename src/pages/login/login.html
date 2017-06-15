@@ -2,7 +2,7 @@
   <ion-row class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
-      <img src="http://placehold.it/300x200"/>
+      <img class="image" src="assets/img/h20 crop final.png"/>
     </ion-col>
     <ion-col></ion-col>
   </ion-row>
@@ -26,7 +26,7 @@
       
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full (click)="login()" [disabled]="!registerForm.form.valid">Login</button>
+          <button ion-button class="submit-btn" color="dark" full (click)="login()" [disabled]="!registerForm.form.valid">Login</button>
           <button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button>
           <button ion-button class="forgotPassword-btn" block clear (click)="forgotPassword()">Forgot Password or Username</button>
 

@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="dark">
     <ion-title>Add Farm</ion-title>
   </ion-navbar>
 
@@ -39,8 +39,6 @@
 
 <div #map id="map"></div>
 
-<button ion-button block (click)="addFarm()" [disabled]="!formCtrl.form.valid">Add Farm</button>
-
-
+<button ion-button round (click)="addFarm()" block [disabled]="!formCtrl.form.valid">Add Farm</button>
 
 </ion-content>

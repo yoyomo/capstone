@@ -184,5 +184,27 @@ farms: any = [];
       prompt.present();
   }
 
+  info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Click the plus + sign button to add crops.</li>
+          <li>Swipe list items to the left < to delete or edit.</li>
+          
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
 
 }
