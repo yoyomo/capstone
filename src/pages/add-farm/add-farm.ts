@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { AuthService } from '../../providers/auth-service';
 
  
-declare var google;
+declare var google: any;
 
 @Component({
   selector: 'page-add-farm',
