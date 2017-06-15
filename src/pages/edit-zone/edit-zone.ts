@@ -43,6 +43,12 @@ control: any = {
     this.loadMasterControl();
   }
 
+  ionViewWillLeave(){
+    if(this.zone.irrigationefficiency > 1){
+      this.makeIrrigationEfficiencyDecimal();
+    }
+  }
+
   makeIrrigationEfficiencyPercentage() {
     this.zone.irrigationefficiency *= 100; // make percentage
   }
