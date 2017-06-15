@@ -23,24 +23,30 @@ forgotPasswordCredentials = { email: '',password: ''};
   
   this.showLoading();
   this.auth.forgotPassword(this.forgotPasswordCredentials).subscribe(data => {
-    this.auth.sendForgotPassword(this.forgotPasswordCredentials).subscribe(data => {
-      if (data) {
-        setTimeout(() => {
-          
-         this.emailSentSuccess = true;
-         this.closeLoading();
-          this.showPopup("Success", "Email Sent.")
-        });
-      } else {
-        this.emailSentSuccess = false;
+    if(data.length > 0){
+      this.auth.sendForgotPassword(this.forgotPasswordCredentials).subscribe(data => {
+        if (data) {
+          setTimeout(() => {
+            
+           this.emailSentSuccess = true;
+           this.closeLoading();
+            this.showPopup("Success", "Email Sent.")
+          });
+        } else {
+          this.emailSentSuccess = false;
+          this.closeLoading();
+          this.showPopup("Error", "try again.")
+        }
+      },
+      error => {
         this.closeLoading();
-        this.showPopup("Error", "try again.")
-      }
-    },
-    error => {
+        this.showPopup("Error","Account does not exist.");
+      });
+    }
+    else{
       this.closeLoading();
       this.showPopup("Error","Account does not exist.");
-    });
+    }
   },
   error => {
     this.closeLoading();
