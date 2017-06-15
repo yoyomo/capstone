@@ -31,6 +31,7 @@ int pulseCount[4] = {0, 0, 0, 0};       // keep track of sensor pulses
 boolean messageOK = false;              // Received a valid message
 boolean irrigateOK = false;             // Received irrigation message
 boolean stopOK = false;                 // Received stop message
+boolean checkStatusOK = false;          // Received check status message
 
 
 
@@ -51,6 +52,8 @@ void setup() {
   digitalWrite(valves[1], LOW);
   digitalWrite(valves[2], LOW);
   //digitalWrite(valves[3], LOW);
+
+  pinMode(RED_LED, OUTPUT);               // use to indicate wheter a wifi connection is available
 
   attachInterrupt(sensors[0], sensor0_ISR, RISING);
   attachInterrupt(sensors[1], sensor1_ISR, RISING);
@@ -96,7 +99,14 @@ void setup() {
 }
 
 void loop() {
-  //Serial.println(pulseCount[0]);
+
+  // check connection to network
+  if(WiFi.status() != WL_CONNECTED){
+    digitalWrite(RED_LED, LOW);
+  }
+  else digitalWrite(RED_LED, HIGH);
+
+  
   int i = 0;
   WiFiClient client = server.available();   // listen for incoming clients
   interrupts();
@@ -115,8 +125,37 @@ void loop() {
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:application/json");
-            client.println("{\"status\":\"received\"}");
+            client.println("Content-type:text/html");
+            client.println();
+
+            // JSON Response
+            client.println("<html><body>");
+            if(stopOK){
+              client.print("{\"command\":\"stop\",\"valveid\":\"");
+              client.print(valve_id);
+              client.print("\",\"currentAmount\":\"");
+              client.print(pulseCount[valve_id] * LITER_PER_PULSE);
+              client.println("\"}");
+            }
+            if(irrigateOK){
+              client.print("{\"command\":\"irrigate\",\"valveid\":\"");
+              client.print(valve_id);
+              client.print("\",\"amount\":\"");
+              client.print(literAmount[valve_id]);
+              client.println("\"}");
+            }
+            if(checkStatusOK){
+              client.print("{\"command\":\"checkStatus\",\"valve");
+              client.print(valve_id);
+              client.print("\":\"");  
+              client.print(valveOn[valve_id]);
+              client.print("\",\"currentAmount\":\"");                       // ","currentAmount":"
+              client.print(pulseCount[valve_id] * LITER_PER_PULSE);
+              client.print("\"}");
+            }
+            
+            client.println("</body></html>");
+            
 
             // break out of the while loop:
             break;
@@ -134,7 +173,7 @@ void loop() {
         if (endsWith(buffer, "HTTP/1.1")) {
           int j = 0;
           Serial.println("reading GET header");
-          if (buffer[11] == 'i'){                       // GET /micro/irrigate/
+          if (buffer[11] == 'i'){                       // read GET /micro/irrigate/ command
             Serial.println("in irrigate command");
             Serial.println(buffer[11]);
             Serial.println(buffer[19]);
@@ -146,8 +185,8 @@ void loop() {
                 valve_id = buffer[40] - '0';
                 Serial.println(valve_id);
                 if (valve_id >= 0 && valve_id < 4) {
-                  while (buffer[j + 59] != '%') {
-                    ammount_string[j] = buffer[j + 59];
+                  while (buffer[j + 61] != '%') {
+                    ammount_string[j] = buffer[j + 61];
                     //Serial.print(ammount_string[j]);
                     j++;
                   }  
@@ -198,7 +237,7 @@ void loop() {
           
           } // end procedure for the /micro/irrigate/ command
           
-          if (buffer[11] == 's'){                       // GET /micro/stop/
+          if (buffer[11] == 's'){                       // read GET /micro/stop/ command
             Serial.println("in stop command");
             if(buffer[16] == '%'){                      // for when the message displays { as %7D
               if(buffer[33] == '%'){                    // check if the number is surrounded by " "  
@@ -218,9 +257,22 @@ void loop() {
             }
             stopOK = true;
           }// end of /micro/stop/ command
-          if (buffer[11] == 'c'){                       // GET /micro/checkstatus
-            
-          }
+          
+          if (buffer[11] == 'c'){                       // read GET /micro/checkstatus command
+            if (buffer[23] == '%'){                     // check if { is represented as %7D
+              if (buffer[40] == '%'){                   // check if valve id is surrounded by "
+                valve_id = buffer[43] - '0';
+              }
+              else valve_id = buffer[40] - '0';
+            }
+            if (buffer[23] == '{'){
+              if (buffer[38] == '%'){
+                valve_id = buffer[41] - '0';
+              }
+              else valve_id = buffer[38] - '0';
+            }
+            checkStatusOK = true;
+          } // end of checkStatus
          }
        }
      }
@@ -249,10 +301,14 @@ void loop() {
       pulseCount[valve_id] = 0; 
       stopOK = false;
     }
+    if(checkStatusOK) checkStatusOK = false;
   }
 }
 
 
+/****************************************************
+ ****************** Methods *************************
+ ****************************************************/
 //
 //a way to check if one array ends with another array
 //
@@ -291,6 +347,8 @@ void printWifiStatus() {
   // print where to go in a browser:
   Serial.print("To see this page in action, open a browser to http://");
   Serial.println(ip);
+
+  // Print MAC Address
   WiFi.macAddress(mac);
   Serial.print("MAC: ");
   Serial.print(mac[5],HEX);
@@ -306,17 +364,21 @@ void printWifiStatus() {
   Serial.println(mac[0],HEX);
 }
 
-// Interrupt Service Routines
+/*************************************************************
+ ************ Interrupt Service Routines *********************
+ *************************************************************/
 void sensor0_ISR() {
   noInterrupts();
   if (valveOn[0]) {
     if ((pulseCount[0] * LITER_PER_PULSE)  < literAmount[0]) {
       pulseCount[0] = pulseCount[0] + 1;
+      Serial.println(pulseCount[0]);
     }
     else {
       digitalWrite(valves[0], LOW);
       valveOn[0] = false;
       pulseCount[0] = 0;
+      Serial.println("valve off");
     }
   }
   interrupts();
@@ -326,7 +388,7 @@ void sensor1_ISR() {
   if (valveOn[1]) {
     if ((pulseCount[1] * LITER_PER_PULSE)  < literAmount[1]) {
       pulseCount[1] = pulseCount[1] + 1;
-
+      //Serial.println(pulseCount[1]);
     }
     else {
       digitalWrite(valves[1], LOW);
@@ -341,6 +403,7 @@ void sensor2_ISR() {
   if (valveOn[2]) {
     if ((pulseCount[2] * LITER_PER_PULSE)  < literAmount[2]) {
       pulseCount[2] = pulseCount[2] + 1;
+      //Serial.println(pulseCount[2]);
     }
     else {
       digitalWrite(valves[2], LOW);
