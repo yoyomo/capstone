@@ -216,8 +216,15 @@ stopIrrigationFlag = false;
     this.auth.updateCrop(this.crop).subscribe(data => {
       console.log("Crop updated.");
       //update other crop under the same irrigation zone
-
-      //this.navCtrl.pop();
+      
+      this.auth.updateAllOtherCrops(this.crop).subscribe(data => {
+        console.log("All other Crops updated.");
+        //update other crop under the same irrigation zone        
+        //this.navCtrl.pop();
+      },
+      error => {
+        console.log(error);
+      });
     },
     error => {
       console.log(error);

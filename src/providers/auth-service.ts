@@ -194,6 +194,11 @@ export class AuthService {
     return this.accessDatabase(url,crop);
   }
 
+  public updateAllOtherCrops(crop) {
+    var url = '/db/update/allothercrops/';
+    return this.accessDatabase(url,crop);
+  }
+
   public getHistory(history) {
     var url = '/db/get/history/';
     return this.accessDatabase(url,history);
