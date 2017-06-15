@@ -1,4 +1,4 @@
-0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 700
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
 G E T   / m i c r o /  i  r  r  i  g  a  t  e  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  3  5  5  %  7  D 
 G E T   / m i c r o /  i  r  r  i  g  a  t  e  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  %  2  2  3  %  2  2  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  %  2  2  3  5  5  %  2  2  %  7  D  
 G E T   / m i c r o /  i  r  r  i  g  a  t  e  /  {  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  3  5  5  } 
@@ -7,5 +7,7 @@ G E T   / m i c r o /  s  t  o  p  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  
 G E T   / m i c r o /  s  t  o  p  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  %  2  2  3  %  2  2  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  %  2  2  3  5  5  %  2  2  %  7  D
 G E T   / m i c r o /  s  t  o  p  /  {  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  3  5  5  }
 G E T   / m i c r o /  s  t  o  p  /  {  %  2  2  v  a  l  v  e  i  d  %  2  2  :  %  2  2  3  %  2  2  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  %  2  2  3  5  5  %  2  2  }
-G E T   / m i c r o /  c  h  e  c  k  s  t  a  t  u  s  /
-G E T   / m i c r o /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  ,  %  2  2  a  m  o  u  n  t  %  2  2  :  3  5  5  %  7  D 
+G E T   / m i c r o /  c  h  e  c  k  s  t  a  t  u  s  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  %  2  2  3  %  2  2  %  7  D 
+G E T   / m i c r o /  c  h  e  c  k  s  t  a  t  u  s  /  %  7  B  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  %  7  D 
+G E T   / m i c r o /  c  h  e  c  k  s  t  a  t  u  s  /  {  %  2  2  v  a  l  v  e  i  d  %  2  2  :  %  2  2  3  %  2  2  %  }
+G E T   / m i c r o /  c  h  e  c  k  s  t  a  t  u  s  /  {  %  2  2  v  a  l  v  e  i  d  %  2  2  :  3  } 
