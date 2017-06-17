@@ -10,6 +10,7 @@
   <allow-navigation href="http://h2ocrop.herokuapp.com"/>
   <allow-navigation href="http://192.168.43.225:8100"/>
   <allow-navigation href="http://192.168.43.226:8100"/>
+  <allow-navigation href="http://192.168.43.227:8100"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>

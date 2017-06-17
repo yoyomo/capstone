@@ -31,6 +31,8 @@
    <h1>Welcome! {{user.username}}</h1>
     </ion-col>
     </ion-row>
+
+    <p *ngIf="farms.length==0">Click + to add items to your profile</p>
   
 
   <ion-card class="card" *ngFor="let farm of farms">
@@ -44,9 +46,10 @@
       <ion-list class="list" >
 
         <ion-item-sliding>
-          <ion-item class="listitem" >
+          <ion-item class="listitem" detail-push>
             <ion-icon name="leaf" class="leaf" item-left></ion-icon>
             {{farm.farmname}}
+
           </ion-item>
           <ion-item-options>
             <button ion-button icon-only (click)="editFarm(farm)" color="light">

@@ -52,7 +52,7 @@
   </ion-item>
   <ion-item>
      <ion-label stacked>Email</ion-label>
-     <ion-input type="email" [(ngModel)]="settings.email" name="email" required ></ion-input>
+     <ion-input type="email" [disabled] [(ngModel)]="settings.email" name="email" required ></ion-input>
   </ion-item>
 
   <ion-item *ngIf="!changePassword">
