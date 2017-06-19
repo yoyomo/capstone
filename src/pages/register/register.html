@@ -28,11 +28,13 @@
             </ion-item>
             
             <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" minlength="6"
+       maxlength="20" required></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input type="password" placeholder="Confirm Password" name="confirmPassword" [(ngModel)]="registerCredentials.confirmpassword" required></ion-input>
+              <ion-input type="password" placeholder="Confirm Password" name="confirmPassword" [(ngModel)]="registerCredentials.confirmpassword" minlength="6"
+       maxlength="20" required></ion-input>
             </ion-item>
             
           </ion-list>

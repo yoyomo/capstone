@@ -41,6 +41,7 @@ export class AuthService {
   private clearURL(string){
     string = string.split('%').join('%25');
     string = string.split('/').join('%2F');
+    string = string.split('+').join('%2B');
     return string;
   }
 
@@ -78,7 +79,7 @@ export class AuthService {
   
   private accessDatabase(url, data) {
     var encrypted = this.encryptToURL(data);
-
+    console.log(encrypted);
     url = url+encrypted;
     return this.accessDatabaseURL(url);
   }

@@ -52,7 +52,7 @@ export class CropHistoryPage {
 
       h.recommended = parseFloat((h.recommendedet - h.rainfall).toFixed(2));
       if(h.recommended < 0) h.recommended = 0;
-      h.irrigatedet = parseFloat((h.irrigatedet).toFixed(2));
+      h.irrigatedet = parseFloat(h.irrigatedet);
 
       recommendedSum += h.recommended;
       irrigatedSum += h.irrigatedet;
