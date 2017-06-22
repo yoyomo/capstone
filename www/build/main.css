@@ -24634,6 +24634,11 @@ page-daily-rec ion-card-header {
   height: 100%;
 }
 
+page-guide .button {
+  margin: auto;
+  display: block;
+}
+
 .ios page-home .card, .md page-home .card {
   padding-top: 1px;
   padding-bottom: 1px;
@@ -24659,6 +24664,11 @@ page-daily-rec ion-card-header {
 .ios page-home .listitem, .md page-home .listitem {
   font-size: 20px;
   font-weight: bold;
+}
+
+.ios page-home .button, .md page-home .button {
+  margin: auto;
+  display: block;
 }
 
 page-login .image {

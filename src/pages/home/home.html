@@ -6,13 +6,11 @@
       </button>
     </ion-buttons>
 
-    <ion-title>
-    </ion-title>
-
     <ion-buttons end>
       <button ion-button icon-only (click)="info()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
+
       <button ion-button icon-only (click)="launcharAddPage()">
         <ion-icon name="add"></ion-icon>
       </button>
@@ -32,7 +30,15 @@
     </ion-col>
     </ion-row>
 
-    <p *ngIf="farms.length==0">Click + to add items to your profile</p>
+    <p *ngIf="farms.length==0">Begin your H2OCrop experience by adding farms, zones and crops to your profile.
+      Click the "Add" button below to begin.
+    </p>
+
+    <button  class="button" ion-button round (click)="launcharAddPage()" *ngIf="farms.length==0"><ion-icon name="add"></ion-icon>Add</button>
+    
+    <p *ngIf="farms.length==0">If you need any more information feel free to click the information button 
+      found in the top right corner or slide screen to the right to revele a side menu where you will find our User Guide.
+    </p>
   
 
   <ion-card class="card" *ngFor="let farm of farms">

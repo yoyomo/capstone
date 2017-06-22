@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, NavParams } from 'ionic-angular';
+import { NavController, ModalController, NavParams, MenuController} from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
+
 import { AddPage } from '../add/add';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
@@ -12,7 +15,6 @@ import { EditZonePage } from '../edit-zone/edit-zone';
   templateUrl: 'home.html'
 })
 
-
 export class HomePage {
 
 user: any = [];
@@ -21,8 +23,9 @@ zones: any = [];
 farms: any = [];
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
-   public navParams: NavParams, private auth: AuthService, public alertCtrl: AlertController) {
-    
+   public navParams: NavParams,private menuCtrl: MenuController, private auth: AuthService, public alertCtrl: AlertController, private iab:InAppBrowser) {
+
+    this.menuCtrl.enable(true); 
     this.user = this.auth.getUserInfo();
     console.log(this.user);
     this.auth.getUserFarms(this.user).subscribe(data => {
@@ -101,7 +104,7 @@ farms: any = [];
   deleteFarm(farm){
     let prompt = this.alertCtrl.create({
           title: 'Delete Farm?',
-          message: "All Irrigation Zones & Crops & History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
+          message: "All Irrigation Zones, Crops and History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
           
           buttons: [
               {
@@ -111,7 +114,7 @@ farms: any = [];
                   text: 'Delete',
                   handler: data => {
                     this.auth.deleteFarm(farm).subscribe(data => {
-                      console.log("Farm & all its irrigation zones & \
+                      console.log("Farm, all its irrigation zones & \
                         all its crops & all its histories deleted.");
                       this.navCtrl.setRoot(HomePage);
                     },
@@ -130,7 +133,7 @@ farms: any = [];
   deleteZone(zone){
     let prompt = this.alertCtrl.create({
           title: 'Delete Irrigation Zone?',
-          message: "All Crops & History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
+          message: "All Crops and History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
           
           buttons: [
               {
@@ -159,8 +162,8 @@ farms: any = [];
   deleteCrop(crop){
       let prompt = this.alertCtrl.create({
           title: 'Delete Crop Info?',
-          message: "All User Crops & History under this Crop Info will also be deleted. Are you sure you want to delete this Crop Info?",
-          
+          message: "All User Crops and History under this Crop Info will also be deleted. Are you sure you want to delete this Crop Info?",
+                    
           buttons: [
               {
                   text: 'Cancel'
@@ -189,9 +192,19 @@ farms: any = [];
           title: 'Information',
           message: `
         <ul>
-          <li> Click the plus + sign button to add crops.</li>
-          <li>Swipe list items to the left < to delete or edit.</li>
-          
+          <li> Press the plus + sign icon found in the page header to add crops.</li>
+
+          <li> Press the 3 lined icon found in the page header to open side menu or Swipe
+          page to the right.</li>
+
+          <li> Swipe list items to the left < to delete or edit farm, zone or crop.</li>
+
+          <li> Press selected crop to see recommended irrigation value.</li>
+                 
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
         </ul>
       `,
           buttons: [

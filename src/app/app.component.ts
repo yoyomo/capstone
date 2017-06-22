@@ -3,11 +3,14 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+
+
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { SettingsPage } from '../pages/settings/settings';
-import {AuthService} from '../providers/auth-service'
+import {AuthService} from '../providers/auth-service';
+import {GuidePage} from '../pages/guide/guide';
 
 
 @Component({
@@ -29,7 +32,9 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage, icon: 'home' },
       { title: 'Account', component: SettingsPage, icon: 'person' },
+      { title: 'Guide', component: GuidePage, icon: 'book'},
       { title: 'Logout', component: LogoutPage, icon: 'power' }
+      
 
     ];
 

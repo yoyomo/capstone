@@ -23,10 +23,13 @@ import { MakeAdminPage } from '../pages/make-admin/make-admin';
 import { Sorting } from "../pipes/sorting";
 import { ChartsModule } from 'ng2-charts';
 import 'chart.js'
+import { GuidePage } from '../pages/guide/guide';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+//import { Camera } from '@ionic-native/camera';
 
 
 @NgModule({
@@ -49,7 +52,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AllCropInfoPage,
     EditCropInfoPage,
     AddCropInfoPage,
-    MakeAdminPage
+    MakeAdminPage,
+    GuidePage
   ],
   imports: [
     IonicModule.forRoot(MyApp), ChartsModule, HttpModule, JsonpModule
@@ -73,7 +77,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AllCropInfoPage,
     EditCropInfoPage,
     AddCropInfoPage, 
-    MakeAdminPage   
+    MakeAdminPage,
+    GuidePage   
   
   ],
   providers: [
@@ -81,7 +86,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    InAppBrowser
+    //Camera
+
   ]
 })
 export class AppModule {}

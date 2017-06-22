@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-add-irrigation-zone',
@@ -14,7 +15,7 @@ public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
 private irrigationMethods: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  public viewCtrl: ViewController, private auth: AuthService) {
+  public viewCtrl: ViewController, private auth: AuthService, public alertCtrl: AlertController) {
 
   	var user, farmid;
   	user = this.auth.getUserInfo();
@@ -58,6 +59,39 @@ private irrigationMethods: any = [];
     error => {
       console.log(error);
     });
+  }
+
+   info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Enter prefered zone name in the indicated field</li>
+          <li> Enter amount of farm acres.</li>
+          <li> Enter amount water flow in gal/min of irrigation method. If unsure of value enter an 
+          estimated amount.</li>
+          <li> Select and "Irrigation Method" from the drop down menu.</li>
+          <li> Percentage of irrigation efficiency field is automatically filled based on selected Irrigation Method but 
+          user may change value if desired.</li>
+                 
+         <li> Save information by pressing the "Add Zone" button found at the bottom of the page.</li>
+      
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
   }
 
 }

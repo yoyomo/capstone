@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { CropHistoryPage } from '../crop-history/crop-history';
 import { AuthService } from '../../providers/auth-service';
+import { AlertController } from 'ionic-angular';
 
 @Component({
 
@@ -25,7 +26,7 @@ loading: Loading;
 stopIrrigationFlag = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    private auth: AuthService, private loadingCtrl: LoadingController) {
+    private auth: AuthService, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 		this.crop = navParams.get("crop");
   }
 
@@ -373,6 +374,36 @@ stopIrrigationFlag = false;
         console.log(error);
       });
     }
+
+  }
+  info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> ETc value of crop in millimeters is presented.</li>
+          <li> Amount of rainfall in millimeters is given but user can change value if desired..</li>
+          <li> Recommended amount of water to irrigate is given but user may change value if desired.</li>
+          <li> Units of irrigation value may be changed by selecting it in the drop down menu which is located to the 
+          right of the recommended field.</li>
+                 
+         <li>To irrigate crops and save information press the irrigate button found at the bottom of the page.</li>
+      
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
 
   }
    

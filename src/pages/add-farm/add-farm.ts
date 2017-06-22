@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AuthService } from '../../providers/auth-service';
+import { AlertController } from 'ionic-angular';
 
  
 declare var google: any;
@@ -23,7 +24,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
-    private auth: AuthService) {
+    private auth: AuthService, public alertCtrl: AlertController) {
     var user = this.auth.getUserInfo();
     this.farm.uid = user.uid;
 
@@ -170,6 +171,37 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       infoWindow.open(this.map, marker);
     });
    
+  }
+
+  info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Enter prefered farm name in the indicated field</li>
+          <li> Select a "Soil Type" from the drop down menu. If not sure of farm soil type, select one similar to what
+          is observed.</li>
+          <li> Press GPS Location button to aquire current farm location. Latitudes and Longitudes may be changed 
+          by the user.</li>
+                 
+         <li> Save information by pressing the "Add Farm" button found at the bottom of the page.</li>
+      
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
   }
   
   

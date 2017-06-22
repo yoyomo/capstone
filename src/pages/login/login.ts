@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, MenuController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { RegisterPage } from '../register/register';
 import { HomePage } from '../home/home';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
  
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -13,8 +14,9 @@ export class LoginPage {
   loading: Loading;
   registerCredentials = {usernameORmail: '', password: ''};
  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-   
+  constructor(private nav: NavController,private menuCtrl: MenuController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+   this.menuCtrl.enable(false);
+
    var user = JSON.parse(localStorage.getItem("loggedInUser"));
     if(user){
       if(user.uid){

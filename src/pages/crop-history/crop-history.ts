@@ -152,5 +152,37 @@ export class CropHistoryPage {
  
   }
 
+  info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Graph of amount of water irrigated versus recommended amount of water to irrigate is presented.</li>
+
+          <li>A table is presented with the date of season, date of irrigation, irrigation amount recommended and actual irrigation amount 
+          given.</li>
+
+          <li> Swipe table items to the left < to  edit.</li>
+
+          
+                 
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
 }
   

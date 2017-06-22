@@ -6,6 +6,7 @@ import { AddIrrigationZonePage } from '../add-irrigation-zone/add-irrigation-zon
 import { AuthService } from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 import { Events } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-add',
@@ -33,7 +34,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth:AuthService, 
    public viewCtrl: ViewController, public events: Events, 
-   private loadingCtrl: LoadingController) {
+   private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 
     this.user = this.auth.getUserInfo();
     this.crop.uid = this.user.uid;
@@ -181,6 +182,44 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     console.log('Irrigation Zones loaded.');
     this.loadingZones.dismiss();
   }
+
+  info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Begin by selecting a farm from the drop down menu titled "Farm Name".
+          If no farm has beed added click the plus + sign button found next to the drop down menu to 
+          add a farm. Then proceed to select farm added from drop down menu.
+           Once farm is selected continue by doing the same with "Irrigation Zone"</li>
+
+          <li> Irrigation Zone and Crop are disabled until Farm Name is selected.</li>
+
+          <li> Once Irrigation Zone is selected search for crop and select it from drop down menu.</li>
+          
+          <li> If crop is not found in list select a similar crop.</li>
+
+          <li> Save information by pressing the "Add" button found at the bottom of the page.</li>
+
+                 
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
 
 }
 
