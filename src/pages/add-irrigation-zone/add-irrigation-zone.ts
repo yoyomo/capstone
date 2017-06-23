@@ -10,7 +10,7 @@ import { AlertController } from 'ionic-angular';
 export class AddIrrigationZonePage {
 
 public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: 0, controlID: '', valveID: '' };
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: 50, controlID: '', valveID: '' };
 
 private irrigationMethods: any = [];
 

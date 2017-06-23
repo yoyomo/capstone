@@ -29,10 +29,11 @@
 </ion-item>
 
 <ion-item>
-  <ion-label floating>Irrigation Efficiency (%)</ion-label>
-          <ion-input type="number" max="100" min="0" step="1" [(ngModel)]="zone.irrigationefficiency" name="irrigationEff" required></ion-input>
+  <ion-label stacked>Irrigation Efficiency (%) 
+  <br>minimum 50%</ion-label>
+          <ion-input type="number" max="100" min="50" step="1" [(ngModel)]="zone.irrigationefficiency" name="irrigationEff" required></ion-input>
 </ion-item>
-<button ion-button round (click)="editIrrigationZone()" block [disabled] = "!formCtrl.form.valid" >Save</button>
+<button ion-button round (click)="editIrrigationZone()" block [disabled] = "!formCtrl.form.valid || zone.irrigationefficiency < 50" >Save</button>
 </form>
 
 <ion-item>

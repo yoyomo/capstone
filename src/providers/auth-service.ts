@@ -79,7 +79,6 @@ export class AuthService {
   
   private accessDatabase(url, data) {
     var encrypted = this.encryptToURL(data);
-    console.log(encrypted);
     url = url+encrypted;
     return this.accessDatabaseURL(url);
   }

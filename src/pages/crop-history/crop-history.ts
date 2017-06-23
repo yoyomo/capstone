@@ -121,9 +121,9 @@ export class CropHistoryPage {
   }
 
   editHistory(history){
- 
+    var date = new Date(history.histdate);
     let prompt = this.alertCtrl.create({
-      title: 'Edit Irrigation Amount at \n'+history.histdate,
+      title: 'Edit Irrigation Amount at \n'+date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear()+'(DD/MM/YYYY) \n'+("0" + date.getHours()).slice(-2)+':'+("0" + date.getMinutes()).slice(-2)+':'+("0" + date.getSeconds()).slice(-2)+'(HH:MM:SS)',
       inputs: [{
         name: 'editedAmount',
         value: history.irrigatedet

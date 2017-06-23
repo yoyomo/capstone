@@ -10,7 +10,7 @@ import { AuthService } from '../../providers/auth-service';
 export class EditZonePage {
 
 zone = { izid: '', farmid: '', uid: '', izname: '',acres: '',
-		waterflow: '0', irrigationmethod: '', irrigationefficiency: 0, crops: ''};
+		waterflow: '0', irrigationmethod: '', irrigationefficiency: 50, crops: ''};
 private irrigationMethods: any = [];
 loadingMethods: Loading;
 

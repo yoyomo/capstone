@@ -79,6 +79,10 @@ export class SettingsPage {
           this.showPopup("Current Password must be verified","If change of settings is\
              desired, your account's current password must be filled.");
         }
+        else if(typeof data[0] === 'undefined'){
+          console.log(data);
+          this.showPopup("Username already exists","the new username is already being used by another user");
+        }
         else{
           console.log("Settings saved.");
           //update local storage and authservice

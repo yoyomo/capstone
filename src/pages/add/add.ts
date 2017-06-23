@@ -43,14 +43,16 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
 
   ionViewWillEnter(){
     this.loadFarms();
-    this.loadZones();
+    
   }
 
   loadFarms(){
     this.showLoadingFarms();
     this.auth.getUserFarms(this.user).subscribe(data => {
       this.farms = data;
+      this.crop.farmid = this.farms[0].farmid;
       this.closeLoadingFarms();
+      this.loadZones();
     },
     error => {
       console.log(error);
@@ -90,6 +92,9 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
       if(this.zones[zoneIndex].farmid === this.crop.farmid){
         this.farmZones.push(this.zones[zoneIndex]);
       }
+    }
+    if(this.farmZones.length > 0) {
+      this.crop.izid = this.farmZones[this.farmZones.length-1].izid;
     }
     
   }

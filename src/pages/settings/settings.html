@@ -53,7 +53,7 @@
   </ion-item>
   <ion-item>
      <ion-label stacked>Email</ion-label>
-     <ion-input type="email" [disabled] [(ngModel)]="settings.email" name="email" required ></ion-input>
+     <ion-input type="email" [disabled]="true" [(ngModel)]="settings.email" name="email" required ></ion-input>
   </ion-item>
 
   <ion-item *ngIf="!changePassword">
@@ -62,12 +62,14 @@
   <div *ngIf="changePassword">
     
     <ion-item>
-       <ion-label stacked>New Password</ion-label>
-       <ion-input type="password" [(ngModel)]="newPassword" name="newpassword" ></ion-input>
+       <ion-label stacked>New Password (minimum length is 6)</ion-label>
+       <ion-input type="password" [(ngModel)]="newPassword" name="newpassword" minlength="6"
+       maxlength="20" ></ion-input>
     </ion-item>
     <ion-item>
        <ion-label stacked>Confirm New Password</ion-label>
-       <ion-input type="password" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" ></ion-input>
+       <ion-input type="password" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" minlength="6"
+       maxlength="20" ></ion-input>
     </ion-item>
     <ion-item>
        <button ion-button (click)="changePassword=false">Cancel</button>
