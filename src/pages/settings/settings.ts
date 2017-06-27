@@ -10,7 +10,6 @@ export class SettingsPage {
 
   edit: boolean;
   changePassword: boolean;
-  username = '';
   mailsubscription: boolean;
   verifyPassword = '';
   newPassword = '';
@@ -25,10 +24,7 @@ export class SettingsPage {
         this.mailsubscription = true;
       else if (this.settings.mailsubscription === 'Unsubscribed')
         this.mailsubscription = false;
-      this.username = this.settings.username;
   }
-
-
 
   // Displays a message as a popup
   showPopup(title, text) {
@@ -109,6 +105,7 @@ export class SettingsPage {
           this.settings = this.auth.getUserInfo();
           this.changePassword = false;
           this.edit = false;
+          this.showPopup("Settings saved!","Your account information were successfully saved.");
         }
       },
       error => {

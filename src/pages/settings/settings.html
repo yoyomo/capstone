@@ -7,36 +7,15 @@
       </button>
     </ion-buttons>
 
-    <ion-title>Account Info.</ion-title>
-
-    <ion-buttons end>
-      <button ion-button icon-only *ngIf="!edit" (click)="enable()">
-        <ion-icon name="build"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-title>Settings</ion-title>
 
     </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <div *ngIf="!edit">
-  <ion-card >
-    <ion-list>
-      <ion-item>
-        <b>Full Name:</b> {{settings.fullname}}
-      </ion-item>
-       <ion-item>
-        <b>Username:</b> {{settings.username}}
-      </ion-item>
-       <ion-item>
-        <b>Email:</b> {{settings.email}}
-      </ion-item>
-    </ion-list>
-  </ion-card>
-  </div>
-
-  <div *ngIf="edit">
+  
+  <div>
   <form #formCtrl="ngForm">
   <ion-item>
      <ion-label stacked>Full Name</ion-label>
@@ -44,7 +23,7 @@
   </ion-item>
   <ion-item>
      <ion-label stacked>Username</ion-label>
-     <ion-input type="text" [(ngModel)]="username" name="userName" required ></ion-input>
+     <ion-input type="text" [(ngModel)]="settings.username" name="userName" required ></ion-input>
   </ion-item>
   <ion-item>
      <ion-label stacked>Email</ion-label>
@@ -83,11 +62,11 @@
 
  <ion-row>
     <ion-col col-4>
-      <button ion-button [disabled]="!formCtrl.form.valid" (click)="save()" round>Save</button>
+      <button ion-button color="secondary" [disabled]="!formCtrl.form.valid" (click)="save()" round>Save Changes</button>
     </ion-col>
-    <ion-col col-8>
+    <!--<ion-col col-8>
     <button ion-button (click)="cancel()" round>Cancel</button>
-    </ion-col>
+    </ion-col>-->
   </ion-row>
   </div>
 
