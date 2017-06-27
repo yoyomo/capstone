@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { AllCropInfoPage } from '../all-cropinfo/all-cropinfo';
 
 @Component({
   selector: 'page-settings',
@@ -34,11 +33,6 @@ export class SettingsPage {
     });
     alert.present();
   }
-
-  // Opens all cropInfo Page if admin
-  allCrops() {
-    this.navCtrl.push(AllCropInfoPage);
-  } 
 
   // Enables Edit Mode
   enable(){

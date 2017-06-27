@@ -35,6 +35,11 @@
 </ion-item>
 <button ion-button round (click)="editIrrigationZone()" block [disabled] = "!formCtrl.form.valid || zone.irrigationefficiency < 50" >Save</button>
 </form>
+<ion-item-divider></ion-item-divider>
+<button ion-button icon-start (click)="deleteZone(zone)" color="danger">
+    <ion-icon name="trash"></ion-icon>
+    Delete Zone
+</button>
 
 <div *ngIf="this.auth.isHardware()">
   <ion-item>

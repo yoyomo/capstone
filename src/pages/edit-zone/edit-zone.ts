@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController,
  Loading, LoadingController, AlertController} from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-edit-zone',
@@ -84,6 +85,36 @@ control: any = {
     error => {
       console.log(error);
     });
+  }
+
+  // Deletes an Irrigation Zone with confirmation
+  deleteZone(zone){
+    let prompt = this.alertCtrl.create({
+          title: 'Delete Irrigation Zone?',
+          message: "All Crops and History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteIrrigationZone(zone).subscribe(data => {
+                      console.log("Irrigation Zone & all its crops & \
+                        all its histories deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present(); 
+
   }
 
   /*

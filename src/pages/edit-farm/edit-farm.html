@@ -69,5 +69,10 @@
 </div>
 
 <button ion-button round (click)="editFarm()" block [disabled]="!formCtrl.form.valid">Save</button>
+<ion-item-divider></ion-item-divider>
+<button ion-button round (click)="deleteFarm(farm)" color="danger">
+  <ion-icon name="trash"></ion-icon>
+  Delete Farm
+</button>
 
 </ion-content>

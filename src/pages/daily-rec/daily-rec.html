@@ -15,11 +15,6 @@
       <button ion-button icon-only (click)="info()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
-      
-      <button ion-button icon-only (click)="cropHistory()">
-        <ion-icon name="calendar"></ion-icon>
-      </button>
-
     </ion-buttons>
 
   </ion-navbar>
@@ -65,7 +60,19 @@
   </ion-item> 
 </ion-list>
 
-  <button ion-button *ngIf="!stopIrrigationFlag" (click)="irrigate()" round>Irrigate</button>
+  <button ion-button *ngIf="!stopIrrigationFlag" (click)="irrigate()" round icon-start>
+    <ion-icon name="water"></ion-icon>
+    Irrigate
+  </button>
   <button ion-button *ngIf="stopIrrigationFlag" (click)="stopIrrigation()" color="danger" round>Stop</button>
+  <button ion-button (click)="cropHistory()" icon-start round color="secondary">
+    <ion-icon name="calendar"></ion-icon>
+    Crop History
+  </button>
+  <ion-item-divider></ion-item-divider>
+  <button ion-button (click)="deleteCrop(crop)" color="danger">
+    <ion-icon name="trash" ></ion-icon>
+    Delete Crop
+  </button>
 
 </ion-content>

@@ -11,6 +11,10 @@
         <ion-icon name="information-circle"></ion-icon>
       </button>
 
+      <button ion-button icon-only *ngIf="user.typeofuser==='Admin'" (click)="allCrops()">
+        <ion-icon name="flower"></ion-icon>
+      </button>
+
       <button ion-button icon-only (click)="launcharAddPage()">
         <ion-icon name="add"></ion-icon>
       </button>
@@ -23,81 +27,73 @@
  
   <ion-row>
     <ion-col col-3>
-   <img class="image" height="60" width="30" align="middle" src="assets/img/hoja  h20 crop .png"/>
+      <img class="image" height="60" width="30" align="middle" src="assets/img/hoja  h20 crop .png"/>
     </ion-col>
     <ion-col col-9>
-   <h1>Welcome! {{user.username}}</h1>
+      <h1>Welcome! {{user.username}}</h1>
     </ion-col>
-    </ion-row>
+  </ion-row>
 
-    <p *ngIf="farms.length==0">Begin your H2OCrop experience by adding farms, zones and crops to your profile.
+  <div *ngIf="farms.length==0">
+    <p>Begin your H2OCrop experience by adding farms, zones and crops to your profile.
       Click the "Add" button below to begin.
     </p>
 
-    <button  class="button" ion-button round (click)="launcharAddPage()" *ngIf="farms.length==0"><ion-icon name="add"></ion-icon>Add</button>
+    <button  class="button" ion-button round (click)="launcharAddPage()">
+      <ion-icon name="add"></ion-icon>
+      Add
+    </button>
     
-    <p *ngIf="farms.length==0">If you need any more information feel free to click the information button 
+    <p>If you need any more information feel free to click the information button 
       found in the top right corner or slide screen to the right to revele a side menu where you will find our User Guide.
     </p>
+  </div>
   
-
   <ion-card class="card" *ngFor="let farm of farms">
   
   <ion-card-header class="cardheader">
   
   </ion-card-header>
 
-  <ion-card-content >
+    <ion-card-content >
 
       <ion-list class="list" >
-
-        <ion-item-sliding>
-          <ion-item class="listitem" detail-push>
-            <ion-icon name="leaf" class="leaf" item-left></ion-icon>
-            {{farm.farmname}}
-
-          </ion-item>
-          <ion-item-options>
-            <button ion-button icon-only (click)="editFarm(farm)" color="light">
-                <ion-icon name="paper"></ion-icon>
-            </button>
-            <button ion-button icon-only (click)="deleteFarm(farm)" color="danger">
-                <ion-icon name="trash"></ion-icon>
-            </button>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item class="listitem" (click)="editFarm(farm)">
+          <ion-icon name="leaf" class="leaf" item-left></ion-icon>
+          {{farm.farmname}}
+        </ion-item>
 
         <div *ngFor="let zone of farm.zones">
-          <ion-item-sliding >
-            <ion-item>
-              <ion-icon name="water" class="water child" item-left></ion-icon>
-              {{zone.izname}}
-            </ion-item>
-            <ion-item-options>
-                <button ion-button icon-only (click)="editZone(zone)" color="light">
-                    <ion-icon name="paper"></ion-icon>
-                </button>
-                <button ion-button icon-only (click)="deleteZone(zone)" color="danger">
-                    <ion-icon name="trash"></ion-icon>
-                </button>
-            </ion-item-options>
-          </ion-item-sliding> 
+          <ion-item (click)="editZone(zone)">
+            <ion-icon name="water" class="water child" item-left></ion-icon>
+            {{zone.izname}}
+          </ion-item>
           
-          <ion-item-sliding *ngFor="let crop of zone.crops">
+          <div *ngFor="let crop of zone.crops">
             <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'">
-              <ion-icon  name="flower" class="flower grandchild" item-left></ion-icon>
+              <ion-icon  name="flower" class="flower grandchild" item-start></ion-icon>
+              {{crop.cropname}}
+            </ion-item>
+            <ion-item (click)="dailyRec(crop)" class="finished"*ngIf="crop.cropstatus==='Finished'" >
+              <ion-icon  name="flower" class="finished" item-left></ion-icon>
+              {{crop.cropname}}
+            </ion-item>
+          </div>
+          <!--<ion-item-sliding *ngFor="let crop of zone.crops">
+            <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'">
+              <ion-icon  name="flower" class="flower grandchild" item-start></ion-icon>
               {{crop.cropname}}
             </ion-item>
             <ion-item-options>
                 <button ion-button icon-only (click)="deleteCrop(crop)" color="danger">
-                    <ion-icon name="trash"></ion-icon>
+                    <ion-icon name="trash" ></ion-icon>
                 </button>
             </ion-item-options>
             <ion-item (click)="dailyRec(crop)" class="finished"*ngIf="crop.cropstatus==='Finished'" >
               <ion-icon  name="flower" class="finished" item-left></ion-icon>
               {{crop.cropname}}
             </ion-item>
-          </ion-item-sliding>
+          </ion-item-sliding>-->
         </div>
       </ion-list>
     </ion-card-content>
