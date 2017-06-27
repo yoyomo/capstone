@@ -52,31 +52,21 @@ stopIrrigationFlag = false;
     }
   }
 
-  showSetup(){
-    this.loading = this.loadingCtrl.create({
-      content: 'Setting up first irrigation...'
-    });
-    this.loading.present();
-  }
-
-  closeSetup(){
-    this.loading.dismiss();
-  }
-
   // Loads all the data of the User's crop
   loadCrop(){
     this.auth.readSpecificCrop(this.crop).subscribe(data => {
       this.crop = data[0];
       if (this.auth.isDebug()) console.log(this.crop);
 
-      if(this.crop.currentday ==0) {
+      if (this.crop.outofrange==='Yes'){
+        this.closeSetup();
+        this.showOutOfRange();
+      }
+      else if(this.crop.currentday ==0) {
         this.setup();
       }
       else {
-        if(this.settingUp){
-          this.settingUp = false;
-          this.closeSetup();
-        }
+        this.closeSetup();
 
         this.history.cropid = this.crop.cropid;
         this.history.uid = this.crop.uid;
@@ -277,6 +267,39 @@ stopIrrigationFlag = false;
       });
 
       prompt.present();
+  }
+
+  showSetup(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Setting up first irrigation...'
+    });
+    this.loading.present();
+  }
+
+  closeSetup(){
+    if(this.settingUp){
+      this.settingUp = false;
+      this.loading.dismiss();
+    }
+    
+  }
+
+  showOutOfRange(){
+    let prompt = this.alertCtrl.create({
+      title: 'Out of Range',
+      message: "Farm is out of range. Please go back and change the Farm location inland.",
+                
+      buttons: [
+        {
+          text: 'OK',
+          handler: data => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+
+    prompt.present();
   }
 
   comm:any ={

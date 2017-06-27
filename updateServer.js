@@ -123,7 +123,7 @@ function readAllCrops() {
     accessDatabase('/db/get/allcrops',function(result) {
     	var allcrops = result;
         for(var i=0;i<allcrops.length;i++){
-        	updateHistory(allcrops[i]);
+        	//updateHistory(allcrops[i]);
         	updateNewData(allcrops[i]);
         }
     });
@@ -195,6 +195,12 @@ function updateHistory(crop) {
 // Updates a crop's ETc and notifies the user if it has exceeded the Readily Available Water (RAW)
 function updateNewData(crop){
 	var calculated, irrigationDepth, Kc, rainfall, adjusted,ETcadj,RAW;
+	var olddata = {
+		currentet: crop.currentet,
+		cumulativeet: crop.cumulativeet,
+		rainfall: crop.rainfall,
+		currentday: crop.currentday
+	};
 
 	console.log('Updating data for crop '+crop.cropid+' ...');
 	calculated = getIrrigationDepth(crop);
@@ -210,12 +216,30 @@ function updateNewData(crop){
 	RAW = adjusted.RAW;
 	crop.cumulativeet += ETcadj;
 
+	if(crop.cropid==58){
+
+	//checks if farm is out of range (NaN)
+	if(!crop.currentet){
+		//reverts everything back
+		console.log("Crop "+crop.cropid+" is out of range");
+		crop.currentet = olddata.currentet;
+		crop.cumulativeet = olddata.cumulativeet;
+		crop.rainfall = olddata.rainfall;
+		crop.currentday = olddata.currentday;
+		crop.outofrange = 'Yes';
+	}
+	else{
+		crop.outofrange = 'No';
+	}
+
 	//update crop in database
 	accessDatabase('/db/update/crop/'+encryptToString(crop), function(result){
 		console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
 			' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
 			' rainfall '+crop.rainfall);
+		console.log(result);
 	});
+}
 
 	if(crop.cumulativeet >= RAW){
 		//check if user is subscribed
