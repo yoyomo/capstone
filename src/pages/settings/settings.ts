@@ -91,7 +91,7 @@ export class SettingsPage {
         else{
           console.log("Settings saved.");
           //update local storage and authservice
-          console.log(data[0]);
+          if (this.auth.isDebug()) console.log(data[0]);
           this.auth.createUser(data[0].uid,data[0].fullname,
             data[0].username,data[0].email,data[0].password,
              data[0].typeofuser);

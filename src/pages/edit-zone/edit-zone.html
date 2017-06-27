@@ -36,29 +36,30 @@
 <button ion-button round (click)="editIrrigationZone()" block [disabled] = "!formCtrl.form.valid || zone.irrigationefficiency < 50" >Save</button>
 </form>
 
-<ion-item>
-  <ion-label> Valve Control</ion-label>
-  <ion-select [(ngModel)]="control.controlid" (ionChange)="getValveID()">
-    <ion-option *ngFor="let mc of mastercontrols" value="{{mc.controlid}}">
-      #{{mc.controlid}} // {{mc.ipaddress}}
-    </ion-option>
-  </ion-select>
-</ion-item>
-<div *ngIf="this.control.controlid">
-  <ion-item >
-     <ion-label floating>Local Valve ID</ion-label>
-     <ion-input type="number" [(ngModel)]="control.valveid" name="valveid" required></ion-input>
+<div *ngIf="this.auth.isHardware()">
+  <ion-item>
+    <ion-label> Valve Control</ion-label>
+    <ion-select [(ngModel)]="control.controlid" (ionChange)="getValveID()">
+      <ion-option *ngFor="let mc of mastercontrols" value="{{mc.controlid}}">
+        #{{mc.controlid}} // {{mc.ipaddress}}
+      </ion-option>
+    </ion-select>
   </ion-item>
-  <ion-buttons *ngIf="!control.new">
-    <button ion-button round (click)="editValveControl()">
-    <ion-icon name="paper"></ion-icon> Control</button>
-    <button ion-button round (click)="showConfirmDelete()" color="danger">
-    <ion-icon name="trash"></ion-icon> Control</button>
-  </ion-buttons>
-   <button *ngIf="control.new" ion-button round (click)="addValveControl()">
-   <ion-icon name="add"></ion-icon> Control</button>
+  <div *ngIf="this.control.controlid">
+    <ion-item >
+       <ion-label floating>Local Valve ID</ion-label>
+       <ion-input type="number" [(ngModel)]="control.valveid" name="valveid" required></ion-input>
+    </ion-item>
+    <ion-buttons *ngIf="!control.new">
+      <button ion-button round (click)="editValveControl()">
+      <ion-icon name="paper"></ion-icon> Control</button>
+      <button ion-button round (click)="showConfirmDelete()" color="danger">
+      <ion-icon name="trash"></ion-icon> Control</button>
+    </ion-buttons>
+     <button *ngIf="control.new" ion-button round (click)="addValveControl()">
+     <ion-icon name="add"></ion-icon> Control</button>
+  </div>
 </div>
-
 
 
 </ion-content>

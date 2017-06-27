@@ -21,7 +21,7 @@ export class AddCropInfoPage {
   // Completes the operation and adds a New CropInfo for every User to choose from
   addCropInfo(){
     this.auth.addCropInfo(this.cropInfo).subscribe(data => {
-      console.log(data);
+      if (this.auth.isDebug()) console.log(data);
       if(data.length != 0){
         console.log(data);
         this.showError(data.detail);

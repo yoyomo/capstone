@@ -36,7 +36,7 @@ loadingLon: Loading;
     private auth: AuthService, private loadingCtrl: LoadingController,
     private alertCtrl: AlertController) {
     this.farm = this.navParams.get("farm");
-    console.log(this.farm);
+    if (this.auth.isDebug()) console.log(this.farm);
 
     this.showLoadingSoils();
     this.auth.getSoils().subscribe(data => {
@@ -65,7 +65,7 @@ loadingLon: Loading;
       console.log(error);
     });
 
-    this.loadMasterControl();
+    if(this.auth.isHardware()) this.loadMasterControl();
 
     
   }
@@ -87,9 +87,9 @@ loadingLon: Loading;
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,
                   longitude: position.coords.longitude};
-                  console.log(GPS);
+      if (this.auth.isDebug()) console.log(GPS);
       GPS = this.accommodateGPS(GPS);
-      console.log(GPS);
+      if (this.auth.isDebug()) console.log(GPS);
       this.loadMap(GPS.latitude,GPS.longitude);
     }, (err) => {
       console.log(err);

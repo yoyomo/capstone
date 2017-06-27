@@ -70,9 +70,9 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,
                   longitude: position.coords.longitude};
-                  console.log(GPS);
+      if (this.auth.isDebug()) console.log(GPS);
       GPS = this.accommodateGPS(GPS);
-      console.log(GPS);
+      if (this.auth.isDebug()) console.log(GPS);
       this.loadMap(GPS.latitude,GPS.longitude);
     }, (err) => {
       console.log(err);

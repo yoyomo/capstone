@@ -41,7 +41,7 @@ control: any = {
       console.log(error);
     });
 
-    this.loadMasterControl();
+    if(this.auth.isHardware()) this.loadMasterControl();
   }
 
   //Converts to decimal to avoid re-entering and re-multplying by 100

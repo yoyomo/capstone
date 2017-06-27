@@ -80,7 +80,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.showLoadingZones();
     this.auth.getUserZones(this.user).subscribe(data => {
       this.zones = data;
-      console.log(this.zones);
+      if (this.auth.isDebug()) console.log(this.zones);
       this.loadFarmZones();
       this.closeLoadingZones();
     },
@@ -112,7 +112,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
 
   // Opens Add Irrigation Zone Page
   launcharZonePage(){
-    console.log(this.crop.farmid);
+    if (this.auth.isDebug()) console.log(this.crop.farmid);
     this.navCtrl.push(AddIrrigationZonePage,{
       farmid: this.crop.farmid
     });

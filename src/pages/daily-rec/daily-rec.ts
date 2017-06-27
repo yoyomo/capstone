@@ -65,7 +65,7 @@ stopIrrigationFlag = false;
   loadCrop(){
     this.auth.readSpecificCrop(this.crop).subscribe(data => {
       this.crop = data[0];
-      console.log(this.crop);
+      if (this.auth.isDebug()) console.log(this.crop);
 
       if(this.crop.currentday ==0) {
         this.setup();
@@ -82,6 +82,7 @@ stopIrrigationFlag = false;
         this.history.seasonday = this.crop.currentday;
         this.history.rainfall = (this.crop.rainfall).toFixed(2);
 
+        console.log("Daily Recommendation calculated.");
         //calculate the difference between etc and rainfall
         //and display amount
         this.changeRainfall();
@@ -229,7 +230,7 @@ stopIrrigationFlag = false;
       
       this.auth.updateAllOtherCrops(this.crop).subscribe(data => {
         console.log("All other Crops updated.");
-        //this.loadCrop();
+        this.loadCrop();
         //this.navCtrl.pop();
       },
       error => {
@@ -243,7 +244,7 @@ stopIrrigationFlag = false;
     /*
      * Send to microcontroller
      */
-    this.sendToMasterControl();
+    if(this.auth.isHardware()) this.sendToMasterControl();
     
   }
 
@@ -266,14 +267,14 @@ stopIrrigationFlag = false;
         this.comm.ipaddress = data[0].ipaddress;
         this.comm.valveid = data[0].valveid;
 
-        console.log(this.comm);
+        if (this.auth.isDebug()) console.log(this.comm);
 
         this.auth.irrigateCommunication(this.comm).subscribe(data => {
-          console.log(data);
+          if (this.auth.isDebug()) console.log(data);
           console.log("Irrigate Communication sent.");
           
           this.auth.sendControl(this.comm).subscribe(data => {
-            console.log(data);
+            if (this.auth.isDebug()) console.log(data);
             console.log("Control sent.");
             //this.refreshStatus(data.status);
             this.stopIrrigationFlag = true;
@@ -325,7 +326,7 @@ stopIrrigationFlag = false;
     //     this.comm.ipaddress = data[0].ipaddress;
     //     this.comm.valveid = data[0].valveid;
 
-    //     console.log(this.comm);
+    //     if (this.auth.isDebug()) console.log(this.comm);
 
     //     this.auth.stopIrrigation(this.comm).subscribe(data => {
     //       console.log("Communication Stopped.");
@@ -357,7 +358,7 @@ stopIrrigationFlag = false;
   refreshStatus(status){
     if(status==='received'){
       this.auth.receivedCommunication(this.comm).subscribe(data => {
-        console.log(data);
+        if (this.auth.isDebug()) console.log(data);
         console.log("Received communication.");
         // recheck status from master control
         // and then call this.refreshStatus(status)
@@ -368,7 +369,7 @@ stopIrrigationFlag = false;
     }
     else if(status === 'irrigating') {
       this.auth.irrigatingCommunication(this.comm).subscribe(data => {
-        console.log(data);
+        if (this.auth.isDebug()) console.log(data);
         console.log("Irrigating communication.");
         // recheck status from master control
         // and then call this.refreshStatus(status)
@@ -380,7 +381,7 @@ stopIrrigationFlag = false;
     }
     else if(status==='finished'){
       this.auth.finishedCommunication(this.comm).subscribe(data => {
-        console.log(data);
+        if (this.auth.isDebug()) console.log(data);
         console.log("Finished communication.");
         // end refresh
       },

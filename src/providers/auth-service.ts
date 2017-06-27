@@ -34,6 +34,8 @@ export class User {
 @Injectable()
 export class AuthService {
   currentUser: User;
+  debug: boolean = false;
+  hardware:boolean = false;
 
   constructor(private http: Http) {
       
@@ -108,16 +110,32 @@ export class AuthService {
     }
   }
  
+ // Returns logged in user
   public getUserInfo() : User {
     return this.currentUser;
   }
  
+ // Logs out user
   public logout() {
     console.log("Logging out...");
     localStorage.setItem("loggedInUser",null);
     this.currentUser = null;
     return;
   }
+
+  // Checks if in Debug Mode
+  public isDebug() {
+  	return this.debug;
+  }
+
+  // Checks if Hardware is enabled
+  public isHardware() {
+  	return this.hardware;
+  }
+
+  /*********************************
+   ***** All RESTful API paths *****
+   *********************************/
 
   public getUserCrops(user) {
     var url = '/db/get/crops/';

@@ -26,11 +26,11 @@ export class RegisterPage {
         if (success.name === "error") {
           this.showPopup("Error", success.detail);
         } else {
-          //console.log("Registered user: "+success)
-          console.log(success);
+          //if (this.auth.isDebug()) console.log("Registered user: "+success)
+          if (this.auth.isDebug()) console.log(success);
           this.createSuccess = true;
           this.auth.sendVerify(this.registerCredentials).subscribe(data => {
-            this.showPopup("Success", "Account created. Please verify your account in the email we sent you at "+this.registerCredentials.email+"");
+            this.showPopup("Verify your Account", "Account created. Please verify your account in the email we sent you at "+this.registerCredentials.email+"");
           });
         }
       },

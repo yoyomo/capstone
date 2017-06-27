@@ -45,7 +45,7 @@ export class LoginPage {
       user = data[0];
       if (user) {
         if(user.verified==='Yes') {
-          console.log('Logged in: '+user.fullname);
+          console.log('Logged in: '+user.username);
           this.auth.createUser(user.uid, user.fullname, user.username, user.email, user.password, user.typeofuser);
           setTimeout(() => {
             localStorage.setItem("loggedInUser",JSON.stringify(user));
@@ -56,21 +56,21 @@ export class LoginPage {
         else if (user.verified==='No'){
           console.log("User not verified.");
           this.auth.sendVerify(user).subscribe(data => {
-            this.showError("Account is not verified.\n\
-           Please check your email and click the verify button.");
+            this.showError("Account is not verified!",
+           "Please look for the email we sent you and click the verify button to verify your account.\n If no email from h2ocrop is found please check the junk mail. \n");
           },
           error => {
-            this.showError(error);
+            this.showError("Fail!",error);
           });
         }
 
       } else {
-        this.showError("Access Denied!\n\
-          User does not exist. Please Create New Account.");
+        this.showError("Access Denied!",
+          "username or password not found. If you are new, please Create New Account.");
       }
     },
     error => {
-      this.showError(error);
+      this.showError('Fail!',error);
     });
 
 
@@ -85,13 +85,13 @@ export class LoginPage {
   }
  
    // Displays an error
-  showError(text) {
+  showError(title,text) {
     setTimeout(() => {
       this.loading.dismiss();
     });
  
     let alert = this.alertCtrl.create({
-      title: 'Fail',
+      title: title,
       subTitle: text,
       buttons: ['OK']
     });

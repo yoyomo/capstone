@@ -233,6 +233,7 @@ app.get('/db/verifyaccount/:verify', function (req,res) {
 	call("update farmer\
 		set verified='Yes'\
 		where email='"+verify.email+"'\
+		returning 'Account has successfully been verified! Please proceed to log in in the h2ocrop application or at https://h2ocrop.herokuapp.com' as message\
 		;",req,res); 
 }); 
 

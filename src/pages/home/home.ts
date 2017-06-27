@@ -28,7 +28,7 @@ farms: any = [];
 
     this.menuCtrl.enable(true); 
     this.user = this.auth.getUserInfo();
-    console.log(this.user);
+    if(this.auth.isDebug()) console.log(this.user);
     this.auth.getUserFarms(this.user).subscribe(data => {
       this.farms = data;
 
@@ -37,7 +37,7 @@ farms: any = [];
 
         this.auth.getUserCrops(this.user).subscribe(data => {
           this.crops = data; 
-          console.log(this.crops);
+          if (this.auth.isDebug()) console.log(this.crops);
 
           this.includeCropsToZones();
           this.includeZonesToFarms();
