@@ -10,6 +10,7 @@ export class SettingsPage {
 
   edit: boolean;
   changePassword: boolean;
+  username = '';
   mailsubscription: boolean;
   verifyPassword = '';
   newPassword = '';
@@ -24,7 +25,10 @@ export class SettingsPage {
         this.mailsubscription = true;
       else if (this.settings.mailsubscription === 'Unsubscribed')
         this.mailsubscription = false;
+      this.username = this.settings.username;
   }
+
+
 
   // Displays a message as a popup
   showPopup(title, text) {
@@ -46,7 +50,7 @@ export class SettingsPage {
     this.edit = false;
     this.settings = JSON.parse(localStorage.getItem("loggedInUser"));
     this.auth.createUser(this.settings.uid, this.settings.fullname, this.settings.username,
-     this.settings.email, this.settings.password, this.settings.typeofuser);
+     this.settings.email, this.settings.password, this.settings.typeofuser, this.settings.mailsubsciption);
   }
 
   // Saves any updated data
@@ -76,8 +80,10 @@ export class SettingsPage {
         }
       }
 
-      if(this.mailsubscription) this.settings.mailsubscription = 'Subscribed';
-      else this.settings.mailsubscription = 'Unsubscribed';
+      if(this.mailsubscription) 
+        this.settings.mailsubscription = 'Subscribed';
+      else 
+        this.settings.mailsubscription = 'Unsubscribed';
 
       this.auth.editFarmer(this.settings).subscribe(data => {
         
@@ -95,7 +101,7 @@ export class SettingsPage {
           if (this.auth.isDebug()) console.log(data[0]);
           this.auth.createUser(data[0].uid,data[0].fullname,
             data[0].username,data[0].email,data[0].password,
-             data[0].typeofuser);
+             data[0].typeofuser, data[0].mailsubscription);
           localStorage.setItem("loggedInUser",JSON.stringify(this.auth.getUserInfo()));
           this.verifyPassword = '';
           this.newPassword = '';

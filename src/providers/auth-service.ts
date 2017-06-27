@@ -18,15 +18,17 @@ export class User {
   email: string;
   password: string;
   typeofuser: string;
+  mailsubscription: string;
  
   constructor(uid: number, fullname: string, username: string, 
-    email: string, password:string, typeofuser: string) {
+    email: string, password:string, typeofuser: string, mailsubscription: string) {
     this.uid = uid;
     this.fullname = fullname;
     this.username = username;
     this.email = email;
     this.password = password;
-    this.typeofuser = typeofuser
+    this.typeofuser = typeofuser;
+    this.mailsubscription = mailsubscription;
     
   }
 
@@ -42,8 +44,8 @@ export class AuthService {
       
   }
 
-  public createUser(uid, fullname, username, email, password, typeofuser){
-    this.currentUser = new User(uid, fullname, username, email, password, typeofuser);
+  public createUser(uid, fullname, username, email, password, typeofuser, mailsubscription){
+    this.currentUser = new User(uid, fullname, username, email, password, typeofuser, mailsubscription);
   }
 
   private clearURL(string){
