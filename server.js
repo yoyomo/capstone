@@ -52,18 +52,26 @@ var transporter = nodemailer.createTransport({
 
 app.get('/send/alert/:alert',function(req,res){
 	var alert = decryptToJSON(req.params.alert);
+	var unsubscribe = setup.encrypt({"email":alert.email});
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
 	    from: 'h2ocrop.pr@gmail.com', // sender address
 	    to: alert.email, // list of receivers
 	    subject: 'Your crop needs irrigation!', // Subject line
-	    text: 'Hello '+alert.username+',\
-	    \n\nYour '+alert.cropname+' crop at '+alert.farmname+' \
-	    needs irrigation.\
-	    \n\nPlease use the H2OCrop application to irrigate the crop.\
-	   	\nhttp://h2ocrop.herokuapp.com'
+	    //text: ''
+	   	
 	    //, // plaintext body
-	    //html: '<b>Hello world ?</b>' // html body
+	    html: '<p>\
+	    Hello '+alert.username+',\
+	    <br><br>Your '+alert.cropname+' crop at '+alert.farmname+' \
+	    needs irrigation.\
+	    <br><br>Please use the \
+	    <a href="https://h2ocrop.herokuapp.com">H2OCrop</a> \
+	    application to irrigate the crop.\
+	   	<br><br><br><small>If you wish to stop recieving alerts, \
+	   	<a href="https://h2ocrop.herokuapp.com/db/unsubscribe/'+unsubscribe+'">Unsubscribe</a>\
+	   	</p>'
+	   	// html body
 	};
 
 	// send mail with defined transport object
@@ -106,7 +114,7 @@ app.get('/send/verify/:verify',function(req,res){
 		    margin: 4px 2px;\
 		    cursor: pointer;" value="Verify" />\
 		</form>\
-		or click https://h2ocrop.herokuapp.com/db/verifyaccount/'+account+'\
+		or click <a href="https://h2ocrop.herokuapp.com/db/verifyaccount/'+account+'">here</a>\
 	    </p>' // html body
 	};
 
@@ -270,6 +278,31 @@ app.get('/db/forgotpassword/:forgotpassword', function(req,res) {
 		returning *\
 		;";
 	call(stringQuery, req, res);
+});
+
+// Unsubscribe from mail
+app.get('/db/unsubscribe/:unsubscribe', function(req,res) {
+	var unsubscribe = decryptToJSON(req.params.unsubscribe);
+	var stringQuery = 
+		"update farmer\
+		set mailsubscription='Unsubscribed'\
+		where email='"+unsubscribe.email+"'\
+		returning 'User account successfully unsubscribed from mail.' as message\
+		;";
+	callWithMessage(stringQuery,res,
+		'User account successfully unsubscribed from mail.');
+});
+
+// Subscribe to mail
+app.get('/db/subscribe/:subscribe', function(req,res) {
+	var subscribe = decryptToJSON(req.params.subscribe);
+	var stringQuery = 
+		"update farmer\
+		set mailsubscription='Subscribed'\
+		where email='"+subscribe.email+"'\
+		returning 'User account successfully subscribed to mail.' as message\
+		;";
+	call(stringQuery,req,res);
 });
 
 // Log In login
