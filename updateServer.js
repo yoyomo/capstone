@@ -210,18 +210,21 @@ function updateNewData(crop){
 	RAW = adjusted.RAW;
 	crop.cumulativeet += ETcadj;
 
-	//update crop in database
-	accessDatabase('/db/update/crop/'+encryptToString(crop), function(result){
-		console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
-			' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
-			' rainfall '+crop.rainfall);
-	});
+	// //update crop in database
+	// accessDatabase('/db/update/crop/'+encryptToString(crop), function(result){
+	// 	console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
+	// 		' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
+	// 		' rainfall '+crop.rainfall);
+	// });
 
 	if(crop.cumulativeet >= RAW){
-		//alert user to irrigate
-		accessDatabase('/send/alert/'+encryptToString(crop),function(result){
-			console.log(result.message);
-		});
+		//check if user is subscribed
+		if (crop.mailsubscription==='Subscribed') {
+			//alert user to irrigate
+			accessDatabase('/send/alert/'+encryptToString(crop),function(result){
+				console.log(result.message);
+			});
+		}
 	}
 
 }
