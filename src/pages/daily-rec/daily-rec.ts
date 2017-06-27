@@ -3,6 +3,8 @@ import { NavController, NavParams, LoadingController, Loading } from 'ionic-angu
 import { CropHistoryPage } from '../crop-history/crop-history';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
+import { HomePage } from '../home/home';
+
 
 @Component({
 

@@ -19,7 +19,6 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
    private auth: AuthService,public alertCtrl: AlertController) {
-  
     this.settings = this.auth.getUserInfo();
    
   }
@@ -42,7 +41,9 @@ export class SettingsPage {
   // Cancels Edit Mode
   cancel(){
     this.edit = false;
-    this.settings = this.auth.getUserInfo();
+    this.settings = JSON.parse(localStorage.getItem("loggedInUser"));
+    this.auth.createUser(this.settings.uid, this.settings.fullname, this.settings.username,
+     this.settings.email, this.settings.password, this.settings.typeofuser);
   }
 
   // Saves any updated data
