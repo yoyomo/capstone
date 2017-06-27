@@ -123,7 +123,7 @@ function readAllCrops() {
     accessDatabase('/db/get/allcrops',function(result) {
     	var allcrops = result;
         for(var i=0;i<allcrops.length;i++){
-        	//updateHistory(allcrops[i]);
+        	updateHistory(allcrops[i]);
         	updateNewData(allcrops[i]);
         }
     });
@@ -216,8 +216,6 @@ function updateNewData(crop){
 	RAW = adjusted.RAW;
 	crop.cumulativeet += ETcadj;
 
-	if(crop.cropid==58){
-
 	//checks if farm is out of range (NaN)
 	if(!crop.currentet){
 		//reverts everything back
@@ -237,9 +235,7 @@ function updateNewData(crop){
 		console.log('Updated crop '+crop.cropid+': day '+crop.currentday+
 			' ETc '+crop.currentet+' Kc '+crop.currentkc+' Cumu '+crop.cumulativeet,
 			' rainfall '+crop.rainfall);
-		console.log(result);
 	});
-}
 
 	if(crop.cumulativeet >= RAW){
 		//check if user is subscribed

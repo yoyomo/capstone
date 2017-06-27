@@ -32,6 +32,11 @@ stopIrrigationFlag = false;
 		this.crop = navParams.get("crop");
   }
 
+  // Reloads crop everytime the page is accessed
+  ionViewWillEnter(){
+    this.loadCrop();
+  }
+
   // Set Up if first time
   setup() {
     if(!this.settingUp){
@@ -40,15 +45,10 @@ stopIrrigationFlag = false;
       this.showSetup();
       this.auth.updateNewCrop(this.crop).subscribe(data => {
         console.log(data.message);
-        this.loadCrop();
       },
       error => {
         console.log(error);
       });
-    }
-    else{
-      //recheck until it has been updated
-      this.loadCrop();
     }
   }
 
@@ -59,11 +59,13 @@ stopIrrigationFlag = false;
       if (this.auth.isDebug()) console.log(this.crop);
 
       if (this.crop.outofrange==='Yes'){
+        this.setup();
         this.closeSetup();
         this.showOutOfRange();
       }
       else if(this.crop.currentday ==0) {
         this.setup();
+        this.loadCrop();
       }
       else {
         this.closeSetup();
@@ -83,11 +85,6 @@ stopIrrigationFlag = false;
     error => {
       console.log(error);
     });
-  }
-
-  // Reloads crop everytime the page is accessed
-  ionViewWillEnter(){
-    this.loadCrop();
   }
 
   // Converts millimeters to:
@@ -287,13 +284,20 @@ stopIrrigationFlag = false;
   showOutOfRange(){
     let prompt = this.alertCtrl.create({
       title: 'Out of Range',
-      message: "Farm is out of range. Please go back and change the Farm location inland.",
+      message: "Farm is out of range. Please go back and change the Farm location inland. If you have, please try again.",
                 
       buttons: [
         {
-          text: 'OK',
+          text: 'Go back',
           handler: data => {
             this.navCtrl.pop();
+          }
+        },
+        {
+          text: 'Retry',
+          handler: data => {
+            prompt.dismiss();
+            this.loadCrop();
           }
         }
       ]
