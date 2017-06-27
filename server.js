@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
    next();
 });
 
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 8080);
 app.listen(app.get('port'), function () {
 	
     console.log('Express server listening on port ' + app.get('port'));
@@ -195,6 +195,24 @@ function call(stringQuery,req,res){
 	});
 }
 
+function callWithMessage(stringQuery,res,message){
+	//clientConnect();
+	query = client.query(stringQuery);
+	query.on('error', function(error) {
+		console.log(error);
+		res.write(JSON.stringify(error, null, "    "));
+		res.end();
+	});  
+	query.on('row', function(row, result) {
+		result.addRow(row);
+	});
+   	query.on('end', function (result) {          
+   		//client.end(); 
+		res.writeHead(200, {'Content-Type': 'text/html'});
+		res.status(200).write(message);
+		res.end();  
+	});
+}
 function decrypt(encryptedString){
 	var decrypted = CryptoJS.AES.decrypt(encryptedString,hashkey);
 	decrypted = decrypted.toString(CryptoJS.enc.Utf8);
@@ -230,11 +248,16 @@ app.get('/db/add/farmer/:farmer', function (req,res) {
 // Verify Account
 app.get('/db/verifyaccount/:verify', function (req,res) {
 	var verify = decryptToJSON(req.params.verify);
-	call("update farmer\
+	callWithMessage("update farmer\
 		set verified='Yes'\
 		where email='"+verify.email+"'\
 		returning 'Account has successfully been verified! Please proceed to log in in the h2ocrop application or at https://h2ocrop.herokuapp.com' as message\
-		;",req,res); 
+		;",res,'<p>\
+		Account has successfully been verified! <br><br>\
+		Please proceed to log in in the h2ocrop application <br>\
+		or at <a href="https://h2ocrop.herokuapp.com">h2ocrop</a>\
+		</p>');
+
 }); 
 
 // Forgot Password
