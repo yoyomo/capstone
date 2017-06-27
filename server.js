@@ -531,6 +531,7 @@ app.get('/db/edit/farmer/:farmer', function(req,res) {
 		"update farmer\
 		set email='"+farmer.email+"',password=crypt('"+farmer.password+"',gen_salt('bf',8)),\
 		username=LOWER('"+farmer.username+"'), fullname='"+farmer.fullname+"'\
+		mailsubscription='"+farmer.mailsubscription+"'\
 		where uid="+farmer.uid+" and password=crypt('"+farmer.currentpassword+"',password)\
 		returning *\
 		;";

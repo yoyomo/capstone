@@ -70,6 +70,10 @@
        <button ion-button (click)="changePassword=false">Cancel</button>
     </ion-item>
   </div>
+  <ion-item>
+    <ion-label>Subscribe to Mail</ion-label>
+    <ion-toggle color="royal" [(ngModel)]="mailsubscription" name="subsciption"></ion-toggle>
+  </ion-item>
 
   <ion-item>
      <ion-label stacked>Current Password</ion-label>

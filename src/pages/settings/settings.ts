@@ -10,17 +10,20 @@ export class SettingsPage {
 
   edit: boolean;
   changePassword: boolean;
-
+  mailsubscription: boolean;
   verifyPassword = '';
   newPassword = '';
   confirmNewPassword = '';
-  settings: any = {uid: 0, fullname : '', username: '', email: '', password: '', currentpassword: ''};
+  settings: any = {uid: 0, fullname : '', username: '', email: '', password: '', currentpassword: '', mailsubscription: ''};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
    private auth: AuthService,public alertCtrl: AlertController) {
-    this.settings = this.auth.getUserInfo();
-   
+      this.settings = this.auth.getUserInfo();
+      if(this.settings.mailsubscription === 'Subscribed')
+        this.mailsubscription = true;
+      else if (this.settings.mailsubscription === 'Unsubscribed')
+        this.mailsubscription = false;
   }
 
   // Displays a message as a popup
@@ -72,6 +75,9 @@ export class SettingsPage {
           return;
         }
       }
+
+      if(this.mailsubscription) this.settings.mailsubscription = 'Subscribed';
+      else this.settings.mailsubscription = 'Unsubscribed';
 
       this.auth.editFarmer(this.settings).subscribe(data => {
         
