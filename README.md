@@ -1,7 +1,7 @@
 # H2O Crop
 Efficient Irrigation System
 
-### How to install
+#### How to install
 1. Download nodejs 6.10.2
 2. Download ionic `npm install ionic cordova`
 3. Download repository from github
@@ -25,3 +25,5 @@ npm install
 | src/providers/auth-service.ts | Provides connection to RESTful API services |
 | src/pages/*/* | All pages in the application |
 
+#### Running program
+[H2OCrop: Efficient Irrigation System](https://h2ocrop.herokuapp.com)
