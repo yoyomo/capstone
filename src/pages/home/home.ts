@@ -22,6 +22,7 @@ crops: any = [];
 zones: any = [];
 farms: any = [];
 
+  //Initializes User Farms, Irrigation Zones, and Crops and sorts them all algorithmically
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams,private menuCtrl: MenuController, private auth: AuthService, public alertCtrl: AlertController, private iab:InAppBrowser) {
 
@@ -54,6 +55,7 @@ farms: any = [];
     });
   }
 
+  // Sort all crops to their respective irrigation zones
   includeCropsToZones() {
 
     for(var zoneIndex = this.zones.length-1; zoneIndex >= 0; zoneIndex--) {
@@ -66,6 +68,7 @@ farms: any = [];
     }
   }
 
+  // Sorts all Zones to their respective farms
   includeZonesToFarms() {
     for(var farmIndex = this.farms.length-1; farmIndex >= 0; farmIndex--) {
       this.farms[farmIndex].zones = [];
@@ -77,12 +80,12 @@ farms: any = [];
     }
   }
 
-  
-
+  //Opens Add Crop Page
   launcharAddPage(){
     this.navCtrl.push(AddPage);
   }
 
+  // Opens Daily Recommendation Page
   dailyRec(crop){
     this.navCtrl.push(DailyRecPage, {
       crop: crop
@@ -90,17 +93,21 @@ farms: any = [];
 
   }
 
+  //Opens Edit Farm Page
   editFarm(farm){
     this.navCtrl.push(EditFarmPage, {
       farm: farm
     });
   }
+
+  // Opens Edit Irrigation Zone Page
   editZone(zone){
     this.navCtrl.push(EditZonePage, {
       zone: zone
     });
   }
  
+   // Deletes a farm with confirmation
   deleteFarm(farm){
     let prompt = this.alertCtrl.create({
           title: 'Delete Farm?',
@@ -130,6 +137,7 @@ farms: any = [];
 
   }
 
+  // Deletes an Irrigation Zone with confirmation
   deleteZone(zone){
     let prompt = this.alertCtrl.create({
           title: 'Delete Irrigation Zone?',
@@ -159,6 +167,7 @@ farms: any = [];
 
   }
  
+   // Deletes a crop with confirmation
   deleteCrop(crop){
       let prompt = this.alertCtrl.create({
           title: 'Delete Crop Info?',
@@ -187,6 +196,7 @@ farms: any = [];
       prompt.present();
   }
 
+  // Displays information needed to guide the user
   info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

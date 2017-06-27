@@ -61,6 +61,7 @@ stopIrrigationFlag = false;
     this.loading.dismiss();
   }
 
+  // Loads all the data of the User's crop
   loadCrop(){
     this.auth.readSpecificCrop(this.crop).subscribe(data => {
       this.crop = data[0];
@@ -91,10 +92,13 @@ stopIrrigationFlag = false;
     });
   }
 
+  // Reloads crop everytime the page is accessed
   ionViewWillEnter(){
     this.loadCrop();
   }
 
+  // Converts millimeters to:
+  // Gallons, Liters, Hours (if waterflow > 0), and Inches
   private getDailyRecommendation() {
     var D, A, Q, eff, G, T, L, mm, inch;
 
@@ -118,7 +122,7 @@ stopIrrigationFlag = false;
     return {gal: G, hr: T, L: L, mm: mm, in: inch};
   }
 
-  // Converts any amount to mm
+  // Converts any type of amount (gallons,liters,hours,inches) to millimeters
   private reverse() {
     var A, Q, eff, G, T, L, mm, inch, amount;
 
@@ -149,6 +153,7 @@ stopIrrigationFlag = false;
     return {gal: G, hr: T, L: L, mm: mm, in: inch};
   }
 
+  // Converts the value according to the chosen type
   public changeAmountType() {
     switch (this.rec.type){
       case this.types.gal:
@@ -170,6 +175,7 @@ stopIrrigationFlag = false;
 
   }
 
+  // Converts the value to millimeters according to the type
   public changeAmount(){
     switch (this.rec.type){
       case this.types.gal:
@@ -191,6 +197,7 @@ stopIrrigationFlag = false;
     console.log("Changed amount to " + this.history.irrigatedet);
   }
 
+  // Recalculate the recommendation according to the rainfall and ETc
   public changeRainfall() {
     //history.irrigatedet is used because it is always in mm
     this.history.irrigatedet = this.history.recommendedet - this.history.rainfall;
@@ -198,12 +205,14 @@ stopIrrigationFlag = false;
     this.changeAmountType();
   }
 
+  // Opens Crop History Page
   public cropHistory(){
     this.navCtrl.push(CropHistoryPage, {
       crop: this.crop
     });
   }
 
+  // Completes the operation and irrigates the specified value to the crop
   public irrigate(){
     this.auth.addHistory(this.history).subscribe(data => {
       console.log("History added.");
@@ -220,6 +229,7 @@ stopIrrigationFlag = false;
       
       this.auth.updateAllOtherCrops(this.crop).subscribe(data => {
         console.log("All other Crops updated.");
+        //this.loadCrop();
         //this.navCtrl.pop();
       },
       error => {
@@ -245,6 +255,7 @@ stopIrrigationFlag = false;
     valveid: ''
   };
 
+  //Sends value in liters to the MasterControl Hardware System
   sendToMasterControl() {
     this.auth.getControl(this.crop).subscribe(data => {
       if(data.length != 0) {
@@ -287,6 +298,7 @@ stopIrrigationFlag = false;
     });
   }
 
+  // Stops the hardware irrigation
   public stopIrrigation(){
     this.auth.stopIrrigation(this.comm).subscribe(data => {
       console.log("Communication Stopped.");
@@ -340,6 +352,8 @@ stopIrrigationFlag = false;
     
   }
 
+  // Used when a value is returned from the MasterControl Hardware System
+  // About the Status of the irrigation
   refreshStatus(status){
     if(status==='received'){
       this.auth.receivedCommunication(this.comm).subscribe(data => {
@@ -376,6 +390,8 @@ stopIrrigationFlag = false;
     }
 
   }
+
+  // Displays information needed to guide the User
   info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

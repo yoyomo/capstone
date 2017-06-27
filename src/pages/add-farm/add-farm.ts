@@ -22,6 +22,7 @@ longitudes: any = [];
 
 public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
+  // Initializes soils, latitudes and longitudes, and loads map
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
     private auth: AuthService, public alertCtrl: AlertController) {
@@ -52,6 +53,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     });
   }
 
+  // Completes the operation and adds a Farm to the User
   addFarm() {
 
     this.auth.addFarm(this.farm).subscribe(data => {
@@ -63,6 +65,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       });
   }
 
+  // Gets the GPS location of the User
   getGPS(){
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,
@@ -77,6 +80,8 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
   }
 
+  // Accommodates the given latitudes and longitudes to the ones available at
+  // the Hyroclimate Data Center
   accommodateGPS(GPS) {
     var latIndex, lonIndex, diff1, diff2;
 
@@ -129,11 +134,13 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     return GPS;
   }
 
+  // Loads map with new coordinates
   reloadMap(){
     this.loadMap(this.latitudes[this.farm.latindex-1].latcoordinate,
      this.longitudes[this.farm.lonindex-1].loncoordinate);
   }
 
+  // Loads map with given coordinates
   loadMap(lat,lon){
     let latLng = new google.maps.LatLng(lat, lon);
  
@@ -147,6 +154,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     this.addMarker(); 
   }
 
+  // Adds a marker indicating the specified location
   addMarker(){
    
     let marker = new google.maps.Marker({
@@ -161,6 +169,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     
   }
 
+  // Displays information when user clicks on marker
   addInfoWindow(marker, content){
    
     let infoWindow = new google.maps.InfoWindow({
@@ -173,6 +182,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
    
   }
 
+  // Displays information needed to help guide the User
   info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

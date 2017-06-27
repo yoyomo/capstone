@@ -30,6 +30,7 @@ loadingSoils: Loading;
 loadingLat: Loading;
 loadingLon: Loading;
 
+  // Initializes soils, latitudes and longitudes, and loads map
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public viewCtrl: ViewController, public geolocation: Geolocation, 
     private auth: AuthService, private loadingCtrl: LoadingController,
@@ -69,6 +70,7 @@ loadingLon: Loading;
     
   }
 
+  // Completes the operation and edits the User's Farm
   editFarm() {
 
     this.auth.editFarm(this.farm).subscribe(data => {
@@ -80,6 +82,7 @@ loadingLon: Loading;
       });
   }
 
+  // Gets the GPS location of the User
   getGPS(){
     this.geolocation.getCurrentPosition().then((position) => {
       var GPS = { latitude: position.coords.latitude,
@@ -94,6 +97,8 @@ loadingLon: Loading;
 
   }
 
+  // Accommodates the given latitudes and longitudes to the ones available at
+  // the Hyroclimate Data Center
   accommodateGPS(GPS) {
     var latIndex, lonIndex, diff1, diff2;
 
@@ -146,11 +151,13 @@ loadingLon: Loading;
     return GPS;
   }
 
+  // Loads map with new coordinates
   reloadMap(){
     this.loadMap(this.latitudes[parseInt(this.farm.latindex)-1].latcoordinate,
      this.longitudes[parseInt(this.farm.lonindex)-1].loncoordinate);
   }
 
+  // Loads map with given coordinates
   loadMap(lat,lon){
     let latLng = new google.maps.LatLng(lat, lon);
  
@@ -164,6 +171,7 @@ loadingLon: Loading;
     this.addMarker(); 
   }
 
+  // Adds a marker indicating the specified location
   addMarker(){
    
     let marker = new google.maps.Marker({
@@ -178,6 +186,7 @@ loadingLon: Loading;
     
   }
 
+  // Displays information when user clicks on marker
   addInfoWindow(marker, content){
    
     let infoWindow = new google.maps.InfoWindow({
@@ -190,6 +199,9 @@ loadingLon: Loading;
 
   }
 
+  /*
+   * Dislays all loading screens
+   */
   showLoadingSoils() {
     this.loadingSoils = this.loadingCtrl.create({
       content: "Loading Soils..."
@@ -226,6 +238,7 @@ loadingLon: Loading;
     this.loadingLon.dismiss();
   }
 
+  // Load the MasterControls in the farm
   loadMasterControl() {
     this.auth.getMasterControl(this.farm).subscribe(data => {
       this.mastercontrols = data;
@@ -237,6 +250,7 @@ loadingLon: Loading;
     });
   }
 
+  // Displays the IP addess of the chosen MasterControl
   getIP(){
     if(this.mastercontrol.controlid==='new') return;
 
@@ -247,6 +261,7 @@ loadingLon: Loading;
     }
   }
 
+  // Edits the IP address of the chosen MasterControl
   editMasterControl() {
     this.auth.editMasterControl(this.mastercontrol).subscribe(data => {
       if(data.length != 0){
@@ -264,6 +279,7 @@ loadingLon: Loading;
     });
   }
 
+  // Adds a new MasterControl
   addMasterControl() {
     this.auth.addMasterControl(this.mastercontrol).subscribe(data => {
       if(data.length != 0){
@@ -281,6 +297,7 @@ loadingLon: Loading;
     });
   }
 
+  // Deletes a chosen MasterControl
   deleteMasterControl() {
     this.auth.deleteMasterControl(this.mastercontrol).subscribe(data => {
       if(data.length != 0){
@@ -298,6 +315,7 @@ loadingLon: Loading;
     });
   }
 
+  // Confirms that the user wants to delete the MasterControl
   showConfirmDelete(){
      let prompt = this.alertCtrl.create({
           title: 'Delete Master Control?',
@@ -320,6 +338,7 @@ loadingLon: Loading;
 
   }
 
+  // Displays a message as a popup
   showPopup(title,message){
      let prompt = this.alertCtrl.create({
           title: title,

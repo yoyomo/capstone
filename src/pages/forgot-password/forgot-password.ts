@@ -17,6 +17,7 @@ forgotPasswordCredentials = { email: '',password: ''};
   constructor(private nav: NavController, private auth: AuthService, 
   private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
   
+  // Writes a random password to the user's password
  public resetPassword() {
   //reset the password
   this.forgotPasswordCredentials.password = this.createRandomPassword();
@@ -54,16 +55,18 @@ forgotPasswordCredentials = { email: '',password: ''};
   });
   }
 
+  // Creates a new random password
   createRandomPassword (){
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for( var i=0; i < 5; i++ )
+    for( var i=0; i < 6; i++ )
       text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
   }
 
+  //Shows Loading screen
   showLoading(){
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -71,10 +74,12 @@ forgotPasswordCredentials = { email: '',password: ''};
     this.loading.present();
   }
 
+  // Closes loading screen
   closeLoading(){
     this.loading.dismiss();
   }
 
+  // Displays message as a popup
   showPopup(title, text) {
     let alert = this.alertCtrl.create({
       title: title,

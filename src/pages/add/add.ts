@@ -31,6 +31,7 @@ cropname = '';
 searchCropString = '';
 crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
 
+  // Initializes all available Crops to choose from
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
    public navParams: NavParams, private auth:AuthService, 
    public viewCtrl: ViewController, public events: Events, 
@@ -41,11 +42,13 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.loadCropInfos();
   }
 
+  // Load Farms everytime the page is being accessed
   ionViewWillEnter(){
     this.loadFarms();
     
   }
 
+  // Loads All User Farms
   loadFarms(){
     this.showLoadingFarms();
     this.auth.getUserFarms(this.user).subscribe(data => {
@@ -59,6 +62,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     });
   }
 
+  // Loads all crops available to choose from
   loadCropInfos(){
     this.showLoadingCropInfo();
     this.auth.getCropInfos().subscribe(data => {
@@ -71,6 +75,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     });
   }
 
+  // Loads all Irrigation Zones from the User
   loadZones(){
     this.showLoadingZones();
     this.auth.getUserZones(this.user).subscribe(data => {
@@ -84,6 +89,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     });
   }
 
+  // Connects all Irrigation Zones to their respective Farms
   loadFarmZones(){
     if(!this.crop.farmid) return;
 
@@ -99,10 +105,12 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     
   }
 
+  // Opens Add Farm Page
   launcharFarmPage(){
     this.navCtrl.push(AddFarmPage);
   }
 
+  // Opens Add Irrigation Zone Page
   launcharZonePage(){
     console.log(this.crop.farmid);
     this.navCtrl.push(AddIrrigationZonePage,{
@@ -110,6 +118,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     });
   }
 
+  // Uses the search bar input to search available crops
   searchCrop(){
     // reset countries list with initial call
     this.cropinfos = this.allcropinfos;
@@ -138,6 +147,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     }
   }
 
+  // Completes the operation and adds a Crop to the chosen Irrigation Zone and to the chosen Farm
   addCrop(){
 
     if(!this.crop.farmid || !this.crop.izid || !this.crop.infoid){
@@ -151,6 +161,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
         console.log(error);
       });
   }
+
+  /*
+   * Opens and closes all Loading Screens
+   */
 
   showLoadingCropInfo() {
     this.loadingCropInfo = this.loadingCtrl.create({
@@ -188,6 +202,7 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.loadingZones.dismiss();
   }
 
+  // Displays information needed to guide the User
   info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

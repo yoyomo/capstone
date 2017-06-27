@@ -24,7 +24,7 @@ export class CropHistoryPage {
 		this.crop = navParams.get("crop"); 
   }
 
-
+  // Loads all the history of the crop and calls display data
   ionViewWillEnter() {
     this.auth.getHistory(this.crop).subscribe(data => {
       this.history = data;
@@ -36,6 +36,7 @@ export class CropHistoryPage {
     });
   }
 
+  // Displays a graph of the history data
   displayData() {
     var recommended = [], irrigated = [], dates = [];
     var h, date;
@@ -120,6 +121,7 @@ export class CropHistoryPage {
     
   }
 
+  // Edits the irrigated value in a history tuple
   editHistory(history){
     var date = new Date(history.histdate);
     let prompt = this.alertCtrl.create({
@@ -152,6 +154,7 @@ export class CropHistoryPage {
  
   }
 
+  // Displays information needed to guide the User
   info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

@@ -15,6 +15,7 @@ var rainfall = [];
 var setup = false;
 var newCrop = [];
 
+// Returns a date in yyymmdd format
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
@@ -25,6 +26,7 @@ Date.prototype.yyyymmdd = function() {
          ].join('');
 };
 
+// Downloads a file from a specified url
 function downloadFile(urlOfFile,day,callback){
 	var matrix = [];
 
@@ -48,6 +50,7 @@ function downloadFile(urlOfFile,day,callback){
 	});
 }
 
+// Downloads all necessary files from the Hydroclimate Data Center
 function getTodaysFiles(){
 	var date = new Date();
 	var today = date.yyyymmdd();
@@ -75,6 +78,7 @@ function getTodaysFiles(){
 	return;
 }
 
+// Calls the RESTful API initialized at server.js
 function accessDatabase(restfulAPI,callback){
 	return http.get({
         host: 'h2ocrop.herokuapp.com',
@@ -98,10 +102,13 @@ function accessDatabase(restfulAPI,callback){
         });
     });
 }
+
+// Exports the encryptToString function for external use
 exports.encrypt = function(data){
 	return encryptToString(data);
 }
 
+// Encrypts any JSON data to a string
 function encryptToString(data) {
 	var encrypted;
 	encrypted = CryptoJS.AES.encrypt(JSON.stringify(data),'h2ocrop2017ICOM5047').toString();
@@ -109,6 +116,9 @@ function encryptToString(data) {
 	return encrypted;
 }
 
+// Gets all On Going crops from the database
+// and updates the history and the crop data 
+// with the newly acquired files
 function readAllCrops() {
     accessDatabase('/db/get/allcrops',function(result) {
     	var allcrops = result;
@@ -119,6 +129,7 @@ function readAllCrops() {
     });
 }
 
+// Prepares a string for URL launch
 function clearURL(string){
 	string = string.split('%').join('%25');
 	string = string.split('/').join('%2F');
@@ -126,6 +137,7 @@ function clearURL(string){
 	return string;
 }
 
+// Prepares a JSON variable for URL launch
 function clearJSON(data){
 	for(d in data){
 		if(typeof data[d] === "string") {
@@ -134,6 +146,7 @@ function clearJSON(data){
 	}
 }
 
+// Makes sure the history of the crop is being updated every day
 function updateHistory(crop) {
 	var prevDay, rec, history = [];
 
@@ -179,6 +192,7 @@ function updateHistory(crop) {
 	});
 }
 
+// Updates a crop's ETc and notifies the user if it has exceeded the Readily Available Water (RAW)
 function updateNewData(crop){
 	var calculated, irrigationDepth, Kc, rainfall, adjusted,ETcadj,RAW;
 
@@ -212,6 +226,7 @@ function updateNewData(crop){
 
 }
 
+// Calculates the Kc and the ETc of a crop
 function getIrrigationDepth(crop){
 	var latIndex, lonIndex, ETo, Kc, ETc, irrigationDepth;
 	crop.kcini = parseFloat(crop.kcini);
@@ -251,6 +266,7 @@ function getIrrigationDepth(crop){
 	 rainfall: rainfall[latIndex][lonIndex]};
 }
 
+// Adjusts the ETc according to the Readily Available Water (RAW)
 function adjustIrrigationDepth(crop){
 	var TAW, p, RAW, ETcadj, Ks;
 	crop.p = parseFloat(crop.p);
@@ -288,6 +304,7 @@ exports.serverUpdate = function(){
 	getTodaysFiles();
 }
 
+// To be called when a user creates a new crop and clicks it for the first time
 exports.serverUpdateNewCrop = function(crop){
 	setup = true;
 	newCrop = crop;

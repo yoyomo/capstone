@@ -18,6 +18,9 @@ export class AllCropInfoPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
    public alertCtrl: AlertController, private auth: AuthService) {}
 
+  // Loads all Crop Categories
+  // Loads all Crop infos
+  // And Sorts them by category
   ionViewWillEnter() {
 
     this.auth.getCropInfoCategory().subscribe(data => {
@@ -36,6 +39,7 @@ export class AllCropInfoPage {
     });
   }
 
+  // Sorts Crops by their Category
   sortByCategory() {
     for(var i=this.categories.length-1; i>=0; i--){
       this.categories[i].cropinfos = [];
@@ -49,16 +53,20 @@ export class AllCropInfoPage {
     console.log("Crop Info sorted.");
   }
 
+  // Opens Add CropInfo Page
   addCropInfo(){
     this.navCtrl.push(AddCropInfoPage);
   }
 
+  // Opens Edit CropInfo Page
   editCropInfo(info){
     this.navCtrl.push(EditCropInfoPage, {
       info: info
     });
   }
 
+  // Warns the Admin and deletes the crop info
+  // *WARNING* VERY DANGEROUS
   deleteCropInfo(info){
      let prompt = this.alertCtrl.create({
           title: 'Delete Crop?',

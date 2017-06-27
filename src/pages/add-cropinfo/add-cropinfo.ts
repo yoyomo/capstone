@@ -18,7 +18,7 @@ export class AddCropInfoPage {
   }
 
 
-
+  // Completes the operation and adds a New CropInfo for every User to choose from
   addCropInfo(){
     this.auth.addCropInfo(this.cropInfo).subscribe(data => {
       console.log(data);
@@ -38,6 +38,7 @@ export class AddCropInfoPage {
     
   }
 
+  // Displays any Error
   showError(error){
      let prompt = this.alertCtrl.create({
           title: 'ERROR',

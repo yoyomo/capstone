@@ -24,6 +24,7 @@ control: any = {
   new: true
 };
 
+  // Initialiazes irrigation methods
   constructor(public navCtrl: NavController, public navParams: NavParams,
   public viewCtrl: ViewController, private auth: AuthService,
   private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
@@ -43,20 +44,24 @@ control: any = {
     this.loadMasterControl();
   }
 
+  //Converts to decimal to avoid re-entering and re-multplying by 100
   ionViewWillLeave(){
     if(this.zone.irrigationefficiency > 1){
       this.makeIrrigationEfficiencyDecimal();
     }
   }
 
+  // Converts decimal to percentage
   makeIrrigationEfficiencyPercentage() {
     this.zone.irrigationefficiency *= 100; // make percentage
   }
 
+  // Converts percentage to decimal
   makeIrrigationEfficiencyDecimal() {
     this.zone.irrigationefficiency /= 100; // make percentage
   }
 
+  // Updates Irrigation Efficiency according to chosen Irrigation Method
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
   		if(this.irrigationMethods[i].irrigationmethod == this.zone.irrigationmethod){
@@ -67,6 +72,7 @@ control: any = {
   	}
   }
 
+  // Completes the operation and edits Irrigation Zone to Farm
   editIrrigationZone() {
   	if(this.zone.irrigationefficiency > 100 || this.zone.irrigationefficiency < 0) return;
     this.makeIrrigationEfficiencyDecimal();
@@ -80,6 +86,9 @@ control: any = {
     });
   }
 
+  /*
+   * Displays all loading screens
+   */
   showLoadingMethods() {
     this.loadingMethods = this.loadingCtrl.create({
       content: "Loading Irrigation Methods..."
@@ -92,6 +101,7 @@ control: any = {
     this.loadingMethods.dismiss();
   }
 
+  // Loads all MasterControls of Farm
   loadMasterControl() {
     this.auth.getMasterControl(this.zone).subscribe(data => {
       this.mastercontrols = data;
@@ -105,6 +115,7 @@ control: any = {
     });
   }
 
+  // Gets the valve id of chosen MasterControl
   getValveID(){
     this.auth.getValveControl(this.control).subscribe(data => {
       if(data.length != 0){
@@ -121,6 +132,7 @@ control: any = {
     });
   }
 
+  //Edits the valve id
   editValveControl() {
     this.auth.editValveControl(this.control).subscribe(data => {
       if(data.length != 0){
@@ -138,6 +150,7 @@ control: any = {
     });
   }
 
+  // Adds the valve id if none was existent
   addValveControl() {
     this.auth.addValveControl(this.control).subscribe(data => {
       if(data.length != 0){
@@ -161,6 +174,7 @@ control: any = {
     });
   }
 
+  // Delets the ValveControl of the Irrigation Zone
   deleteValveControl() {
     this.auth.deleteValveControl(this.control).subscribe(data => {
       if(data.length != 0){
@@ -180,6 +194,7 @@ control: any = {
     });
   }
 
+  // Displays a confirmation to delete the valve id
   showConfirmDelete(){
      let prompt = this.alertCtrl.create({
           title: 'Delete Valve Control?',
@@ -202,6 +217,7 @@ control: any = {
 
   }
 
+  // Displays a message as a popup
   showPopup(title,message){
    let prompt = this.alertCtrl.create({
         title: title,
@@ -218,6 +234,7 @@ control: any = {
 
   }
 
+  // Displays options for conflicting valve ids
   showIPOption(){
     let prompt = this.alertCtrl.create({
       title: 'New IP',

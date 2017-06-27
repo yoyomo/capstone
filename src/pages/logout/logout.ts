@@ -9,6 +9,7 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class LogoutPage {
 
+  // Logs out the user
   constructor(public navCtrl: NavController, public navParams: NavParams, 
   	private auth: AuthService) {
   	this.auth.logout();

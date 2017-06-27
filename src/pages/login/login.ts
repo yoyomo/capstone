@@ -14,6 +14,7 @@ export class LoginPage {
   loading: Loading;
   registerCredentials = {usernameORmail: '', password: ''};
  
+   //Checks if user is already logged in
   constructor(private nav: NavController,private menuCtrl: MenuController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
    this.menuCtrl.enable(false);
 
@@ -26,14 +27,17 @@ export class LoginPage {
     } 
   }
  
+ // Opens Create Account Page
   public createAccount() {
     this.nav.push(RegisterPage);
   }
 
+  // Opens Forgot Password page
   public forgotPassword() {
     this.nav.push(ForgotPasswordPage);
   }
  
+ // Tries to log in the user
   public login() {
     var user;
     this.showLoading();
@@ -72,6 +76,7 @@ export class LoginPage {
 
   }
  
+   // Shows Loading Screen
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -79,6 +84,7 @@ export class LoginPage {
     this.loading.present();
   }
  
+   // Displays an error
   showError(text) {
     setTimeout(() => {
       this.loading.dismiss();

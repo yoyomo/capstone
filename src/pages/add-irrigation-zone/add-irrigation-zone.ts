@@ -14,6 +14,7 @@ public zoneInfo = { farmid: '', uid: '', izname: '',acres: '',
 
 private irrigationMethods: any = [];
 
+  // Initialiazes irrigation methods
   constructor(public navCtrl: NavController, public navParams: NavParams,
   public viewCtrl: ViewController, private auth: AuthService, public alertCtrl: AlertController) {
 
@@ -31,14 +32,17 @@ private irrigationMethods: any = [];
     });
   }
 
+  // Converts decimal to percentage
   makeIrrigationEfficiencyPercentage() {
     this.zoneInfo.irrigationefficiency *= 100; // make percentage
   }
 
+  // Converts percentage to decimal
   makeIrrigationEfficiencyDecimal() {
     this.zoneInfo.irrigationefficiency /= 100; // make percentage
   }
 
+  // Updates Irrigation Efficiency according to chosen Irrigation Method
   updateEfficiency() {
   	for(var i=0;i<this.irrigationMethods.length;i++){
   		if(this.irrigationMethods[i].irrigationmethod == this.zoneInfo.irrigationmethod){
@@ -48,6 +52,7 @@ private irrigationMethods: any = [];
   	}
   }
 
+  // Completes the operation and adds Irrigation Zone to Farm
   addIrrigationZone() {
   	if(this.zoneInfo.irrigationefficiency > 100 || this.zoneInfo.irrigationefficiency < 0) return;
   	this.makeIrrigationEfficiencyDecimal();
@@ -61,6 +66,7 @@ private irrigationMethods: any = [];
     });
   }
 
+  // Displays information needed to guide the User
    info(){
     let prompt = this.alertCtrl.create({
           title: 'Information',

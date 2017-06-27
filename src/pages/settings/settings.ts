@@ -25,6 +25,7 @@ export class SettingsPage {
    
   }
 
+  // Displays a message as a popup
   showPopup(title, text) {
     let alert = this.alertCtrl.create({
       title: title,
@@ -34,19 +35,23 @@ export class SettingsPage {
     alert.present();
   }
 
+  // Opens all cropInfo Page if admin
   allCrops() {
     this.navCtrl.push(AllCropInfoPage);
   } 
 
+  // Enables Edit Mode
   enable(){
     this.edit = true;
   }
 
+  // Cancels Edit Mode
   cancel(){
     this.edit = false;
     this.settings = this.auth.getUserInfo();
   }
 
+  // Saves any updated data
   save(){
     
     //make sure current password is verified

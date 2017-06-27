@@ -18,6 +18,7 @@ export class RegisterPage {
   constructor(private nav: NavController, private auth: AuthService,
    private alertCtrl: AlertController) {}
  
+   //Tries to register a new account and sends verification
   public register() {
     if(this.registerCredentials.password === this.registerCredentials.confirmpassword) {
 
@@ -41,6 +42,7 @@ export class RegisterPage {
     }
   }
  
+ // Displays a message as a popup
   showPopup(title, text) {
     let alert = this.alertCtrl.create({
       title: title,

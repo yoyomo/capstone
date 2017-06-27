@@ -1,3 +1,8 @@
+/*
+ * Calls all RESTful API and passes necessary data to access the database.
+ * Returns the database's  output to the page as an Observable
+ */
+
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import { Http } from '@angular/http';

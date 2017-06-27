@@ -17,6 +17,7 @@ public cropInfo = { infoid: '', cropname: '', category: '',lini: '',
     this.cropInfo = this.navParams.get("info");
   }
 
+  // Completes the operation and edits the Crop Info data already created
   editCropInfo(){
     this.auth.editCropInfo(this.cropInfo).subscribe(data => {
       console.log('Crop Information edited.');
