@@ -59,20 +59,6 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     });
   }
 
-  // Completes the operation and adds a Farm to the User
-  addFarm() {
-    var coords = { latitude: this.latitude,
-                  longitude: this.longitude};
-    this.accommodateGPS(coords);
-    this.auth.addFarm(this.farm).subscribe(data => {
-        console.log("Farm added.");
-        this.navCtrl.pop();
-      },
-      error => {
-        console.log(error);
-      });
-  }
-
   // Gets the GPS location of the User
   getGPS(){
     this.geolocation.getCurrentPosition().then((position) => {
@@ -81,8 +67,10 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       if (this.auth.isDebug()) console.log(GPS);
       //GPS = this.accommodateGPS(GPS);
       if (this.auth.isDebug()) console.log(GPS);
+      console.log(GPS);
       this.latitude = GPS.latitude;
       this.longitude = GPS.longitude;
+      console.log(this.latitude,this.longitude);
       this.reloadMapWithInput();
     }, (err) => {
       console.log(err);
@@ -195,6 +183,20 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       infoWindow.open(this.map, marker);
     });
    
+  }
+
+  // Completes the operation and adds a Farm to the User
+  addFarm() {
+    var coords = { latitude: this.latitude,
+                  longitude: this.longitude};
+    this.accommodateGPS(coords);
+    this.auth.addFarm(this.farm).subscribe(data => {
+        console.log("Farm added.");
+        this.navCtrl.pop();
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   // Displays information needed to help guide the User

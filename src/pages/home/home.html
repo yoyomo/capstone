@@ -51,49 +51,57 @@
   
   <ion-card class="card" *ngFor="let farm of farms">
   
-  <ion-card-header class="cardheader">
-  
-  </ion-card-header>
+    <ion-card-header class="cardheader">
+    
+    </ion-card-header>
 
     <ion-card-content >
 
       <ion-list class="list" >
-        <ion-item class="listitem" (click)="editFarm(farm)">
-          <ion-icon name="leaf" class="leaf" item-left></ion-icon>
-          {{farm.farmname}}
-        </ion-item>
+        <ion-item-sliding >
+            <ion-item class="listitem" (click)="editFarm(farm)" detail-push>
+              <ion-icon name="leaf" class="leaf" item-left></ion-icon>
+              {{farm.farmname}}
+            </ion-item>
+            <ion-item-options>
+                <button ion-button (click)="deleteFarm(farm)" color="danger">
+                    <ion-icon name="trash" ></ion-icon>
+                    Delete
+                </button>
+            </ion-item-options>
+          </ion-item-sliding>
 
         <div *ngFor="let zone of farm.zones">
-          <ion-item (click)="editZone(zone)">
-            <ion-icon name="water" class="water child" item-left></ion-icon>
-            {{zone.izname}}
-          </ion-item>
           
-          <div *ngFor="let crop of zone.crops">
-            <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'">
-              <ion-icon  name="flower" class="flower grandchild" item-start></ion-icon>
-              {{crop.cropname}}
+          <ion-item-sliding >
+            <ion-item (click)="editZone(zone)" detail-push>
+              <ion-icon name="water" class="water child" item-left></ion-icon>
+              {{zone.izname}}
             </ion-item>
-            <ion-item (click)="dailyRec(crop)" class="finished"*ngIf="crop.cropstatus==='Finished'" >
-              <ion-icon  name="flower" class="finished" item-left></ion-icon>
-              {{crop.cropname}}
-            </ion-item>
-          </div>
-          <!--<ion-item-sliding *ngFor="let crop of zone.crops">
-            <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'">
+            <ion-item-options>
+                <button ion-button (click)="deleteZone(zone)" color="danger">
+                    <ion-icon name="trash" ></ion-icon>
+                    Delete
+                </button>
+            </ion-item-options>
+          </ion-item-sliding>
+
+          <ion-item-sliding *ngFor="let crop of zone.crops">
+            <ion-item (click)="dailyRec(crop)" *ngIf="crop.cropstatus==='On Going'" detail-push>
               <ion-icon  name="flower" class="flower grandchild" item-start></ion-icon>
               {{crop.cropname}}
             </ion-item>
             <ion-item-options>
-                <button ion-button icon-only (click)="deleteCrop(crop)" color="danger">
+                <button ion-button (click)="deleteCrop(crop)" color="danger">
                     <ion-icon name="trash" ></ion-icon>
+                    Delete
                 </button>
             </ion-item-options>
             <ion-item (click)="dailyRec(crop)" class="finished"*ngIf="crop.cropstatus==='Finished'" >
               <ion-icon  name="flower" class="finished" item-left></ion-icon>
               {{crop.cropname}}
             </ion-item>
-          </ion-item-sliding>-->
+          </ion-item-sliding>
         </div>
       </ion-list>
     </ion-card-content>

@@ -3,8 +3,6 @@ import { NavController, NavParams, LoadingController, Loading } from 'ionic-angu
 import { CropHistoryPage } from '../crop-history/crop-history';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
-import { HomePage } from '../home/home';
-
 
 @Component({
 
@@ -235,35 +233,6 @@ stopIrrigationFlag = false;
      */
     if(this.auth.isHardware()) this.sendToMasterControl();
     
-  }
-
-  // Deletes a crop with confirmation
-  deleteCrop(crop){
-      let prompt = this.alertCtrl.create({
-          title: 'Delete Crop Info?',
-          message: "All User Crops and History under this Crop Info will also be deleted. Are you sure you want to delete this Crop Info?",
-                    
-          buttons: [
-              {
-                  text: 'Cancel'
-              },
-              {
-                  text: 'Delete',
-                  handler: data => {
-                    this.auth.deleteCrop(crop).subscribe(data => {
-                      console.log("Crop Info &Crops & \
-                        all its History deleted.");
-                      this.navCtrl.setRoot(HomePage);
-                    },
-                    error => {
-                      console.log(error);
-                    });
-                  }
-              }
-          ]
-      });
-
-      prompt.present();
   }
 
   showSetup(){

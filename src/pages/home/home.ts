@@ -112,6 +112,95 @@ farms: any = [];
     });
   }
 
+  // Deletes a farm with confirmation
+  deleteFarm(farm){
+    let prompt = this.alertCtrl.create({
+          title: 'Delete Farm?',
+          message: "All Irrigation Zones, Crops and History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteFarm(farm).subscribe(data => {
+                      console.log("Farm, all its irrigation zones & \
+                        all its crops & all its histories deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
+  // Deletes an Irrigation Zone with confirmation
+  deleteZone(zone){
+    let prompt = this.alertCtrl.create({
+          title: 'Delete Irrigation Zone?',
+          message: "All Crops and History under this Irrigation Zone will also be deleted. Are you sure you want to delete this Irrigation Zone?",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteIrrigationZone(zone).subscribe(data => {
+                      console.log("Irrigation Zone & all its crops & \
+                        all its histories deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present(); 
+
+  }
+
+  // Deletes a crop with confirmation
+  deleteCrop(crop){
+      let prompt = this.alertCtrl.create({
+          title: 'Delete Crop Info?',
+          message: "All User Crops and History under this Crop Info will also be deleted. Are you sure you want to delete this Crop Info?",
+                    
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+              {
+                  text: 'Delete',
+                  handler: data => {
+                    this.auth.deleteCrop(crop).subscribe(data => {
+                      console.log("Crop Info &Crops & \
+                        all its History deleted.");
+                      this.navCtrl.setRoot(HomePage);
+                    },
+                    error => {
+                      console.log(error);
+                    });
+                  }
+              }
+          ]
+      });
+
+      prompt.present();
+  }
+
   // Displays information needed to guide the user
   info(){
     let prompt = this.alertCtrl.create({

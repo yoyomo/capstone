@@ -25,17 +25,15 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item-sliding *ngFor="let info of category.cropinfos">
-          <ion-item>
+        <ion-item-sliding *ngFor="let info of category.cropinfos" >
+          <ion-item (click)="editCropInfo(info)">
             <ion-icon name="flower" class="flower" item-left></ion-icon>
             {{info.cropname}} - {{info.plantdate}} @ {{info.region}}
           </ion-item>
           <ion-item-options>
-            <button ion-button icon-only (click)="editCropInfo(info)" color="light">
-                <ion-icon name="paper"></ion-icon>
-            </button>
-            <button ion-button icon-only (click)="deleteCropInfo(info)" color="danger">
+            <button ion-button (click)="deleteCropInfo(info)" color="danger">
                 <ion-icon name="trash"></ion-icon>
+                Delete
             </button>
           </ion-item-options>
         </ion-item-sliding>

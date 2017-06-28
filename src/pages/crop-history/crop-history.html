@@ -35,22 +35,20 @@
 
       <ion-list>
         <ion-row>
-          <ion-col class="four" *ngFor="let header of headers">{{header}}</ion-col>
+          <ion-col class="six" *ngFor="let header of headers">{{header}}</ion-col>
         </ion-row>
-        <ion-item>
-          <ion-item-sliding *ngFor="let h of history">
+          <ion-item-sliding item-end *ngFor="let h of history">
             <ion-item>
               <ion-row button>
-                <ion-col class="four" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
+                <ion-col class="six" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
               </ion-row>
             </ion-item>
             <ion-item-options>
               <button ion-button icon-only (click)="editHistory(h)" color="light">
-                <ion-icon name="paper"></ion-icon>
+                <ion-icon name="build"></ion-icon>
               </button>
             </ion-item-options>
           </ion-item-sliding>
-        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>

@@ -3,7 +3,6 @@ import { NavController, NavParams, ViewController, Loading, LoadingController } 
 import { Geolocation } from '@ionic-native/geolocation';
 import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
-import { HomePage } from '../home/home';
 
 declare var google;
 
@@ -73,21 +72,6 @@ loadingLon: Loading;
     if(this.auth.isHardware()) this.loadMasterControl();
 
     
-  }
-
-  // Completes the operation and edits the User's Farm
-  editFarm() {
-    var coords = { latitude: this.latitude,
-                  longitude: this.longitude};
-    this.accommodateGPS(coords);
-
-    this.auth.editFarm(this.farm).subscribe(data => {
-        console.log("Farm edited.");
-        this.navCtrl.pop();
-      },
-      error => {
-        console.log(error);
-      });
   }
 
   // Gets the GPS location of the User
@@ -201,6 +185,7 @@ loadingLon: Loading;
     
   }
 
+  
   // Displays information when user clicks on marker
   addInfoWindow(marker, content){
    
@@ -214,34 +199,19 @@ loadingLon: Loading;
 
   }
 
-  // Deletes a farm with confirmation
-  deleteFarm(farm){
-    let prompt = this.alertCtrl.create({
-          title: 'Delete Farm?',
-          message: "All Irrigation Zones, Crops and History under this Farm will also be deleted. Are you sure you want to delete this Farm?",
-          
-          buttons: [
-              {
-                  text: 'Cancel'
-              },
-              {
-                  text: 'Delete',
-                  handler: data => {
-                    this.auth.deleteFarm(farm).subscribe(data => {
-                      console.log("Farm, all its irrigation zones & \
-                        all its crops & all its histories deleted.");
-                      this.navCtrl.setRoot(HomePage);
-                    },
-                    error => {
-                      console.log(error);
-                    });
-                  }
-              }
-          ]
+  // Completes the operation and edits the User's Farm
+  editFarm() {
+    var coords = { latitude: this.latitude,
+                  longitude: this.longitude};
+    this.accommodateGPS(coords);
+
+    this.auth.editFarm(this.farm).subscribe(data => {
+        console.log("Farm edited.");
+        this.navCtrl.pop();
+      },
+      error => {
+        console.log(error);
       });
-
-      prompt.present();  
-
   }
 
   /*

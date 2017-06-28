@@ -12,8 +12,8 @@ export class CropHistoryPage {
   @ViewChild('historyCanvas') historyCanvas;
   historyChart: any;
 
-  public headers:Array<any> = ['Season Day','Date\n(DD-MM)','Recommended\n(mm)','Irrigated\n(mm)'];
-  public trueHeaders:Array<any> = ['seasonday','cleandate','recommended','irrigatedet'];
+  public headers:Array<any> = ['Season Day','ETc\n(mm)','Rainfall\n(mm)','Recommended (ETc-Rainfall)\n(mm)','Irrigated\n(mm)'];
+  public trueHeaders:Array<any> = ['seasonday','recommendedet','rainfall','recommended','irrigatedet'];
 
   crop:any = [];
   history: any = [];
@@ -53,7 +53,9 @@ export class CropHistoryPage {
 
       h.recommended = parseFloat((h.recommendedet - h.rainfall).toFixed(2));
       if(h.recommended < 0) h.recommended = 0;
-      h.irrigatedet = parseFloat(h.irrigatedet);
+      h.irrigatedet = parseFloat(h.irrigatedet.toFixed(2));
+      h.recommendedet = parseFloat(h.recommendedet.toFixed(2));
+      h.rainfall = parseFloat(h.rainfall.toFixed(2));
 
       recommendedSum += h.recommended;
       irrigatedSum += h.irrigatedet;
@@ -72,7 +74,7 @@ export class CropHistoryPage {
           labels: dates,
           datasets: [
             {
-              label: "Recommended",
+              label: "Recommended Irrigation (ETc-Rainfall) (mm)",
               fill: false,
               lineTension: 0.1,
               backgroundColor: "rgba(0,0,0,0.4)",
@@ -94,7 +96,7 @@ export class CropHistoryPage {
               spanGaps: false,
             },
             {
-              label: "Irrigated",
+              label: "Irrigated Amount (mm)",
               fill: false,
               lineTension: 0.1,
               backgroundColor: "rgba(75,192,192,0.4)",
@@ -116,6 +118,22 @@ export class CropHistoryPage {
               spanGaps: false,
             }
           ]
+        },
+        options : {
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Irrigation Depth (mm)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Days'
+              }
+            }]
+          }
         }
       });
     
