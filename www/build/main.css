@@ -24558,39 +24558,39 @@ ion-navbar.toolbar {
   white-space: initial;
 }
 
-.ios page-add p, .md page-add p {
+page-add p {
   font-size: 0.8em;
   color: #d2d2d2;
 }
 
-.ios page-add ion-label, .ios page-add .select-text, .md page-add ion-label, .md page-add .select-text {
+page-add .ion-label, page-add .select-text {
   margin-left: 10px;
 }
 
-.ios page-add ion-input, .ios page-add ion-select, .ios page-add ion-textarea, .md page-add ion-input, .md page-add ion-select, .md page-add ion-textarea {
+page-add .ion-input, page-add .ion-select, page-add .ion-textarea {
   padding: 5px 10px;
 }
 
-.ios page-add .icon, .md page-add .icon {
+page-add .icon {
   font-size: 32px;
 }
 
-.ios page-add .round-button, .md page-add .round-button {
-  width: 80%;
-  height: 10;
+page-add .round-button {
+  width: 42px;
+  height: 42px;
   padding-bottom: 0.02%;
-  border-radius: 60%;
+  border-radius: 100%;
   border: 2px solid #f5f5f5;
   overflow: hidden;
   background: #464646;
   box-shadow: 0 0 3px gray;
 }
 
-.ios page-add .round-button:hover, .md page-add .round-button:hover {
+page-add .round-button:hover {
   background: #262626;
 }
 
-.ios page-add .round-button img, .md page-add .round-button img {
+page-add .round-button img {
   display: block;
   width: 85%;
   padding: 10%;

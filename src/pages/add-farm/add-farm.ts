@@ -67,10 +67,8 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       if (this.auth.isDebug()) console.log(GPS);
       //GPS = this.accommodateGPS(GPS);
       if (this.auth.isDebug()) console.log(GPS);
-      console.log(GPS);
       this.latitude = GPS.latitude;
       this.longitude = GPS.longitude;
-      console.log(this.latitude,this.longitude);
       this.reloadMapWithInput();
     }, (err) => {
       console.log(err);
