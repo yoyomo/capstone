@@ -53,9 +53,7 @@
             "id": "cordova-plugin-geolocation"
         },
         "is_top_level": true,
-        "variables": {
-            "GEOLOCATION_USAGE_DESCRIPTION": " "
-        }
+        "variables": {}
     },
     "cordova-plugin-compat": {
         "source": {

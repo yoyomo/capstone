@@ -28,20 +28,21 @@
 
 <ion-item>
   <ion-label stacked>Latitude</ion-label>
-    <ion-select [(ngModel)]="farm.latindex" name="latIndex" (ionChange)="reloadMap()" required>
-      <ion-option *ngFor="let lat of latitudes" value="{{lat.latindex}}">{{lat.latcoordinate}}</ion-option>
-    </ion-select>
+    <ion-input type="number" [(ngModel)]="latitude" name="lat" (change)="reloadMapWithInput()" required>
+    </ion-input>
 </ion-item>
 <ion-item>
   <ion-label stacked>Longitude</ion-label>
-    <ion-select [(ngModel)]="farm.lonindex" name="lonIndex" (ionChange)="reloadMap()" required>
-      <ion-option *ngFor="let lon of longitudes" value="{{lon.lonindex}}">{{lon.loncoordinate}}</ion-option>
-    </ion-select>
+    <ion-input type="number" [(ngModel)]="longitude" name="lon" (change)="reloadMapWithInput()" required>
+    </ion-input>
 </ion-item>
 
 </form>
 <ion-item>
-  <button ion-button block (click)="getGPS()">GPS Location</button>
+  <button ion-button round (click)="getGPS()">
+    <ion-icon name="locate"></ion-icon> 
+    Use GPS
+  </button>
 </ion-item>
 
 <div #map id="map"></div>

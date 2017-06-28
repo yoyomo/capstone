@@ -16,9 +16,11 @@ export class EditFarmPage {
 @ViewChild('map') mapElement: ElementRef;
 map: any;
 soilTypes: any = [];
+latitude: number = 0;
+longitude: number = 0;
 latitudes: any = [];
 longitudes: any = [];
-farm = {uid: 0, farmid: '', farmname : '', soiltype: '', latindex: '', lonindex: ''};
+farm = {uid: 0, farmid: '', farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 mastercontrols: any = [];
 mastercontrol: any = {
   controlid: '',
@@ -56,7 +58,9 @@ loadingLon: Loading;
       this.auth.getLongitudes().subscribe(data => {
         this.longitudes = data;
         this.closeLoadingLon();
-        this.reloadMap();
+        this.latitude = this.latitudes[this.farm.latindex-1].latcoordinate;
+        this.longitude = this.longitudes[this.farm.lonindex-1].loncoordinate;
+        this.reloadMapWithInput();
       },
       error => {
         console.log(error);
@@ -73,6 +77,9 @@ loadingLon: Loading;
 
   // Completes the operation and edits the User's Farm
   editFarm() {
+    var coords = { latitude: this.latitude,
+                  longitude: this.longitude};
+    this.accommodateGPS(coords);
 
     this.auth.editFarm(this.farm).subscribe(data => {
         console.log("Farm edited.");
@@ -89,7 +96,7 @@ loadingLon: Loading;
       var GPS = { latitude: position.coords.latitude,
                   longitude: position.coords.longitude};
       if (this.auth.isDebug()) console.log(GPS);
-      GPS = this.accommodateGPS(GPS);
+      //GPS = this.accommodateGPS(GPS);
       if (this.auth.isDebug()) console.log(GPS);
       this.loadMap(GPS.latitude,GPS.longitude);
     }, (err) => {
@@ -154,8 +161,13 @@ loadingLon: Loading;
 
   // Loads map with new coordinates
   reloadMap(){
-    this.loadMap(this.latitudes[parseInt(this.farm.latindex)-1].latcoordinate,
-     this.longitudes[parseInt(this.farm.lonindex)-1].loncoordinate);
+    this.loadMap(this.latitudes[this.farm.latindex-1].latcoordinate,
+     this.longitudes[this.farm.lonindex-1].loncoordinate);
+  }
+
+  // Loads map with new input coordinates
+  reloadMapWithInput(){
+    this.loadMap(this.latitude,this.longitude);
   }
 
   // Loads map with given coordinates

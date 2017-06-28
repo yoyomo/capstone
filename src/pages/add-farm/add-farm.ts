@@ -5,7 +5,7 @@ import { AuthService } from '../../providers/auth-service';
 import { AlertController } from 'ionic-angular';
 
  
-declare var google: any;
+declare var google;
 
 @Component({
   selector: 'page-add-farm',
@@ -19,6 +19,8 @@ user: any = [];
 soilTypes: any = [];
 latitudes: any = [];
 longitudes: any = [];
+latitude: number = 0;
+longitude:number = 0;
 
 public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
@@ -40,9 +42,13 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       this.latitudes = data;
       this.auth.getLongitudes().subscribe(data => {
         this.longitudes = data;
-        this.farm.latindex = 1;
-        this.farm.lonindex = 1;
-        this.reloadMap();
+        this.farm.latindex = Math.floor(this.latitudes.length/2);
+        this.farm.lonindex = Math.floor(this.longitudes.length/2);
+        this.latitude = this.latitudes[this.farm.latindex-1].latcoordinate;
+        this.longitude = this.longitudes[this.farm.lonindex-1].loncoordinate;
+        this.reloadMapWithInput();
+
+        this.getGPS();
       },
       error => {
         console.log(error);
@@ -55,7 +61,9 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
 
   // Completes the operation and adds a Farm to the User
   addFarm() {
-
+    var coords = { latitude: this.latitude,
+                  longitude: this.longitude};
+    this.accommodateGPS(coords);
     this.auth.addFarm(this.farm).subscribe(data => {
         console.log("Farm added.");
         this.navCtrl.pop();
@@ -71,7 +79,7 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
       var GPS = { latitude: position.coords.latitude,
                   longitude: position.coords.longitude};
       if (this.auth.isDebug()) console.log(GPS);
-      GPS = this.accommodateGPS(GPS);
+      //GPS = this.accommodateGPS(GPS);
       if (this.auth.isDebug()) console.log(GPS);
       this.loadMap(GPS.latitude,GPS.longitude);
     }, (err) => {
@@ -138,6 +146,11 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
   reloadMap(){
     this.loadMap(this.latitudes[this.farm.latindex-1].latcoordinate,
      this.longitudes[this.farm.lonindex-1].loncoordinate);
+  }
+
+  // Loads map with new input coordinates
+  reloadMapWithInput(){
+    this.loadMap(this.latitude,this.longitude);
   }
 
   // Loads map with given coordinates
