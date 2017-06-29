@@ -232,8 +232,29 @@ stopIrrigationFlag = false;
      * Send to microcontroller
      */
     if(this.auth.isHardware()) this.sendToMasterControl();
-    
+    this.irrigateMessage();
   }
+
+irrigateMessage(){
+    let prompt = this.alertCtrl.create({
+          title: 'Irrigated',
+          message: "Your crop was Irrigated!",
+          
+          buttons: [
+              {
+                  text: 'Cancel'
+              },
+                  ]
+      });
+
+      prompt.present();  
+
+  }
+
+
+
+
+
 
   showSetup(){
     this.loading = this.loadingCtrl.create({

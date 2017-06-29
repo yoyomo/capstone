@@ -212,7 +212,9 @@ farms: any = [];
           <li> Press the 3 lined icon found in the page header to open side menu or Swipe
           page to the right.</li>
 
-          <li> Swipe list items to the left < to delete or edit farm, zone or crop.</li>
+          <li> Swipe list items to the left < to delete farm, zone or crop.</li>
+
+          <li> Press on desired farm or zone to edit.</li>
 
           <li> Press selected crop to see recommended irrigation value.</li>
                  

@@ -53,7 +53,10 @@ crop:any = {  uid: 0,farmid: '',izid: '', infoid: ''};
     this.showLoadingFarms();
     this.auth.getUserFarms(this.user).subscribe(data => {
       this.farms = data;
-      this.crop.farmid = this.farms[0].farmid;
+      if(this.farms.length != 0){
+        this.crop.farmid = this.farms[0].farmid;
+      }
+      
       this.closeLoadingFarms();
       this.loadZones();
     },
