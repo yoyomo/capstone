@@ -24621,6 +24621,10 @@ page-crop-history .six {
   border: think solid black;
 }
 
+page-crop-history .col {
+  border: think solid black;
+}
+
 page-crop-history .table {
   font-size: 20px;
   font-weight: bold;

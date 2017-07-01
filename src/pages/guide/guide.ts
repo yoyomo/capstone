@@ -22,7 +22,7 @@ export class GuidePage {
 
   // Loads PDF
   info(){
-    const browser = this.iab.create('https://drive.google.com/open?id=0By24c14-AbzUYTRPWjZBOURRTGc');
+    const browser = this.iab.create('https://drive.google.com/file/d/0B3Z6VcmEaTdPTVJBLWtUOG5Ld28/view?usp=sharing');
     browser.show();
   }
 

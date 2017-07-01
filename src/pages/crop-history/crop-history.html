@@ -29,18 +29,18 @@
   
   <ion-card>
     <ion-card-header>
-      <h3 class="table">Crop History</h3>
+      <h3 class="table" style="text-align: center;">Crop History</h3>
     </ion-card-header>
     <ion-card-content>
 
-      <ion-list ng-style="{'line-height': '250px'}">
-        <ion-row>
-          <ion-col class="six" *ngFor="let header of headers">{{header}}</ion-col>
+      <ion-list style="border: 1px solid;">
+        <ion-row >
+          <ion-col class="six" style="text-align: center;" *ngFor="let header of headers" >{{header}}</ion-col>
         </ion-row>
-          <ion-item-sliding item-end *ngFor="let h of history">
+          <ion-item-sliding  item-end *ngFor="let h of history">
             <ion-item>
               <ion-row button>
-                <ion-col class="six" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
+                <ion-col class="six" style="text-align: center;" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
               </ion-row>
             </ion-item>
             <ion-item-options>

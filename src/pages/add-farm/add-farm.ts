@@ -161,14 +161,16 @@ public farm = {uid: 0, farmname : '', soiltype: '', latindex: 0, lonindex: 0};
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      position: this.map.getCenter()
+      position: this.map.getCenter(),
+      //draggable: true
     });
    
     let content = "<h4>Your Farm's location</h4>"; 
     
     this.addInfoWindow(marker, content);           
     
-  }
+  }    
+ 
 
   // Displays information when user clicks on marker
   addInfoWindow(marker, content){

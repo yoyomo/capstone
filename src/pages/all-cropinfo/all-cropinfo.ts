@@ -93,6 +93,44 @@ export class AllCropInfoPage {
       prompt.present();  
 
   }
+
+info(){
+    let prompt = this.alertCtrl.create({
+          title: 'Information',
+          message: `
+        <ul>
+          <li> Press the plus + sign icon found in the page header to add crops.</li>
+
+          <li> Press the 3 lined icon found in the page header to open side menu or Swipe
+          page to the right.</li>
+
+          <li> Swipe list items to the left < to delete crop.</li>
+
+          <li> Press on desired farm crop to edit.
+                 
+        </ul>
+        <ul>
+        For more detailed information about H2O Crop see our user manual found in the side menu.
+                 
+        </ul>
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
+
+
+
+
+
   }
 
 

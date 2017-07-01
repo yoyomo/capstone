@@ -242,7 +242,7 @@ irrigateMessage(){
           
           buttons: [
               {
-                  text: 'Cancel'
+                  text: 'OK'
               },
                   ]
       });

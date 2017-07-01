@@ -97,4 +97,36 @@ export class LoginPage {
     });
     alert.present(prompt);
   }
+
+info(){
+    let prompt = this.alertCtrl.create({
+          title: 'About Us',
+          message: `
+        <p> H2OCrop is an efficient irrigation system that provides the user with a water amount to irrigate their crops
+          bassed on scientific predictions. This with the ends of growing strong healthy crops which will in the future
+          save farmers money, time and energy.</p>
+           
+        <ul> 
+          <li> To create an account please go to to the "Create New Account" button found on this page.</li>
+
+          <li> If you already have an account please login.</li>
+                 
+        </ul>
+       
+      `,
+          buttons: [
+              {
+                  text: 'Done'
+              }
+              
+          ]
+      });
+
+      prompt.present();  
+
+  }
+
+
+
+  
 }
