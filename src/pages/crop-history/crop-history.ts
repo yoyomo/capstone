@@ -155,7 +155,14 @@ export class CropHistoryPage {
             history.irrigatedet = data.editedAmount;
             this.auth.editHistory(history).subscribe(data => {
               console.log("History edited");
-              this.displayData();
+              this.auth.getHistory(this.crop).subscribe(data => {
+                this.history = data;
+                console.log("History loaded.");
+                this.displayData();
+              },
+              error => {
+                console.log(error);
+              });
             },
             error => {
               console.log(error);

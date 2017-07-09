@@ -33,13 +33,13 @@
     </ion-card-header>
     <ion-card-content>
 
-      <ion-list style="border: 1px solid;">
+      <ion-list>
         <ion-row >
           <ion-col class="six" style="text-align: center;" *ngFor="let header of headers" >{{header}}</ion-col>
         </ion-row>
           <ion-item-sliding  item-end *ngFor="let h of history">
             <ion-item>
-              <ion-row button>
+              <ion-row>
                 <ion-col class="six" style="text-align: center;" *ngFor="let header of trueHeaders">{{h[header]}}</ion-col>
               </ion-row>
             </ion-item>
